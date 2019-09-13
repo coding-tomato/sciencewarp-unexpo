@@ -14,6 +14,9 @@ module.exports = {
   resolve: {
     extensions: [ '.ts', '.tsx', '.js' ]
   },
+  node: {
+    fs: 'empty'
+  },
   output: {
     filename: 'game.js',
     path: path.resolve(__dirname, 'dist')

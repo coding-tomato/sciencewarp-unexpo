@@ -1,10 +1,16 @@
 import "phaser";
+import Bootstrap from "./bootstrap";
+import Menu from "./scenes/menu";
 
 const config: Phaser.Types.Core.GameConfig = {
   title: "Science Warp",
-  width: 600,
-  height: 800,
+  width: 800,
+  height: 794,
   parent: "container",
+  scene: [
+    Bootstrap,
+    Menu
+  ]
 };
 
 export class ScienceWarpGame extends Phaser.Game {

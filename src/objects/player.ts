@@ -1,77 +1,98 @@
 import "phaser"
 
+const enum State {
+    WALKING_NO_JETPACK,
+    WALKING_JETPACK,
+    JUMPING_NO_JETPACK,
+    JUMPING_JETPACK
+}
+
 export class Player extends Phaser.Physics.Arcade.Sprite {
     private currentScene: Phaser.Scene;
     //Variables
-    private acceleration: integer;
-    private direction: integer;
-    private maxSpeed: integer;
-    private jumpSpeed: integer;
-    private isJumping: boolean;
-    private onGround: boolean;
-
+    private acceleration: number;
+    private maxSpeed: number;
+    private friction: number;
+    private direction: {
+        x: number,
+        y: number
+    };
+    private lastDirection: {
+        x: number,
+        y: number
+    }
+    private jetAcceleration: number;
+    private jetMaxSpeed: number;
     //Input
-    private RIGHT: Phaser.Input.Keyboard.Key;
-    private LEFT: Phaser.Input.Keyboard.Key;
-    private UP: Phaser.Input.Keyboard.Key;
+    private keys: Phaser.Types.Input.Keyboard.CursorKeys
 
     constructor(params: any) {
         super(params.scene, params.x, params.y, params.key, params.frame);
         this.currentScene = params.scene
 
-        this.initSprite();
+        //Input
+        this.keys = this.currentScene.input.keyboard.createCursorKeys();
+
+        //Movement variables
+        this.acceleration = 300;
+        this.maxSpeed = 150;
+        this.friction = 400;
+        this.direction = {
+            x: 0,
+            y: 0
+        };
+        this.lastDirection = {
+            x: 0,
+            y: 0
+        }
+        this.jetAcceleration = -20;
+        this.jetMaxSpeed = -200;
+
+        //Settings
+        this.currentScene.physics.world.enable(this);
+        this.setCollideWorldBounds(true);
         this.scene.add.existing(this);
     }
 
-    private initSprite() {
-        this.RIGHT = this.currentScene.input.keyboard.addKey("RIGHT");
-        this.LEFT = this.currentScene.input.keyboard.addKey("LEFT");
-        this.UP = this.currentScene.input.keyboard.addKey("UP");
-
-        this.acceleration = 300;
-        this.direction = 0;
-        this.maxSpeed = 150;
-        this.jumpSpeed = 300;
-
-        this.currentScene.physics.world.enable(this);
-        this.setCollideWorldBounds(true);
-    }
-
     //Cycle
-    update(): void {
+    update(delta: number): void {
         this.handleInput();
-        this.handleMovement();
+        this.handleMovement(delta);
         this.handleAnimations();
     }
 
     private handleInput() {
-        if(this.RIGHT.isDown)     { this.direction = 1  }
-        else if(this.LEFT.isDown) { this.direction = -1 }
-        else { this.direction = 0 }
+        if(this.keys.right.isDown)     { this.direction.x = 1  }
+        else if(this.keys.left.isDown) { this.direction.x = -1 }
+        else { this.direction.x = 0 }
         
-        if(this.UP.isDown) { this.isJumping = true }
+        if(this.keys.up.isDown) { this.direction.y = -1 }
+        else { this.direction.y = 0 }
     }
 
-    private handleMovement() {
+    private handleMovement(delta: number /*, player_state: State*/) {
         // Lateral movement
-        if(this.direction !== 0) {
-            this.setAccelerationX(this.acceleration * this.direction);
-            if (Math.abs(this.body.velocity.x) > this.maxSpeed) this.setVelocityX(this.maxSpeed * this.direction);
+        if(this.lastDirection.x !== this.direction.x) {
+            this.setVelocityX(this.body.velocity.x/2);
+            this.lastDirection.x = this.direction.x;
+        }
+
+        if(this.direction.x !== 0) {
+            this.setAccelerationX(this.acceleration * this.direction.x);
+            if (Math.abs(this.body.velocity.x) > this.maxSpeed) this.setVelocityX(this.maxSpeed * this.direction.x);
         } else {
             this.setAccelerationX(0);
-            this.setDragX(400);
+            this.setDragX(this.friction);
         }
-        //Jumping
-        if(this.isJumping) {
-            this.setVelocityY(-this.jumpSpeed);
-            this.onGround = false;
-            this.isJumping = false;
+        //Jet pack
+        if(this.direction.y == -1) {
+            this.body.velocity.y += this.jetAcceleration * delta * 0.1;
+            if (this.body.velocity.y < this.jetMaxSpeed) this.setVelocityY(this.jetMaxSpeed)
         }
-        //Ground checking
     }
 
     private handleAnimations() {
-        switch(this.direction){
+        switch(this.direction.x){
             case 1:
                 this.setFlipX(false);
                 break;

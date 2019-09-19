@@ -18,7 +18,7 @@ export default class TeslaLevel extends Phaser.Scene {
             key: "moran"
         })
     }
-    public update(): void {
-        this.player.update();
+    public update(time: number, delta: number): void {
+        this.player.update(delta);   
     }
 }

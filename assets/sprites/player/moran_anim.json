@@ -1,0 +1,128 @@
+{
+    "anims": [
+        {
+            "key": "idle",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "moran",
+                    "frame": "moran_0"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_1"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_2"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_3"
+                }
+            ]
+        },
+        {
+            "key": "run",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "moran",
+                    "frame": "moran_4"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_5"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_6"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_7"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_8"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_9"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_10"
+                }
+            ]
+        },
+        {
+            "key": "jet_boost",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "moran",
+                    "frame": "moran_12"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_13"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_14"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_15"
+                }
+            ]
+        },
+        {
+            "key": "jet_fall",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "moran",
+                    "frame": "moran_16"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_17"
+                }
+            ]
+        },
+        {
+            "key": "jump",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "moran",
+                    "frame": "moran_18"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_19"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_20"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_21"
+                }
+            ]
+        }
+    ]
+}

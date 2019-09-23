@@ -1,0 +1,294 @@
+{
+    "frames": [
+        {
+            "filename": "moran_0",
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_1",
+            "frame": {
+                "x": 29,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_2",
+            "frame": {
+                "x": 58,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_3",
+            "frame": {
+                "x": 87,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_4",
+            "frame": {
+                "x": 116,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_5",
+            "frame": {
+                "x": 145,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_6",
+            "frame": {
+                "x": 174,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_7",
+            "frame": {
+                "x": 203,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_8",
+            "frame": {
+                "x": 232,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_9",
+            "frame": {
+                "x": 261,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_10",
+            "frame": {
+                "x": 290,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_11",
+            "frame": {
+                "x": 319,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_12",
+            "frame": {
+                "x": 348,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_13",
+            "frame": {
+                "x": 377,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_14",
+            "frame": {
+                "x": 406,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_15",
+            "frame": {
+                "x": 435,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_16",
+            "frame": {
+                "x": 464,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_17",
+            "frame": {
+                "x": 493,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_18",
+            "frame": {
+                "x": 522,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_19",
+            "frame": {
+                "x": 551,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_20",
+            "frame": {
+                "x": 580,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "moran_21",
+            "frame": {
+                "x": 609,
+                "y": 0,
+                "w": 29,
+                "h": 54
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Phaser3",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}

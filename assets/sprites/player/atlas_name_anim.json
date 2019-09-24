@@ -7,19 +7,19 @@
             "frameRate": 12,
             "frames": [
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_0"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_1"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_2"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_3"
                 }
             ]
@@ -31,55 +31,59 @@
             "frameRate": 12,
             "frames": [
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_4"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_5"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_6"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_7"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_8"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_9"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_10"
+                },
+                {
+                    "key": "atlas_name",
+                    "frame": "moran_11"
                 }
             ]
         },
         {
-            "key": "jet_boost",
+            "key": "jet_fly",
             "type": "frames",
             "repeat": -1,
             "frameRate": 12,
             "frames": [
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_12"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_13"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_14"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_15"
                 }
             ]
@@ -91,11 +95,11 @@
             "frameRate": 12,
             "frames": [
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_16"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_17"
                 }
             ]
@@ -107,20 +111,36 @@
             "frameRate": 12,
             "frames": [
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_18"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_19"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_20"
                 },
                 {
-                    "key": "moran",
+                    "key": "atlas_name",
                     "frame": "moran_21"
+                }
+            ]
+        },
+        {
+            "key": "jump_fall",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "atlas_name",
+                    "frame": "moran_22"
+                },
+                {
+                    "key": "atlas_name",
+                    "frame": "moran_23"
                 }
             ]
         }

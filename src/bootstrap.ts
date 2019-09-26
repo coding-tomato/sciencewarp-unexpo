@@ -14,6 +14,9 @@ export default class Bootstrap extends Phaser.Scene {
 			this.load.image(`layer0${i}`, `../assets/temp_layer0${i}.png`)
 		}
 
-		this.load.image('moran', '../assets/sprites/player/moran.png')
+		this.load.image('moran', '../assets/sprites/player/moran_still.png');
+
+		this.load.image('tileset', '../assets/tilesets/tesla_tileset.png');
+		this.load.tilemapTiledJSON('tesla', '../assets/tilemaps/test_tilemap_0.json');
 	}
 }

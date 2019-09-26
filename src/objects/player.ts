@@ -7,7 +7,7 @@ const enum State {
     JUMPING_JETPACK
 }
 
-export class Player extends Phaser.Physics.Arcade.Sprite {
+export default class Player extends Phaser.Physics.Arcade.Sprite {
     private currentScene: Phaser.Scene;
     //Variables
     private acceleration: number;
@@ -24,7 +24,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     private jetAcceleration: number;
     private jetMaxSpeed: number;
     //Input
-    private keys: Phaser.Types.Input.Keyboard.CursorKeys
+    private keys: Phaser.Types.Input.Keyboard.CursorKeys;
 
     constructor(params: any) {
         super(params.scene, params.x, params.y, params.key, params.frame);
@@ -49,9 +49,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.jetMaxSpeed = -200;
 
         //Settings
-        this.currentScene.physics.world.enable(this);
-        this.setCollideWorldBounds(true);
         this.scene.add.existing(this);
+        this.currentScene.physics.world.enable(this);
+        //this.setCollideWorldBounds(true);
+        
     }
 
     //Cycle
@@ -65,7 +66,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         if(this.keys.right.isDown)     { this.direction.x = 1  }
         else if(this.keys.left.isDown) { this.direction.x = -1 }
         else { this.direction.x = 0 }
-        
+
         if(this.keys.up.isDown) { this.direction.y = -1 }
         else { this.direction.y = 0 }
     }
@@ -102,5 +103,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             default:
                 break;
         }
+    }
+
+    get playerScene(): Phaser.Scene {
+        return this.currentScene;
     }
 }

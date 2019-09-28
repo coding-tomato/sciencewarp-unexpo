@@ -1,0 +1,44 @@
+{
+    "anims": [
+        {
+            "key": "walk",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "coil",
+                    "frame": "coil_0"
+                },
+                {
+                    "key": "coil",
+                    "frame": "coil_1"
+                },
+                {
+                    "key": "coil",
+                    "frame": "coil_2"
+                },
+                {
+                    "key": "coil",
+                    "frame": "coil_3"
+                },
+                {
+                    "key": "coil",
+                    "frame": "coil_4"
+                },
+                {
+                    "key": "coil",
+                    "frame": "coil_5"
+                },
+                {
+                    "key": "coil",
+                    "frame": "coil_6"
+                },
+                {
+                    "key": "coil",
+                    "frame": "coil_7"
+                }
+            ]
+        }
+    ]
+}

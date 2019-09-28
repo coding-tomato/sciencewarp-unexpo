@@ -1,11 +1,11 @@
 import "phaser";
 
 import Player from '../objects/player'
-import TeslaGoon from '../objects/enemies/tesla_goon'
+import Coil from '../objects/enemies/coil'
 
 export default class TestLevel extends Phaser.Scene {
     private player: Player;
-    private goon: TeslaGoon
+    private Coil: Coil
     private map: any[];
     private tileset: any[];
     private level: any[];
@@ -40,7 +40,7 @@ export default class TestLevel extends Phaser.Scene {
         });
 
         //Enemy testing
-        this.goon = new TeslaGoon({
+        this.Coil = new Coil({
             scene: this,
             x: 350,
             y: 490,
@@ -48,20 +48,19 @@ export default class TestLevel extends Phaser.Scene {
                 x: 1,
                 y: 0
             },
-            key: "tesla_goon"
+            key: "coil"
         })
         
 
         this.player.setFuelHUD();
         this.physics.add.collider(this.player, this.level[0]);
-        this.physics.add.collider(this.goon, this.level[0]);
+        this.physics.add.collider(this.Coil, this.level[0]);
         this.cameras.main.startFollow(this.player);
-        
     }
 
     public update(time: number, delta: number): void {
         this.player.update(delta);
-        this.goon.update(delta);
+        this.Coil.update(delta);
         
     }
 } 

@@ -1,0 +1,112 @@
+{
+    "frames": [
+        {
+            "filename": "coil_0",
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 30,
+                "h": 30
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "coil_1",
+            "frame": {
+                "x": 30,
+                "y": 0,
+                "w": 30,
+                "h": 30
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "coil_2",
+            "frame": {
+                "x": 60,
+                "y": 0,
+                "w": 30,
+                "h": 30
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "coil_3",
+            "frame": {
+                "x": 90,
+                "y": 0,
+                "w": 30,
+                "h": 30
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "coil_4",
+            "frame": {
+                "x": 120,
+                "y": 0,
+                "w": 30,
+                "h": 30
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "coil_5",
+            "frame": {
+                "x": 150,
+                "y": 0,
+                "w": 30,
+                "h": 30
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "coil_6",
+            "frame": {
+                "x": 180,
+                "y": 0,
+                "w": 30,
+                "h": 30
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "coil_7",
+            "frame": {
+                "x": 210,
+                "y": 0,
+                "w": 30,
+                "h": 30
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Phaser3",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}

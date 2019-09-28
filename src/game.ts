@@ -3,12 +3,12 @@ import "phaser";
 import Bootstrap from "./bootstrap";
 import Menu from "./scenes/menu";
 
-import TeslaLevel from './scenes/tesla_level'
+import TestLevel from './scenes/test_level'
 
 const config: Phaser.Types.Core.GameConfig = {
 	title: "Science Warp",
-	width: 380,
-	height: 240,
+	width: 480,
+	height: 270,
 	parent: "container",
 	physics: {
 		default: "arcade",
@@ -26,7 +26,7 @@ const config: Phaser.Types.Core.GameConfig = {
 	scene: [
 		Bootstrap,
 		Menu,
-		TeslaLevel
+		TestLevel
 	]
 };
 

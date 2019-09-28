@@ -1,10 +1,17 @@
 import "phaser"
 
 const enum State {
-    WALKING_NO_JETPACK,
-    WALKING_JETPACK,
-    JUMPING_NO_JETPACK,
-    JUMPING_JETPACK
+    WALKING,
+    FLYING
+}
+
+interface Fuel {
+    vFuel: number,
+    rateGetFuel: number,
+    rateLoseFuel: number,
+    bonusFuel: number,
+    fuelBox: Phaser.GameObjects.Graphics;
+    fuelBar: Phaser.GameObjects.Graphics;
 }
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
@@ -25,6 +32,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     private jetMaxSpeed: number;
     //Input
     private keys: Phaser.Types.Input.Keyboard.CursorKeys;
+    // Fuel
+    private fuel: Fuel;
+
 
     constructor(params: any) {
         super(params.scene, params.x, params.y, params.key, params.frame);
@@ -32,6 +42,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         //Input
         this.keys = this.currentScene.input.keyboard.createCursorKeys();
+
+        // State
+        this.state = State.WALKING;
 
         //Movement variables
         this.acceleration = 300;
@@ -52,14 +65,35 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.scene.add.existing(this);
         this.currentScene.physics.world.enable(this);
         //this.setCollideWorldBounds(true);
-        
+
+        this.fuel = {
+            vFuel: 0,
+            rateGetFuel: 1,
+            rateLoseFuel: 1,
+            bonusFuel: 10,
+            fuelBox: this.currentScene.add.graphics(),
+            fuelBar: this.currentScene.add.graphics(),
+        };
     }
 
     //Cycle
-    update(delta: number): void {
+    public update(delta: number): void {
         this.handleInput();
         this.handleMovement(delta);
         this.handleAnimations();
+        this.handleFuel();
+    }
+
+    public setFuelHUD(): void {
+        const black: Phaser.Display.Color = Phaser.Display.Color.HexStringToColor('#0000');
+
+        
+        this.fuel.fuelBox.fillStyle(black.color, 0.5);
+        this.fuel.fuelBox.setScrollFactor(0, 0);
+
+        const {width, height} = this.currentScene.cameras.main;
+        
+        this.fuel.fuelBox.fillRect(width, 0, -20, height);
     }
 
     private handleInput() {
@@ -69,6 +103,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         if(this.keys.up.isDown) { this.direction.y = -1 }
         else { this.direction.y = 0 }
+
+        if (this.keys.space.isDown) {
+            this.state = State.FLYING;
+        }
     }
 
     private handleMovement(delta: number /*, player_state: State*/) {
@@ -105,7 +143,36 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    get playerScene(): Phaser.Scene {
-        return this.currentScene;
+    private hasEnoughFuel(): boolean {
+        if (this.fuel.vFuel > 0) {
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
+
+    private handleFuel(): void {
+        switch(this.state) {
+            case State.FLYING: {
+                if (this.hasEnoughFuel()) {
+                    this.fuel.vFuel -= this.fuel.rateLoseFuel;
+                    this.fuel.vFuel.toFixed();
+                    console.log(this.fuel.vFuel);
+                }
+
+                break;
+            }
+
+            case State.WALKING: {
+                if (this.fuel.vFuel < 100) {
+                    this.fuel.vFuel += this.fuel.rateGetFuel;
+                    this.fuel.vFuel.toFixed();
+                    console.log(this.fuel.vFuel);
+                }
+
+                break;
+            }
+        }
     }
 }

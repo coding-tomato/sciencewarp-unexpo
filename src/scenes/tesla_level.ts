@@ -24,6 +24,7 @@ export default class TeslaLevel extends Phaser.Scene {
         this.tileset[0] = this.map[0].addTilesetImage('tesla_tileset', 'tileset');
 
         this.level[0] = this.map[0].createStaticLayer('Ground', this.tileset[0]);
+
         this.level[0].setCollisionByProperty({ collides: true });
         
         this.cameras.main.setBounds(0, 0, 80*36, 36*36, true);
@@ -35,12 +36,11 @@ export default class TeslaLevel extends Phaser.Scene {
             y: 490,
             key: "moran"
         });      
-        
+
+        this.player.setFuelHUD();
         this.physics.add.collider(this.player, this.level[0]);
-
-
-        
         this.cameras.main.startFollow(this.player);
+        
     }
 
     public update(time: number, delta: number): void {

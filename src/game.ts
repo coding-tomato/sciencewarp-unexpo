@@ -18,7 +18,7 @@ const config: Phaser.Types.Core.GameConfig = {
 		},
 	},
 	backgroundColor: "#ffb570",
-	zoom: 2,
+	zoom: 3,
 	render: {
 		pixelArt: true,
 		antialias: false

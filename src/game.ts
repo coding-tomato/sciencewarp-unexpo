@@ -7,8 +7,8 @@ import TeslaLevel from './scenes/tesla_level'
 
 const config: Phaser.Types.Core.GameConfig = {
 	title: "Science Warp",
-	width: 360,
-	height: 144,
+	width: 380,
+	height: 240,
 	parent: "container",
 	physics: {
 		default: "arcade",

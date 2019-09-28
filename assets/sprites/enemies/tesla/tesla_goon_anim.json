@@ -1,0 +1,44 @@
+{
+    "anims": [
+        {
+            "key": "walk",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "tesla_goon",
+                    "frame": "tesla-goon_0"
+                },
+                {
+                    "key": "tesla_goon",
+                    "frame": "tesla-goon_1"
+                },
+                {
+                    "key": "tesla_goon",
+                    "frame": "tesla-goon_2"
+                },
+                {
+                    "key": "tesla_goon",
+                    "frame": "tesla-goon_3"
+                },
+                {
+                    "key": "tesla_goon",
+                    "frame": "tesla-goon_4"
+                },
+                {
+                    "key": "tesla_goon",
+                    "frame": "tesla-goon_5"
+                },
+                {
+                    "key": "tesla_goon",
+                    "frame": "tesla-goon_6"
+                },
+                {
+                    "key": "tesla_goon",
+                    "frame": "tesla-goon_7"
+                }
+            ]
+        }
+    ]
+}

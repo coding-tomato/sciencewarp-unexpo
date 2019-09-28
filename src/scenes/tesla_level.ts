@@ -26,7 +26,7 @@ export default class TeslaLevel extends Phaser.Scene {
         this.level[0] = this.map[0].createStaticLayer('Ground', this.tileset[0]);
         this.level[0].setCollisionByProperty({ collides: true });
         
-        this.cameras.main.setBounds(0, 0, 80*36, 36*36, true);
+        this.cameras.main.setBounds(0, 0, 80*16, 36*36, true);
         
         // Player
         this.player = new Player({

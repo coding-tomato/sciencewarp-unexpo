@@ -15,7 +15,7 @@ export default class Coil extends Phaser.GameObjects.Sprite {
         this.currentScene = params.scene
 
         this.direction = params.direction;
-        this.velocity = 60;
+        this.velocity = 100;
     
         //Settings
         this.scene.add.existing(this);
@@ -45,6 +45,6 @@ export default class Coil extends Phaser.GameObjects.Sprite {
     }
 
     private handleAnimations() {
-
+        
     }
 }

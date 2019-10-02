@@ -14,10 +14,10 @@ const config: Phaser.Types.Core.GameConfig = {
 		default: "arcade",
 		arcade: {
 			gravity: { y: 800 },
-			debug: true
+			debug: false
 		},
 	},
-	backgroundColor: "#ffb570",
+	backgroundColor: "#4da6ff",
 	zoom: 3,
 	render: {
 		pixelArt: true,

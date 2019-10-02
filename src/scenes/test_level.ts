@@ -23,21 +23,21 @@ export default class TestLevel extends Phaser.Scene {
     }
     public create(): void {
         
-        this.cameras.main.setBounds(0, 0, 80*16, 36*36, true);
+        this.cameras.main.setBounds(0, 0, 100*16, 50*16, true);
         
         // Player
         this.player = new Player({
             scene: this,
-            x: 300,
-            y: 490,
+            x: 5*16,
+            y: 45*16,
             key: "moran"
         });
 
         //Enemy testing
         this.Coil = new Coil({
             scene: this,
-            x: 350,
-            y: 490,
+            x: 25*16,
+            y: 45*16,
             direction: {
                 x: 1,
                 y: 0

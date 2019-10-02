@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="80" height="36" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#4da6ff" nextlayerid="10" nextobjectid="22">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="80" height="36" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#4da6ff" nextlayerid="11" nextobjectid="26">
  <tileset firstgid="1" name="tesla_tileset" tilewidth="16" tileheight="16" tilecount="66" columns="11">
   <image source="../tilesets/tesla_tileset.png" width="176" height="96"/>
   <tile id="0">
@@ -78,4 +78,12 @@
 23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23
 </data>
  </layer>
+ <objectgroup id="10" name="pointer">
+  <object id="22" x="216" y="412">
+   <properties>
+    <property name="name" value="hola"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
 </map>

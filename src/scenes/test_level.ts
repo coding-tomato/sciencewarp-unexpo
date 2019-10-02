@@ -22,17 +22,6 @@ export default class TestLevel extends Phaser.Scene {
         this.level = [];
     }
     public create(): void {
-        // Map
-
-        
-
-        // this.map[0] = this.add.tilemap('tesla');
-
-        // this.tileset[0] = this.map[0].addTilesetImage('tesla_tileset', 'tileset');
-
-        // this.level[0] = this.map[0].createStaticLayer('Ground', this.tileset[0]);
-
-        // this.level[0].setCollisionByProperty({ collides: true });
         
         this.cameras.main.setBounds(0, 0, 80*16, 36*36, true);
         
@@ -61,17 +50,13 @@ export default class TestLevel extends Phaser.Scene {
         }));
 
         this.mapManager.setTilesetImage('tesla_tileset', 'tileset');
-
-        this.mapManager.setStaticLayers([
-            'Ground'
-        ], [
-            this.player,
-            this.Coil
-        ]);
+        this.mapManager.setStaticLayers(['Ground'], [this.player, this.Coil]);
         
 
         this.player.setFuelHUD();
         this.cameras.main.startFollow(this.player);
+
+        this.mapManager.createObjects('coil');
     }
 
     public update(time: number, delta: number): void {

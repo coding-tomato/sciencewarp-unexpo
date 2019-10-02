@@ -28,4 +28,8 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
             }     
         });
     }
+
+    createObjects(sprite: string) {
+        this.map.createFromObjects('pointer', 22, { key: sprite });
+    }
 }

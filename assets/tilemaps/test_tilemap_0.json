@@ -13,9 +13,38 @@
          "width":80,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"pointer",
+         "objects":[
+                {
+                 "height":0,
+                 "id":22,
+                 "name":"",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"name",
+                         "type":"string",
+                         "value":"hola"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":216,
+                 "y":412
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":22,
+ "nextlayerid":11,
+ "nextobjectid":26,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

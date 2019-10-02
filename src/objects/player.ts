@@ -158,7 +158,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 if (this.hasEnoughFuel()) {
                     this.fuel.vFuel -= this.fuel.rateLoseFuel;
                     this.fuel.vFuel.toFixed();
-                    console.log(this.fuel.vFuel);
                 }
 
                 break;
@@ -168,7 +167,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 if (this.fuel.vFuel < 100) {
                     this.fuel.vFuel += this.fuel.rateGetFuel;
                     this.fuel.vFuel.toFixed();
-                    console.log(this.fuel.vFuel);
                 }
 
                 break;

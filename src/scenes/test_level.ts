@@ -2,6 +2,7 @@ import "phaser";
 
 import Player from '../objects/player'
 import Coil from '../objects/enemies/coil'
+import MapHelper from '../utils/mapHelper'
 
 export default class TestLevel extends Phaser.Scene {
     private player: Player;
@@ -9,6 +10,7 @@ export default class TestLevel extends Phaser.Scene {
     private map: any[];
     private tileset: any[];
     private level: any[];
+    private mapManager: MapHelper;
 
     constructor() {
         super({
@@ -21,13 +23,16 @@ export default class TestLevel extends Phaser.Scene {
     }
     public create(): void {
         // Map
-        this.map[0] = this.add.tilemap('tesla');
 
-        this.tileset[0] = this.map[0].addTilesetImage('tesla_tileset', 'tileset');
+        
 
-        this.level[0] = this.map[0].createStaticLayer('Ground', this.tileset[0]);
+        // this.map[0] = this.add.tilemap('tesla');
 
-        this.level[0].setCollisionByProperty({ collides: true });
+        // this.tileset[0] = this.map[0].addTilesetImage('tesla_tileset', 'tileset');
+
+        // this.level[0] = this.map[0].createStaticLayer('Ground', this.tileset[0]);
+
+        // this.level[0].setCollisionByProperty({ collides: true });
         
         this.cameras.main.setBounds(0, 0, 80*16, 36*36, true);
         
@@ -50,11 +55,22 @@ export default class TestLevel extends Phaser.Scene {
             },
             key: "coil"
         })
+
+        this.mapManager = new MapHelper(this, new Phaser.Tilemaps.MapData({
+            name: 'tesla'
+        }));
+
+        this.mapManager.setTilesetImage('tesla_tileset', 'tileset');
+
+        this.mapManager.setStaticLayers([
+            'Ground'
+        ], [
+            this.player,
+            this.Coil
+        ]);
         
 
         this.player.setFuelHUD();
-        this.physics.add.collider(this.player, this.level[0]);
-        this.physics.add.collider(this.Coil, this.level[0]);
         this.cameras.main.startFollow(this.player);
     }
 

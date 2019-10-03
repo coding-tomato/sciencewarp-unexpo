@@ -87,10 +87,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         //Fuel
         this.fuel = {
-            vFuel: 2000,
-            maxFuel: 2000,
-            rateGetFuel: 5,
-            rateLoseFuel: 5,
+            vFuel: 10000,
+            maxFuel: 10000,
+            rateGetFuel: 10,
+            rateLoseFuel: 10,
             bonusFuel: 10,
             fuelBox: this.currentScene.add.graphics(),
             fuelBar: this.currentScene.add.graphics(),
@@ -98,11 +98,21 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.setFuelHUD();
 
         //Animations
-        
+        this.currentScene.anims.create({ key:"idle", frames: this.currentScene.anims.generateFrameNumbers('moran', {start: 0, end: 3}), frameRate: 10, repeat: -1 })
+        this.currentScene.anims.create({ key:"run", frames: this.currentScene.anims.generateFrameNumbers('moran', {start: 4, end: 11}), frameRate: 12, repeat: -1 })
+        this.currentScene.anims.create({ key:"jetpack", frames: this.currentScene.anims.generateFrameNumbers('moran', {start: 12, end: 15}), frameRate: 16, repeat: -1 })
+        this.currentScene.anims.create({ key:"jetpack_still", frames: [{key: 'moran', frame: 16}], frameRate: 16, repeat: -1 })
+        this.currentScene.anims.create({ key:"jetpack_fall", frames: this.currentScene.anims.generateFrameNumbers('moran', {start: 16, end: 17}), frameRate: 20, repeat: -1 })
+        this.currentScene.anims.create({ key:"jumping", frames: this.currentScene.anims.generateFrameNumbers('moran', {start: 18, end: 21}), frameRate: 10, repeat: 0 })
+        this.currentScene.anims.create({ key:"fall", frames: this.currentScene.anims.generateFrameNumbers('moran', {start: 22, end: 23}), frameRate: 20, repeat: -1 })
+
+        this.play('idle', true)
 
         //Settings
         this.scene.add.existing(this);
         this.currentScene.physics.world.enable(this);
+        this.body.setSize(12,32)
+        this.body.setOffset(8,4)
     }
 
     //Cycle
@@ -185,20 +195,33 @@ export default class Player extends Phaser.GameObjects.Sprite {
             default:
                 break;
         }
+        switch(this.state) {
+            case State.WALKING:
+                if(this.body.velocity.y > 0) this.play('fall', true)
+                else if(this.body.velocity.y < 0 && this.anims.getCurrentKey) this.play('jumping', true)
+                if(this.body.blocked.down && this.body.velocity.x === 0) this.play('idle', true)
+                else if (this.body.blocked.down) this.play('run', true)
+                break;
+            case State.FLYING:
+                if(this.direction.y === -1) this.play('jetpack', true)
+                else if(this.body.velocity.y > 0) this.play('jetpack_fall', true)
+                else this.play('jetpack_still')
+                
+        }
     }
 
     private handleFuel(delta: number): void {
         switch(this.state) {
-            case State.FLYING: {
-                if (this.fuel.vFuel > 0) {
-                    this.fuel.vFuel -= this.fuel.rateLoseFuel * parseInt((delta*0.1).toFixed());
+            case State.WALKING: {
+                if (this.fuel.vFuel < this.fuel.maxFuel) {
+                    this.fuel.vFuel += this.fuel.rateGetFuel * parseInt((delta*0.1).toFixed());
                     this.fuel.vFuel.toFixed(0);
                 }
                 break;
             }
-            case State.WALKING: {
-                if (this.fuel.vFuel < this.fuel.maxFuel) {
-                    this.fuel.vFuel += this.fuel.rateGetFuel * parseInt((delta*0.1).toFixed());
+            case State.FLYING: {
+                if (this.fuel.vFuel > 0) {
+                    this.fuel.vFuel -= this.fuel.rateLoseFuel * parseInt((delta*0.1).toFixed());
                     this.fuel.vFuel.toFixed(0);
                 }
                 break;

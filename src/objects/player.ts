@@ -155,22 +155,22 @@ export default class Player extends Phaser.GameObjects.Sprite {
                     this.body.setVelocityY(this.jumpHeight);
                     this.lastDirection.y = this.direction.y;
                 }
-                //If player hasn't let go jump button, he won't fly
-                if(this.lastDirection.y === -1 && this.direction.y === -1) break;
-                if(this.lastDirection.y === -1 && this.direction.y === 0) this.body.setVelocityY(this.body.velocity.y/2)
-                //Player will start flying if: 
-                //(a) releases jump button 
-                if(this.direction.y === -1 && this.lastDirection.y === 0) {
-                    this.lastDirection.y = this.direction.y;
-                    this.state = State.FLYING
-                    break;
+                switch(true){
+                    //If player hasn't let go jump button, he won't fly
+                    case (this.lastDirection.y === -1 && this.direction.y === -1): break;
+                    case (this.lastDirection.y === -1 && this.direction.y === 0): 
+                        this.body.setVelocityY(this.body.velocity.y/2); 
+                        break;
+                    //Player will start flying if: 
+                    //(a) releases jump button 
+                    case (this.lastDirection.y === 0 && this.direction.y === -1):
+                        this.state = State.FLYING;
+                        break;
+                    // (b) starts falling
+                    case (this.body.velocity.y > 0 && this.direction.y === -1 && this.lastDirection.y === 0):
+                        this.state = State.FLYING
+                        break;
                 }
-                // (b) starts falling
-                if(this.body.velocity.y > 0 && this.direction.y === -1 && this.lastDirection.y === 0) {
-                    this.state = State.FLYING
-                    break;
-                }
-                
                 this.lastDirection.y = this.direction.y;
                 break;
             //Flying
@@ -197,9 +197,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
         }
         switch(this.state) {
             case State.WALKING:
-                if(this.body.velocity.y > 0) this.play('fall', true)
-                else if(this.body.velocity.y < 0 && this.anims.getCurrentKey) this.play('jumping', true)
-                if(this.body.blocked.down && this.body.velocity.x === 0) this.play('idle', true)
+                if(this.body.velocity.y > 200) this.play('fall', true)
+                else if(this.body.velocity.y < 0 && this.anims.getCurrentKey() !== 'jumping') this.play('jumping', true)
+                else if(this.body.blocked.down && this.body.velocity.x === 0) this.play('idle', true)
                 else if (this.body.blocked.down) this.play('run', true)
                 break;
             case State.FLYING:
@@ -220,7 +220,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
                 break;
             }
             case State.FLYING: {
-                if (this.fuel.vFuel > 0) {
+                if (this.fuel.vFuel > 0 && this.direction.y === -1) {
                     this.fuel.vFuel -= this.fuel.rateLoseFuel * parseInt((delta*0.1).toFixed());
                     this.fuel.vFuel.toFixed(0);
                 }

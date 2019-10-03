@@ -1,4 +1,5 @@
 export default class Bootstrap extends Phaser.Scene {
+	private moranx: Phaser.Cache.BaseCache
 	constructor() {
 		super({
 			key: "Bootstrap"
@@ -16,7 +17,8 @@ export default class Bootstrap extends Phaser.Scene {
 
 		this.load.path = '../assets/'
 
-		this.load.image('moran', 'sprites/player/moran_still.png');
+		this.load.spritesheet('moran', 'sprites/player/moran.png', {frameWidth: 29, frameHeight: 54})
+
 		this.load.image('coil', 'sprites/enemies/tesla/coil_still.png')
 		this.load.image('bg0', 'bg0.png')
 		this.load.image('bg1', 'bg1.png')

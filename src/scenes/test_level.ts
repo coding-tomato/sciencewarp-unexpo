@@ -29,7 +29,7 @@ export default class TestLevel extends Phaser.Scene {
         this.player = new Player({
             scene: this,
             x: 5*16,
-            y: 45*16,
+            y: 47*16,
             key: "moran"
         });
 
@@ -51,9 +51,6 @@ export default class TestLevel extends Phaser.Scene {
 
         this.mapManager.setTilesetImage('tesla_tileset', 'tileset');
         this.mapManager.setStaticLayers(['Ground'], [this.player, this.Coil]);
-        
-
-        this.player.setFuelHUD();
         this.cameras.main.startFollow(this.player);
 
         this.mapManager.createObjects('coil');

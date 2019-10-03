@@ -87,10 +87,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         //Fuel
         this.fuel = {
-            vFuel: 10000,
-            maxFuel: 10000,
-            rateGetFuel: 10,
-            rateLoseFuel: 10,
+            vFuel: 2000,
+            maxFuel: 2000,
+            rateGetFuel: 5,
+            rateLoseFuel: 5,
             bonusFuel: 10,
             fuelBox: this.currentScene.add.graphics(),
             fuelBar: this.currentScene.add.graphics(),
@@ -203,7 +203,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
                 else if (this.body.blocked.down) this.play('run', true)
                 break;
             case State.FLYING:
-                if(this.direction.y === -1) this.play('jetpack', true)
+                if(this.direction.y === -1 && this.fuel.vFuel > 0) this.play('jetpack', true)
                 else if(this.body.velocity.y > 0) this.play('jetpack_fall', true)
                 else this.play('jetpack_still')
                 
@@ -213,9 +213,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
     private handleFuel(delta: number): void {
         switch(this.state) {
             case State.WALKING: {
-                if (this.fuel.vFuel < this.fuel.maxFuel) {
+                if (this.fuel.vFuel < this.fuel.maxFuel && this.body.blocked.down) {
                     this.fuel.vFuel += this.fuel.rateGetFuel * parseInt((delta*0.1).toFixed());
                     this.fuel.vFuel.toFixed(0);
+                    if(this.fuel.vFuel > 2000) { this.fuel.vFuel = 2000 }
                 }
                 break;
             }
@@ -223,6 +224,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
                 if (this.fuel.vFuel > 0 && this.direction.y === -1) {
                     this.fuel.vFuel -= this.fuel.rateLoseFuel * parseInt((delta*0.1).toFixed());
                     this.fuel.vFuel.toFixed(0);
+                    if(this.fuel.vFuel < 0) { this.fuel.vFuel = 0 }
                 }
                 break;
             }

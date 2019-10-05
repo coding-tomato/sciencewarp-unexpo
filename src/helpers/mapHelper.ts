@@ -1,4 +1,6 @@
 import "phaser";
+import "../objects/enemies/coil";
+import Coil from "../objects/enemies/coil";
 
 export default class MapHelper extends Phaser.Tilemaps.Tilemap {
     private map: any;
@@ -29,7 +31,17 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         });
     }
 
-    createObjects(sprite: string) {
-        this.map.createFromObjects('pointer', 22, { key: sprite });
+    createObjects(number: number): Array<Coil> {
+        let enemies = [];
+
+        for (let i = 0; i < number; i++) {
+            enemies[i] = new Coil({scene: this.scene, x: 350 + 10*i, y: 490, direction: { x: 1, y: 0}, key: 'coil'});
+        }
+
+        this.map.objects[0].objects;
+
+        return enemies;
+
+        
     }
 }

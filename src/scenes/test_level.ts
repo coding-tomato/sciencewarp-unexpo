@@ -2,7 +2,7 @@ import "phaser";
 
 import Player from '../objects/player'
 import Coil from '../objects/enemies/coil'
-import MapHelper from '../utils/mapHelper'
+import MapHelper from '../helpers/mapHelper'
 
 export default class TestLevel extends Phaser.Scene {
     private player: Player;
@@ -11,6 +11,7 @@ export default class TestLevel extends Phaser.Scene {
     private tileset: any[];
     private level: any[];
     private mapManager: MapHelper;
+    private nobo: any[];
 
     constructor() {
         super({
@@ -20,6 +21,7 @@ export default class TestLevel extends Phaser.Scene {
         this.map = [];
         this.tileset = [];
         this.level = [];
+        this.nobo = [];
     }
     public create(): void {
         
@@ -49,19 +51,32 @@ export default class TestLevel extends Phaser.Scene {
             name: 'tesla'
         }));
 
+        
+
         this.mapManager.setTilesetImage('tesla_tileset', 'tileset');
-        this.mapManager.setStaticLayers(['Ground'], [this.player, this.Coil]);
+        this.nobo = this.mapManager.createObjects(5);
+        //this.mapManager.setStaticLayers(['Ground'], this.nobo);
+        //this.mapManager.setStaticLayers(['Ground'], [this.player, this.Coil]);
+
+        let allSprites = this.nobo;
+        allSprites.push(this.player, this.Coil);
+        this.mapManager.setStaticLayers(['Ground'], allSprites);
         
 
         this.player.setFuelHUD();
+
         this.cameras.main.startFollow(this.player);
 
-        this.mapManager.createObjects('coil');
+        
     }
 
     public update(time: number, delta: number): void {
         this.player.update(delta);
         this.Coil.update(delta);
+
+        this.nobo.forEach( element => {
+            element.update(delta);
+        })
         
     }
 } 

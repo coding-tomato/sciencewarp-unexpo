@@ -23,9 +23,10 @@ export default class TestLevel extends Phaser.Scene {
         this.level = [];
         this.nobo = [];
     }
+
     public create(): void {
-        
-        this.cameras.main.setBounds(0, 0, 100*16, 50*16, true);
+
+        //this.cameras.main.setBounds(0, 0, 100*16, 50*16, true);
         
         // Player
         this.player = new Player({
@@ -47,28 +48,19 @@ export default class TestLevel extends Phaser.Scene {
             key: "coil"
         })
 
-        this.mapManager = new MapHelper(this, new Phaser.Tilemaps.MapData({
-            name: 'tesla'
-        }));
+        const teslaMapData = new Phaser.Tilemaps.MapData({ name: 'tesla'});
+        this.mapManager = new MapHelper(this, teslaMapData, 'tesla_tileset', 'tileset');
 
-        
-
-        this.mapManager.setTilesetImage('tesla_tileset', 'tileset');
         this.nobo = this.mapManager.createObjects(5);
-        //this.mapManager.setStaticLayers(['Ground'], this.nobo);
-        //this.mapManager.setStaticLayers(['Ground'], [this.player, this.Coil]);
+        
 
         let allSprites = this.nobo;
         allSprites.push(this.player, this.Coil);
-        this.mapManager.setStaticLayers(['Ground'], allSprites);
-        
 
+        this.mapManager.setStaticLayers(['Ground'], allSprites);
         this.player.setFuelHUD();
 
-        this.mapManager.setStaticLayers(['Ground'], [this.player, this.Coil]);
         this.cameras.main.startFollow(this.player);
-
-        
     }
 
     public update(time: number, delta: number): void {

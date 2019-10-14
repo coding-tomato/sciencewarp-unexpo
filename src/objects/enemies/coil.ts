@@ -21,6 +21,7 @@ export default class Coil extends Phaser.GameObjects.Sprite {
         this.scene.add.existing(this);
         this.currentScene.physics.world.enable(this);
         this.body.setAllowGravity(false);
+        this.body.setSize(16, 16)
     }
 
     //Cycle
@@ -45,6 +46,14 @@ export default class Coil extends Phaser.GameObjects.Sprite {
     }
 
     private handleAnimations() {
+        this.currentScene.anims.create({
+            key: 'coil_move',
+            frames: this.currentScene.anims.generateFrameNumbers('coil', { start: 0, end: 7}),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.play('coil_move', true);
         
     }
 }

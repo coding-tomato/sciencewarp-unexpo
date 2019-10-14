@@ -6,6 +6,7 @@
 import "phaser";
 import "../objects/enemies/coil";
 import Coil from "../objects/enemies/coil";
+import Player from "../objects/player"
 
 export default class MapHelper extends Phaser.Tilemaps.Tilemap {
     private map: any;
@@ -28,6 +29,7 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
             }
 
         }));
+
         // Functions called at Initialization
         this.setBounds();
         this.setTilesetImage(tilesetInTiled, tilesetInBoot);
@@ -52,7 +54,27 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         });
     }
 
-    public createObjects<T extends Phaser.GameObjects.Sprite>(layer_n: string, obj_n: string): any[] {
+    public createPlayer(layer_n: string, obj_n: string): any { 
+        let player: any = null;
+
+        let obj_layer: Phaser.Tilemaps.ObjectLayer = null;
+
+        this.map.objects.forEach( (element: any) => {
+            if (element.name == layer_n) {
+                obj_layer = element
+            }
+        });
+
+        obj_layer.objects.forEach( (element: any, index: number) => {
+            if (element.name == obj_n) {
+                player = new Player({ scene: this.scene, x: element.x, y: element.y, key: 'moran' });
+            }
+        });
+
+        return player;   
+    }
+
+    public createObjects<T extends Phaser.GameObjects.Sprite>(layer_n: string, obj_n: string, class_n: any): any[] {
         let obj_arr: any[] = [];
 
         let obj_layer: Phaser.Tilemaps.ObjectLayer = null;
@@ -61,13 +83,13 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
             if (element.name == layer_n) {
                 obj_layer = element
             }
-        })
+        });
 
         obj_layer.objects.forEach( (element: any, index: number) => {
             if (element.name == obj_n) {
-                obj_arr[index] = new Coil({ scene: this.scene, x: element.x, y: element.y, direction: { x: 1, y: 0}, key: 'coil' });
+                obj_arr[index] = new class_n({ scene: this.scene, x: element.x, y: element.y, direction: { x: 1, y: 0}, key: 'coil' });
             }
-        })
+        });
 
         return obj_arr;
     }

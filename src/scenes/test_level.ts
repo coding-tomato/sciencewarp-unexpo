@@ -25,6 +25,8 @@ export default class TestLevel extends Phaser.Scene {
     }
 
     public create(): void {
+
+        //this.cameras.main.setBounds(0, 0, 100*16, 50*16, true);
         
         // Player
         this.player = new Player({
@@ -33,19 +35,17 @@ export default class TestLevel extends Phaser.Scene {
             y: 47*16,
             key: "moran"
         });
-
-        
-
+    
         const teslaMapData = new Phaser.Tilemaps.MapData({ name: 'tesla'});
         this.mapManager = new MapHelper(this, teslaMapData, 'tesla_tileset', 'tileset');
 
-
-        // Create enemies from objects
-        this.nobo = this.mapManager.createObjects('pointer', 'enemy');
+        this.player = this.mapManager.createPlayer('Player', 'p_respawn');
+        
+        this.nobo = this.mapManager.createObjects('pointer', 'enemy', Coil);
         
 
         let allSprites = this.nobo;
-        allSprites.push(this.player, this.Coil);
+        allSprites.push(this.player);
 
         this.mapManager.setStaticLayers(['Ground'], allSprites);
         this.player.setFuelHUD();
@@ -55,7 +55,6 @@ export default class TestLevel extends Phaser.Scene {
 
     public update(time: number, delta: number): void {
         this.player.update(delta);
-        this.Coil.update(delta);
 
         this.nobo.forEach( element => {
             element.update(delta);

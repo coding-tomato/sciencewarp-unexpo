@@ -22,6 +22,12 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         this.map = this.scene.add.tilemap(mapData.name);
         this.level = [];
 
+        console.log(this.map.objects.forEach((element: any) => {
+            if (element.name == 'pointer') {
+                console.log(element);
+            }
+
+        }));
         // Functions called at Initialization
         this.setBounds();
         this.setTilesetImage(tilesetInTiled, tilesetInBoot);
@@ -46,16 +52,24 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         });
     }
 
-    public createObjects<T extends Phaser.GameObjects.Sprite>(number: number): any[] {
-        let enemies = [];
+    public createObjects<T extends Phaser.GameObjects.Sprite>(layer_n: string, obj_n: string): any[] {
+        let obj_arr: any[] = [];
 
-        for (let i = 0; i < number; i++) {
-            enemies[i] = new Coil({scene: this.scene, x: 350 + 10*i, y: 490, direction: { x: 1, y: 0}, key: 'coil'});
-        }
+        let obj_layer: Phaser.Tilemaps.ObjectLayer = null;
 
-        this.map.objects[0].objects;
+        this.map.objects.forEach( (element: any) => {
+            if (element.name == layer_n) {
+                obj_layer = element
+            }
+        })
 
-        return enemies;
+        obj_layer.objects.forEach( (element: any, index: number) => {
+            if (element.name == obj_n) {
+                obj_arr[index] = new Coil({ scene: this.scene, x: element.x, y: element.y, direction: { x: 1, y: 0}, key: 'coil' });
+            }
+        })
+
+        return obj_arr;
     }
 
     private setBounds(): void {

@@ -25,8 +25,6 @@ export default class TestLevel extends Phaser.Scene {
     }
 
     public create(): void {
-
-        //this.cameras.main.setBounds(0, 0, 100*16, 50*16, true);
         
         // Player
         this.player = new Player({
@@ -36,22 +34,14 @@ export default class TestLevel extends Phaser.Scene {
             key: "moran"
         });
 
-        //Enemy testing
-        this.Coil = new Coil({
-            scene: this,
-            x: 25*16,
-            y: 45*16,
-            direction: {
-                x: 1,
-                y: 0
-            },
-            key: "coil"
-        })
+        
 
         const teslaMapData = new Phaser.Tilemaps.MapData({ name: 'tesla'});
         this.mapManager = new MapHelper(this, teslaMapData, 'tesla_tileset', 'tileset');
 
-        this.nobo = this.mapManager.createObjects(5);
+
+        // Create enemies from objects
+        this.nobo = this.mapManager.createObjects('pointer', 'enemy');
         
 
         let allSprites = this.nobo;

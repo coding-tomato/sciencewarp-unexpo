@@ -48,7 +48,7 @@ export default class DialogBox extends Phaser.Scene {
         });
 
         const timeConfig: Phaser.Types.Time.TimerEventConfig = {
-            delay: 150,
+            delay: 75,
              callback: () => {
                 if (count >= textArr.length) {
                      this.time.delayedCall(1000, () => {

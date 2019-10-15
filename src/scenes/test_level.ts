@@ -3,6 +3,8 @@ import "phaser";
 import Player from '../objects/player'
 import Coil from '../objects/enemies/coil'
 import MapHelper from '../helpers/mapHelper'
+import Platform from '../objects/hazards/h_plat'
+import Disappear from '../objects/hazards/h_diss'
 
 export default class TestLevel extends Phaser.Scene {
     private player: Player;
@@ -13,6 +15,7 @@ export default class TestLevel extends Phaser.Scene {
     private mapManager: MapHelper;
     private nobo: any[];
     private firstCollide: Phaser.Physics.Arcade.Collider;
+    private plat: any;
 
     constructor() {
         super({
@@ -56,6 +59,16 @@ export default class TestLevel extends Phaser.Scene {
 
         this.scene.launch('DialogBox');
 
+        this.plat = new Platform({scene: this, x: 200, y: 100, texture: 'platform'});
+
+        this.physics.add.collider(this.player, this.plat);
+
+        const diss = new Disappear({scene: this, x: 300, y: 100, texture: 'platform'});
+
+        this.physics.add.collider(this.player, diss, () => { 
+            diss.disable();
+        });
+
         //////// 
         ///// EVENTS /////////
 
@@ -86,7 +99,7 @@ export default class TestLevel extends Phaser.Scene {
 
         this.player.update(delta);
 
-
+    
         this.nobo.forEach( element => {
             element.update(delta);
         })

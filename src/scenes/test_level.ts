@@ -54,6 +54,8 @@ export default class TestLevel extends Phaser.Scene {
 
         this.cameras.main.startFollow(this.player);
 
+        this.scene.launch('DialogBox');
+
         //////// 
         ///// EVENTS /////////
 

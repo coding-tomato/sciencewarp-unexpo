@@ -7,6 +7,11 @@ import "phaser";
 import "../objects/enemies/coil";
 import Coil from "../objects/enemies/coil";
 import Player from "../objects/player"
+import { prependOnceListener } from "cluster";
+
+interface objectProp {
+    [key: string] : any;
+}
 
 export default class MapHelper extends Phaser.Tilemaps.Tilemap {
     private map: any;
@@ -43,6 +48,7 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         
     }
 
+    /* Set Static Layers */
     public setStaticLayers(layers: Array<string>, sprites: Array<Phaser.GameObjects.Sprite>): void {
         layers.forEach((layer, index) => {
             this.level[index] = this.map.createStaticLayer(layer, this.tileset);
@@ -87,7 +93,13 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
 
         obj_layer.objects.forEach( (element: any, index: number) => {
             if (element.name == obj_n) {
-                obj_arr[index] = new class_n({ scene: this.scene, x: element.x, y: element.y, direction: { x: 1, y: 0}, key: 'coil' });
+                let newProps: objectProp = {}
+                if (element.hasOwnProperty('properties')) {
+                    element.properties.forEach( (element: any) => {
+                        newProps[element.name] = element.value
+                    })
+                };
+                obj_arr[index] = new class_n({ scene: this.scene, x: element.x, y: element.y, props: newProps, key: 'coil' });
             }
         });
 

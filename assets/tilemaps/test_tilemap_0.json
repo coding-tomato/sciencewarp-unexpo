@@ -78,12 +78,23 @@
                  "id":27,
                  "name":"enemy",
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"dir_x",
+                         "type":"int",
+                         "value":1
+                        }, 
+                        {
+                         "name":"dir_y",
+                         "type":"int",
+                         "value":1
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":144,
-                 "y":336
+                 "x":495,
+                 "y":103
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -105,8 +116,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":703,
-                 "y":442
+                 "x":363,
+                 "y":108
                 }],
          "opacity":1,
          "type":"objectgroup",

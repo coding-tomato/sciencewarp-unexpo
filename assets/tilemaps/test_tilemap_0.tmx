@@ -108,12 +108,16 @@
   <object id="26" name="enemy" x="138" y="173">
    <point/>
   </object>
-  <object id="27" name="enemy" x="144" y="336">
+  <object id="27" name="enemy" x="495" y="103">
+   <properties>
+    <property name="dir_x" type="int" value="1"/>
+    <property name="dir_y" type="int" value="1"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>
  <objectgroup id="12" name="Player">
-  <object id="28" name="p_respawn" x="703" y="442">
+  <object id="28" name="p_respawn" x="363" y="108">
    <point/>
   </object>
  </objectgroup>

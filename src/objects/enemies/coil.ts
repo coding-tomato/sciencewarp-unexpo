@@ -14,9 +14,18 @@ export default class Coil extends Phaser.GameObjects.Sprite {
         super(params.scene, params.x, params.y, params.key, params.frame);
         this.currentScene = params.scene
 
-        this.direction = params.direction;
+        let dir_x = 1;
+        let dir_y = 0
+
+        if (Object.keys(params.props).length > 0) {
+            dir_x = params.props.dir_x
+            dir_y = params.props.dir_y
+        }
+
+        this.direction = {x: dir_x, y: dir_y};
         this.velocity = 100;
     
+
         //Settings
         this.scene.add.existing(this);
         this.currentScene.physics.world.enable(this);

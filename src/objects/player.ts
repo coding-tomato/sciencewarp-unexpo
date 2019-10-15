@@ -89,7 +89,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.fuel = {
             vFuel: 2000,
             maxFuel: 2000,
-            rateGetFuel: 5,
+            rateGetFuel: 1000,
             rateLoseFuel: 5,
             bonusFuel: 10,
             fuelBox: this.currentScene.add.graphics(),

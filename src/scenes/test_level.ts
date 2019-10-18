@@ -1,17 +1,15 @@
-import "phaser";
+import "phaser"
 
 import Player from '../objects/player'
 import Coil from '../objects/enemies/coil'
 import MapHelper from '../helpers/mapHelper'
 import Platform from '../objects/hazards/h_plat'
 import Disappear from '../objects/hazards/h_diss'
+import { Entrance } from '../utils/text'
 
 export default class TestLevel extends Phaser.Scene {
     private player: Player;
     private Coil: Coil
-    private map: any[];
-    private tileset: any[];
-    private level: any[];
     private mapManager: MapHelper;
     private nobo: any[];
     private firstCollide: Phaser.Physics.Arcade.Collider;
@@ -22,9 +20,6 @@ export default class TestLevel extends Phaser.Scene {
             key: "TestLevel"
         })
 
-        this.map = [];
-        this.tileset = [];
-        this.level = [];
         this.nobo = [];
     }
 
@@ -57,7 +52,9 @@ export default class TestLevel extends Phaser.Scene {
 
         this.cameras.main.startFollow(this.player);
 
-        this.scene.launch('DialogBox');
+        // Launch scene Dialog Box
+        this.scene.launch('DialogBox', {text: Entrance});
+        ///////////////////////////////
 
         this.plat = new Platform({scene: this, x: 200, y: 100, texture: 'platform'});
 

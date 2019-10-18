@@ -8,11 +8,16 @@ const PADDING = 10;
 export default class DialogBox extends Phaser.Scene {
     public dialogBox: Dialog;
     public dialogText: Text;
+    private text: string;
 
     constructor() {
         super({
             key: 'DialogBox'
         })
+    }
+
+    init(data: any) {
+        this.text = data.text || "Error";
     }
 
     create() {
@@ -30,10 +35,10 @@ export default class DialogBox extends Phaser.Scene {
 
         // Create Dialog Text
         this.dialogText = {
-            text: "Hello Hssssssssssssssssssow are you? Fine thanks",
+            text: this.text,
             x: this.dialogBox.x + 2,
-            y: this.dialogBox.y + 2,
-            width: this.dialogBox.width - PADDING
+            y: this.dialogBox.y,
+            width: this.dialogBox.width
         };
 
         const textArr = this.dialogText.text.split('');
@@ -43,8 +48,9 @@ export default class DialogBox extends Phaser.Scene {
 
         let count = 0;
 
-        const genial = this.add.text(this.dialogText.x, this.dialogText.y, ' ', {
-            wordWrap: { width: this.dialogText.width }
+        const genial = this.add.text(this.dialogText.x, this.dialogText.y, ' ', { padding: PADDING,
+            fontSize: 12,
+            wordWrap: { width: this.dialogText.width - PADDING, advancedWordWrap: true }
         });
 
         const timeConfig: Phaser.Types.Time.TimerEventConfig = {
@@ -62,8 +68,6 @@ export default class DialogBox extends Phaser.Scene {
             },
             loop: true
         };
-
-        
 
         this.time.addEvent(timeConfig);
     }

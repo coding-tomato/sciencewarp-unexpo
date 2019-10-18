@@ -5,7 +5,7 @@ import Coil from '../objects/enemies/coil'
 import MapHelper from '../helpers/mapHelper'
 import Platform from '../objects/hazards/h_plat'
 import Disappear from '../objects/hazards/h_diss'
-import { Entrance } from '../utils/text'
+import { Second, Entrance } from '../utils/text'
 
 export default class TestLevel extends Phaser.Scene {
     private player: Player;
@@ -53,7 +53,7 @@ export default class TestLevel extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
 
         // Launch scene Dialog Box
-        this.scene.launch('DialogBox', {text: Entrance});
+        this.scene.launch('DialogBox', {text: [Entrance, Second, "Great Fun! Right, Boo?"]});
         ///////////////////////////////
 
         this.plat = new Platform({scene: this, x: 200, y: 100, texture: 'platform'});

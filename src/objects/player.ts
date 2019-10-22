@@ -30,6 +30,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     };
     //Variables
     private acceleration: number;
+    public name: string
     private maxSpeed: number;
     private friction: number;
     private direction: {
@@ -65,6 +66,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         //Input
         this.keys = this.currentScene.input.keyboard.createCursorKeys();
+
+        this.name = "player";
 
         // State
         this.state = State.WALKING;

@@ -1,10 +1,15 @@
 import "phaser"
 
 import Player from '../objects/player'
+
 import Coil from '../objects/enemies/coil'
+import Cannon from '../objects/enemies/cannon'
+
 import MapHelper from '../helpers/mapHelper'
+
 import Platform from '../objects/hazards/h_plat'
 import Disappear from '../objects/hazards/h_diss'
+
 import { Second, Entrance } from '../utils/text'
 
 export default class TestLevel extends Phaser.Scene {
@@ -14,6 +19,7 @@ export default class TestLevel extends Phaser.Scene {
     private nobo: any[];
     private firstCollide: Phaser.Physics.Arcade.Collider;
     private plat: any;
+    private colo: any;
 
     constructor() {
         super({
@@ -28,12 +34,7 @@ export default class TestLevel extends Phaser.Scene {
         //this.cameras.main.setBounds(0, 0, 100*16, 50*16, true);
         
         // Player
-        this.player = new Player({
-            scene: this,
-            x: 5*16,
-            y: 47*16,
-            key: "moran"
-        });
+        
     
         const teslaMapData = new Phaser.Tilemaps.MapData({ name: 'tesla'});
         this.mapManager = new MapHelper(this, teslaMapData, 'tesla_tileset', 'tileset');
@@ -53,7 +54,7 @@ export default class TestLevel extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
 
         // Launch scene Dialog Box
-        this.scene.launch('DialogBox', {text: [Entrance, Second, "Great Fun! Right, Boo?"]});
+        this.scene.launch('DialogBox', {text: [Entrance]});
         ///////////////////////////////
 
         this.plat = new Platform({scene: this, x: 200, y: 100, texture: 'platform'});
@@ -86,6 +87,8 @@ export default class TestLevel extends Phaser.Scene {
                 }
             });
         });
+
+       this.colo = new Cannon({ scene: this, x: 300, y: 200, texture: 'coil' });
     }
 
     public update(time: number, delta: number): void {
@@ -99,7 +102,9 @@ export default class TestLevel extends Phaser.Scene {
     
         this.nobo.forEach( element => {
             element.update(delta);
-        })
+        });
+
+        this.colo.update();
         
     }
 

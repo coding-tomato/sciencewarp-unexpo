@@ -11,6 +11,8 @@ export default class DialogBox extends Phaser.Scene {
     public dialogText: Text[];
 
     private text: string[];
+    private clock: any;
+    
 
     constructor() {
         super({
@@ -28,6 +30,10 @@ export default class DialogBox extends Phaser.Scene {
         // Dialog Box configuration
         this.dialogBox = this.makeBox();
 
+        if (!this.data.get('index')) {
+            this.data.set('index', 0);
+        }
+
         // Create Dialog Box
         this.dialogBox.box.fillRect(this.dialogBox.x, this.dialogBox.y, this.dialogBox.width, this.dialogBox.height);
 
@@ -43,12 +49,12 @@ export default class DialogBox extends Phaser.Scene {
 
     animateText(dialog: Text[], index: number) {
 
-        const textArr: string[] = dialog[index].text.split('');
-        const newTextArr: any[] = [];
+        let textArr: string[] = dialog[index].text.split('');
+        let newTextArr: any[] = [];
 
         let count = 0;
 
-        const actualText = this.add.text(dialog[index].x, dialog[index].y, ' ', { padding: PADDING,
+        let actualText = this.add.text(dialog[index].x, dialog[index].y, ' ', { padding: PADDING,
             fontSize: 12,
             wordWrap: { width: dialog[index].width - PADDING, advancedWordWrap: true }
         });
@@ -61,9 +67,12 @@ export default class DialogBox extends Phaser.Scene {
                          if (index == dialog.length - 1) {
                             this.scene.stop();
                          } else {
-                             actualText.setText(' ');
+                             textArr = [];
+                             newTextArr = [];
+                             actualText.setText('');
                              this.animateText(dialog, index + 1);
                          }
+                         
                      }, [], this)
                  } else {
                      newTextArr.push(textArr[count]);
@@ -74,7 +83,7 @@ export default class DialogBox extends Phaser.Scene {
             loop: true
         };
 
-        this.time.addEvent(timeConfig);
+        this.clock = this.time.addEvent(timeConfig);   
     }
 
     makeBox(): Dialog {

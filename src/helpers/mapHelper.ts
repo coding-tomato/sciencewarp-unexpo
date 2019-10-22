@@ -28,6 +28,8 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         this.map = this.scene.add.tilemap(mapData.name);
         this.level = [];
 
+        console.log(this.map.objects[0]);
+
         console.log(this.map.objects.forEach((element: any) => {
             if (element.name == 'pointer') {
                 console.log(element);

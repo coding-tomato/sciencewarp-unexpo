@@ -20,6 +20,7 @@ export default class TestLevel extends Phaser.Scene {
     private firstCollide: Phaser.Physics.Arcade.Collider;
     private plat: any;
     private colo: any;
+    private colo2: any;
 
     constructor() {
         super({
@@ -88,7 +89,8 @@ export default class TestLevel extends Phaser.Scene {
             });
         });
 
-       this.colo = new Cannon({ scene: this, x: 300, y: 200, texture: 'coil' });
+       this.colo = new Cannon({ scene: this, x: 300, y: 200, texture: 'cannon' });
+       this.colo2 = new Cannon({ scene: this, x: 500, y: 200, texture: 'cannon' });
     }
 
     public update(time: number, delta: number): void {
@@ -105,6 +107,7 @@ export default class TestLevel extends Phaser.Scene {
         });
 
         this.colo.update();
+        this.colo2.update()
         
     }
 

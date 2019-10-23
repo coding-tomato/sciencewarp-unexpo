@@ -23,7 +23,7 @@ export default class Bootstrap extends Phaser.Scene {
 
 		// Sprites
 		this.load.spritesheet('moran', 'sprites/player/moran.png', 
-		{ frameWidth: 29, frameHeight: 54} );
+		{ frameWidth: 31, frameHeight: 56} );
 
 		this.load.spritesheet('coil', 'sprites/enemies/tesla/coil.png', 
 		{ frameWidth: 30, frameHeight: 30 });

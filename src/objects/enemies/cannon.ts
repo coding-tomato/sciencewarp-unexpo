@@ -94,7 +94,7 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
                 if (this.moveTween.isPaused()) {
                     this.moveTween.resume();
 
-                    reset(this, State.Moving, 2000);
+                    reset(this, State.Moving, 500);
                 }
             }, [], this);
         });

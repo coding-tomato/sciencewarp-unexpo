@@ -4,6 +4,7 @@ import Player from '../objects/player'
 
 import Coil from '../objects/enemies/coil'
 import Cannon from '../objects/enemies/cannon'
+import Legs from '../objects/enemies/legs'
 
 import MapHelper from '../helpers/mapHelper'
 
@@ -46,6 +47,10 @@ export default class TestLevel extends Phaser.Scene {
 
         let allSprites = this.nobo;
         allSprites.push(this.player);
+
+        const legs = new Legs({scene: this, x: 100, y: 200, texture: 'coil'});
+
+        allSprites.push(legs);
 
         this.mapManager.setStaticLayers(['Ground'], allSprites);
         this.player.setFuelHUD();

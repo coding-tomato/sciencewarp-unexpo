@@ -34,6 +34,8 @@ export default class Bootstrap extends Phaser.Scene {
 		this.load.spritesheet('cannon_part', 'sprites/enemies/tesla/cannoncopter_particle_14x14.png', 
 		{ frameWidth: 14, frameHeight: 14 });
 
+		this.load.image('legs', 'sprites/enemies/tesla/legs-luthor.png');
+
 		// Backgrounds
 		this.load.image('bg0', 'bg0.png')
 		this.load.image('bg1', 'bg1.png')

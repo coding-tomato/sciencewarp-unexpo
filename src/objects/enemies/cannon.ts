@@ -95,6 +95,8 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
                 if (this.moveTween.isPaused()) {
                     this.moveTween.resume();
 
+		    this.anims.play('cannon_move', true);
+
                     
                 }
 
@@ -179,7 +181,7 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
 
     shootProjectiles() {
 
-        for (let i = 0; i <= 4800; i += 800) {
+        for (let i = 400; i <= 2500; i += 700) {
             this.scene.time.delayedCall(i, () =>
             {
                 this.createProjectiles();

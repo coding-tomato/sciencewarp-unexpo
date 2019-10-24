@@ -2,15 +2,15 @@ import "phaser";
 import { reset, isObjectNear, shoot } from '../../utils/libmon';
 
 enum State {
-    Moving,
-    Attacking,
+    Moving = 1,
+    Attacking = 2,
 }
 
 const MAX_DIS =         50;         // Maximum movement in Y
 const VELOCITY =        50;         // Velocity
 const RESTING_TIME =    300;        // Time to hop from Resting to Moving
 const PROJ_TIME =       100;        // Time between projectiles
-let   AGGRO_RAN =       100;        // Range before it detects player
+const AGGRO_RAN =       100;        // Range before it detects player
 const PROJ_NUM =        2;          // Number of projectiles
 const UPPER_P =         100;
 const LOWER_P =         250;
@@ -28,8 +28,6 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
         super(params.scene, params.x, params.y, params.texture);
 
         this.state = State.Moving;
-
-        AGGRO_RAN += this.y;
 
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
@@ -66,22 +64,23 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
         // While moving: check for player position
         this.scene.events.on('moving', () => { this.moving(player); });
 
-        this.scene.events.on('attacking', () => { 
+        this.scene.events.on('attacking', () => {
+
+	    console.log("Attacking");
 
             // Animate cannoncopter
             this.anims.play('cannon_attack', true);
 
-            // Animate projectiles
-            this.partGroup.getChildren().forEach( (element) => {
-                (element as any).anims.play('cannon_part_anim', true)
-            });
-
+    
+      
          });
 
         // If monsters spots the player
         this.scene.events.addListener('shoot', () => {
 
             console.log("Hello");
+
+	    this.scene.events.off('moving');
 
             if (!this.moveTween.isPaused()) {
                 this.moveTween.pause();
@@ -90,18 +89,24 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
             this.shootProjectiles();
             
             this.scene.time.delayedCall(3000, () => {
+
+		this.scene.events.on('moving', () => { this.moving(player); });
                 
                 if (this.moveTween.isPaused()) {
                     this.moveTween.resume();
 
-                    reset(this, State.Moving, 500);
+                    
                 }
+
+		reset(this, State.Moving, 500);
+		
+		
             }, [], this);
         });
     }
 
     update(): void {
-
+    	     
         switch(this.state) {
 
             case State.Moving:
@@ -134,6 +139,8 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
         
         if (isPlayerNear) {
 
+	
+	    this.state = State.Attacking;
             reset(this, State.Attacking, 0);
 
             this.scene.events.emit('shoot');

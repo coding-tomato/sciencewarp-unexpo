@@ -48,7 +48,7 @@ export default class TestLevel extends Phaser.Scene {
         let allSprites = this.nobo;
         allSprites.push(this.player);
 
-        const legs = new Legs({scene: this, x: 100, y: 200, texture: 'coil'});
+        const legs = new Legs({scene: this, x: 100, y: 200, texture: 'legs'});
 
         allSprites.push(legs);
 
@@ -95,7 +95,7 @@ export default class TestLevel extends Phaser.Scene {
         });
 
        this.colo = new Cannon({ scene: this, x: 300, y: 200, texture: 'cannon' });
-       this.colo2 = new Cannon({ scene: this, x: 500, y: 200, texture: 'cannon' });
+       
     }
 
     public update(time: number, delta: number): void {
@@ -112,7 +112,7 @@ export default class TestLevel extends Phaser.Scene {
         });
 
         this.colo.update();
-        this.colo2.update()
+       
         
     }
 

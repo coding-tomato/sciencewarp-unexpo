@@ -1,11 +1,11 @@
 import "phaser";
 
-export function isObjectNear(range:number, firstObj: any, secondObj: any): number {
+export function isObjectNear(range: number, firstObj: any, secondObj: any): number {
 
     try {
 
-        if (firstObj.x <= secondObj.x + range && firstObj.x >= secondObj.x || 
-            firstObj.x >= secondObj.x - range && firstObj.x <= secondObj.x) {
+        if (firstObj.x <= secondObj.x + 100 && firstObj.x >= secondObj.x || 
+            firstObj.x >= secondObj.x - 100 && firstObj.x <= secondObj.x) {
 
             return (Math.abs(Phaser.Math.Distance.Between(
                 firstObj.x, firstObj.y, secondObj.x, secondObj.y)));

@@ -37,9 +37,9 @@ export default class Bootstrap extends Phaser.Scene {
 		this.load.image('legs', 'sprites/enemies/tesla/legs-luthor.png');
 
 		// Backgrounds
-		this.load.image('bg0', 'bg0.png')
-		this.load.image('bg1', 'bg1.png')
-		this.load.image('bg2', 'bg2.png')
+		for (let i=0; i < 4; i++) {
+			this.load.image(`bg${i}`, `bg${i}.png`)
+		}
 
 		// Tilemaps
 		this.load.image('platform', 'h_block.png');

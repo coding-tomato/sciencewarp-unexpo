@@ -33,6 +33,8 @@ export default class TestLevel extends Phaser.Scene {
 
     public create(): void {
 
+    	console.log("Hello");
+
         //this.cameras.main.setBounds(0, 0, 100*16, 50*16, true);
         
         // Player

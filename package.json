@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "start": "webpack --watch"
+    "start": "webpack --watch",
+    "server": "live-server --port=8085"
   },
   "repository": {
     "type": "git",
@@ -26,7 +27,8 @@
     "ts-loader": "^6.0.4",
     "typescript": "^3.5.3",
     "webpack": "^4.39.2",
-    "webpack-cli": "^3.3.7"
+    "webpack-cli": "^3.3.7",
+    "live-server": "^1.2.1"
   },
   "dependencies": {
     "@types/glob": "^7.1.1",

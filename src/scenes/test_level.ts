@@ -14,7 +14,6 @@ import { Second, Entrance } from '../utils/text'
 
 export default class TestLevel extends Phaser.Scene {
     private player: Player;
-    private Coil: Coil
     private mapManager: MapHelper;
     private nobo: any[];
     private firstCollide: Phaser.Physics.Arcade.Collider;

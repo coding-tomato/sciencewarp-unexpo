@@ -18,7 +18,8 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
     private tileset: any;
     private level: any[];
     private currentScene: Phaser.Scene;
-
+    private background: Phaser.GameObjects.Image[];
+    
     constructor(scene: Phaser.Scene, mapData: Phaser.Tilemaps.MapData, tilesetInTiled: string, tilesetInBoot:string) {
         super(scene, mapData);
 
@@ -27,6 +28,7 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         this.currentScene = scene;
         this.map = this.scene.add.tilemap(mapData.name);
         this.level = [];
+        this.background = [];
 
         console.log(this.map.objects[0]);
 
@@ -36,6 +38,8 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
             }
 
         }));
+
+        this.createBackground();
 
         // Functions called at Initialization
         this.setBounds();
@@ -110,5 +114,14 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
 
     private setBounds(): void {
         this.currentScene.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels, true);   
+    }
+
+    private createBackground(): void {
+        for(let i=0; i<4; i++) {
+            this.background[i] = this.currentScene.add.image(0, Math.max(0, 200 - i*100), `bg${i}`)
+                                    .setOrigin(0, 0)
+                                    .setScrollFactor(0, 0.2 - i * 0.05)
+                                    .setDepth(-i-1);
+        }
     }
 }

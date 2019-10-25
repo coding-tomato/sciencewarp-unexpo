@@ -30,6 +30,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     };
     //Variables
     private acceleration: number;
+    public name: string
     private maxSpeed: number;
     private friction: number;
     private direction: {
@@ -66,6 +67,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
         //Input
         this.keys = this.currentScene.input.keyboard.createCursorKeys();
 
+        this.name = "player";
+
         // State
         this.state = State.WALKING;
 
@@ -89,7 +92,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.fuel = {
             vFuel: 2000,
             maxFuel: 2000,
-            rateGetFuel: 5,
+            rateGetFuel: 1000,
             rateLoseFuel: 5,
             bonusFuel: 10,
             fuelBox: this.currentScene.add.graphics(),

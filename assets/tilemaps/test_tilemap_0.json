@@ -34,8 +34,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":216,
-                 "y":412
+                 "x":151,
+                 "y":474
                 }, 
                 {
                  "height":0,
@@ -46,8 +46,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":401,
-                 "y":387
+                 "x":364,
+                 "y":361
                 }, 
                 {
                  "height":0,
@@ -58,8 +58,66 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":530,
-                 "y":277
+                 "x":505,
+                 "y":235
+                }, 
+                {
+                 "height":0,
+                 "id":26,
+                 "name":"enemy",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":138,
+                 "y":173
+                }, 
+                {
+                 "height":0,
+                 "id":27,
+                 "name":"enemy",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"dir_x",
+                         "type":"int",
+                         "value":1
+                        }, 
+                        {
+                         "name":"dir_y",
+                         "type":"int",
+                         "value":1
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":495,
+                 "y":103
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":12,
+         "name":"Player",
+         "objects":[
+                {
+                 "height":0,
+                 "id":28,
+                 "name":"p_respawn",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":363,
+                 "y":108
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -67,8 +125,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":12,
- "nextobjectid":26,
+ "nextlayerid":13,
+ "nextobjectid":29,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

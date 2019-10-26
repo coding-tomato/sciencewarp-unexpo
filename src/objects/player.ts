@@ -57,11 +57,31 @@ export default class Player extends Phaser.GameObjects.Sprite {
         //Debug
         this.debugActive = true;
         this.debug = {
-            state: this.currentScene.add.text(5,5, "State: ").setScrollFactor(0).setDepth(1).setFontSize(14).setVisible(this.debugActive),
-            velocity: this.currentScene.add.text(5,20, "Velocity: ").setScrollFactor(0).setDepth(1).setFontSize(14).setVisible(this.debugActive),
-            acceleration: this.currentScene.add.text(5,35, "Acceleration: ").setScrollFactor(0).setFontSize(14).setDepth(1).setVisible(this.debugActive),
-            direction: this.currentScene.add.text(5,50, "Direction: ").setScrollFactor(0).setDepth(1).setFontSize(14).setVisible(this.debugActive),
-            fuel: this.currentScene.add.text(5,65, "Fuel: ").setScrollFactor(0).setDepth(1).setFontSize(14).setVisible(this.debugActive)
+            state: this.currentScene.add.text(5,5, "State: ")
+                .setScrollFactor(0)
+                .setDepth(1)
+                .setFontSize(14)
+                .setVisible(this.debugActive),
+            velocity: this.currentScene.add.text(5,20, "Velocity: ")
+                .setScrollFactor(0)
+                .setDepth(1)
+                .setFontSize(14)
+                .setVisible(this.debugActive),
+            acceleration: this.currentScene.add.text(5,35, "Acceleration: ")
+                .setScrollFactor(0)
+                .setFontSize(14)
+                .setDepth(1)
+                .setVisible(this.debugActive),
+            direction: this.currentScene.add.text(5,50, "Direction: ")
+                .setScrollFactor(0)
+                .setDepth(1)
+                .setFontSize(14)
+                .setVisible(this.debugActive),
+            fuel: this.currentScene.add.text(5,65, "Fuel: ")
+                .setScrollFactor(0)
+                .setDepth(1)
+                .setFontSize(14)
+                .setVisible(this.debugActive)
         }
 
         //Input
@@ -188,16 +208,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     private handleAnimations() {
-        switch(this.direction.x) {
-            case 1:
-                this.setFlipX(false);
-                break;
-            case -1:
-                this.setFlipX(true);
-                break;
-            default:
-                break;
-        }
+        if(this.direction.x !== 0) this.setFlipX(this.direction.x === -1);
         switch(this.state) {
             case State.WALKING:
                 if(this.body.velocity.y > 200) this.play('fall', true)
@@ -209,7 +220,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
                 if(this.direction.y === -1 && this.fuel.vFuel > 0) this.play('jetpack', true)
                 else if(this.body.velocity.y > 0) this.play('jetpack_fall', true)
                 else this.play('jetpack_still')
-                
         }
     }
 

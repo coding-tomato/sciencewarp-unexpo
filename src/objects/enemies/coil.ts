@@ -7,7 +7,7 @@ export default class Coil extends Phaser.GameObjects.Sprite {
         y: number
     };
     private velocity: number;
-    public body: Phaser.Physics.Arcade.Body
+    public body: Phaser.Physics.Arcade.Body;
     //Variables
 
     constructor(params: any) {

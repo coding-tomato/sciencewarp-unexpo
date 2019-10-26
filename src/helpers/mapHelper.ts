@@ -30,6 +30,7 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         this.level = [];
         this.background = [];
 
+        /*
         console.log(this.map.objects[0]);
 
         console.log(this.map.objects.forEach((element: any) => {
@@ -38,6 +39,7 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
             }
 
         }));
+        */
 
         this.createBackground();
 

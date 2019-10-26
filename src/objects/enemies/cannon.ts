@@ -2,8 +2,10 @@ import "phaser";
 import { reset, isObjectNear, shoot } from '../../utils/libmon';
 
 enum State {
+    
     Moving = 1,
     Attacking = 2,
+    
 }
 
 const MAX_DIS =         50;         // Maximum movement in Y
@@ -19,6 +21,7 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
 
     private moveTween:      Phaser.Tweens.Tween;  
     private partGroup:      Phaser.GameObjects.Group;
+    private moveEvent:      Phaser.Events.EventEmitter;
 
     public state:           State;
 
@@ -35,7 +38,7 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
         (this.body as any).allowGravity = false;
 
         this.setSize(20, 35);
-     
+	
         this.createAnimations();
         this.create();
         
@@ -62,25 +65,14 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
         let player = (this.scene as any).children.scene.player;
 
         // While moving: check for player position
-        this.scene.events.on('moving', () => { this.moving(player); });
-
-        this.scene.events.on('attacking', () => {
-
-	    console.log("Attacking");
-
-            // Animate cannoncopter
-            this.anims.play('cannon_attack', true);
-
-    
-      
-         });
+        this.moveEvent = this.scene.events.on('moving', () => { this.moving(player); });
 
         // If monsters spots the player
         this.scene.events.addListener('shoot', () => {
 
             console.log("Hello");
 
-	    this.scene.events.off('moving');
+	    this.moveEvent.off('moving');
 
             if (!this.moveTween.isPaused()) {
                 this.moveTween.pause();
@@ -90,15 +82,14 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
             
             this.scene.time.delayedCall(3000, () => {
 
-		this.scene.events.on('moving', () => { this.moving(player); });
+		this.moveEvent = this.scene.events.on('moving', () => { this.moving(player); });
                 
                 if (this.moveTween.isPaused()) {
                     this.moveTween.resume();
-
                     
                 }
 
-		reset(this, State.Moving, 500);
+		reset(this, State.Moving, 0);
 		
 		
             }, [], this);
@@ -106,18 +97,26 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(): void {
-    	     
+    	
         switch(this.state) {
 
             case State.Moving:
+		
                 this.scene.events.emit('moving');
+		this.anims.play("cannon_move", true);
+		
                 break;
+		
             case State.Attacking:
-                this.scene.events.emit('attacking');
+		
+		this.anims.play("cannon_attack", true);
+		this.partGroup.playAnimation('cannon_part_anim', true);
+		
                 break;
+		
         }
 
-    
+	
         
     }
 
@@ -179,7 +178,7 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
 
     shootProjectiles() {
 
-        for (let i = 0; i <= 4800; i += 800) {
+        for (let i = 400; i <= 2500; i += 700) {
             this.scene.time.delayedCall(i, () =>
             {
                 this.createProjectiles();
@@ -197,10 +196,8 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
 
         this.partGroup.add(ball);
 
-        this.scene.time.delayedCall(2000, () => {
+        this.scene.time.delayedCall(1000, () => {
             ball.destroy();
         }, [], this);   
-
-        ball.anims.play('cannon_part_anim', true);
     }
 }

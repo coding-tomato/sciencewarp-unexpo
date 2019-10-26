@@ -5,6 +5,7 @@ import Player from '../objects/player'
 import Coil from '../objects/enemies/coil'
 import Cannon from '../objects/enemies/cannon'
 import Legs from '../objects/enemies/legs'
+import Vroomba from '../objects/enemies/vroomba'
 
 import MapHelper from '../helpers/mapHelper'
 
@@ -21,6 +22,7 @@ export default class TestLevel extends Phaser.Scene {
     private plat: any;
     private colo: any;
     private colo2: any;
+    private vroomba: any;
 
     constructor() {
         super({
@@ -31,12 +33,6 @@ export default class TestLevel extends Phaser.Scene {
     }
 
     public create(): void {
-
-
-        //this.cameras.main.setBounds(0, 0, 100*16, 50*16, true);
-        
-        // Player
-        
     
         const teslaMapData = new Phaser.Tilemaps.MapData({ name: 'tesla'});
         this.mapManager = new MapHelper(this, teslaMapData, 'tesla_tileset', 'tileset');
@@ -45,14 +41,15 @@ export default class TestLevel extends Phaser.Scene {
         
         this.nobo = this.mapManager.createObjects('pointer', 'enemy', Coil);
 
-        let allSprites = this.nobo;
-        allSprites.push(this.player);
+        this.nobo.push(this.player);
 
         const legs = new Legs({scene: this, x: 100, y: 200, texture: 'legs'});
+        const vroomba = new Vroomba({ scene: this, x: 150, y: 750, texture: 'vroomba' })
+        
+        this.nobo.push(legs);
+        this.nobo.push(vroomba);
 
-        allSprites.push(legs);
-
-        this.mapManager.setStaticLayers(['Ground'], allSprites);
+        this.mapManager.setStaticLayers(['Ground'], this.nobo);
         this.player.setFuelHUD();
 
         this.firstCollide = this.physics.add.overlap(this.player, this.nobo, this.hurt, null, this);
@@ -68,7 +65,7 @@ export default class TestLevel extends Phaser.Scene {
         this.physics.add.collider(this.player, this.plat);
 
         const diss = new Disappear({scene: this, x: 300, y: 100, texture: 'platform'});
-
+        
         this.physics.add.collider(this.player, diss, () => { 
             diss.disable();
         });
@@ -96,6 +93,7 @@ export default class TestLevel extends Phaser.Scene {
 
        this.colo = new Cannon({ scene: this, x: 300, y: 200, texture: 'cannon' });
        
+       
     }
 
     public update(time: number, delta: number): void {
@@ -111,8 +109,7 @@ export default class TestLevel extends Phaser.Scene {
             element.update(delta);
         });
 
-        this.colo.update();
-       
+        this.colo.update(); 
         
     }
 

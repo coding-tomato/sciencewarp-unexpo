@@ -23,6 +23,8 @@ export default class TestLevel extends Phaser.Scene {
     private colo: any;
     private colo2: any;
     private vroomba: any;
+    private debugControl: any;
+    private debugGraphics: any;
 
     constructor() {
         super({
@@ -48,6 +50,8 @@ export default class TestLevel extends Phaser.Scene {
         
         this.nobo.push(legs);
         this.nobo.push(vroomba);
+
+	this.debugControl = this.input.keyboard.addKey('F2');
 
         this.mapManager.setStaticLayers(['Ground'], this.nobo);
         this.player.setFuelHUD();
@@ -91,7 +95,9 @@ export default class TestLevel extends Phaser.Scene {
             });
         });
 
-       this.colo = new Cannon({ scene: this, x: 300, y: 200, texture: 'cannon' });
+	this.colo = new Cannon({ scene: this, x: 300, y: 200, texture: 'cannon' });
+
+	this.debugGraphics = this.physics.world.createDebugGraphic();
        
        
     }
@@ -109,7 +115,17 @@ export default class TestLevel extends Phaser.Scene {
             element.update(delta);
         });
 
-        this.colo.update(); 
+        this.colo.update();
+
+	let debugGraphics;
+
+	if (Phaser.Input.Keyboard.JustDown(this.debugControl)) {
+	    if (this.debugGraphics.active) {
+		this.debugGraphics.destroy();
+	    } else {
+		this.debugGraphics = this.physics.world.createDebugGraphic();
+	    }
+	}
         
     }
 

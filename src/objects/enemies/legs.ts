@@ -1,21 +1,29 @@
 import "phaser";
 
-enum State {
-    Moving,
-    Attacking
+import { isObjectNear } from "../../utils/libmon";
+
+interface Legs {
+    
+    direction: number;
+    
 }
 
-export default class Legs extends Phaser.Physics.Arcade.Sprite {
+const enum State {
+    
+    Moving = 1,
+    Attacking = 2,
+    
+}
 
-    private direction: number;
+const VELOCITY = 50;
+const FRAME_RATE = 12;
+const EPSILON = 1e-2;
+
+class Legs extends Phaser.Physics.Arcade.Sprite {
 
     constructor(params: any) {
 
-        super(params.scene, params.x, params.y, params.texture);
-
-        this.state = State.Moving;
-
-        this.direction = 1;
+        super(params.scene, params.x, params.y, params.texture);  
 
         this.animSetup();
 
@@ -24,53 +32,145 @@ export default class Legs extends Phaser.Physics.Arcade.Sprite {
         this.create();
 
     }
-
+    
+    // Create Animations
+    
     private animSetup(): void {
+
+	// Default animation
+	this.scene.anims.create({
+	    
+	    key: 'legs_move',
+	    frames: this.scene.anims.generateFrameNumbers('legs', {
+		
+		start: 0, end: 7
+		
+	    }),
+	    frameRate: FRAME_RATE
+	    
+	});
+
+	// Play when attack starts
+	this.scene.anims.create({
+	    
+	    key: 'legs_jump',
+	    frames: this.scene.anims.generateFrameNumbers('legs', {
+		
+		start: 8, end: 10
+		
+	    }),
+	    frameRate: FRAME_RATE
+	    
+	});
+
+	// Play when attack ends
+	this.scene.anims.create({
+	    
+	    key: 'legs_land',
+	    frames: this.scene.anims.generateFrameNumbers('legs', {
+		
+		start: 11, end: 14
+		
+	    }),
+	    frameRate: FRAME_RATE
+	    
+	});
 
     }
 
+    // All initialization setup goes here
+    
     private arcadeSetup(): void {
 
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
         this.state = State.Moving;
-
+	this.direction = 1;
 
     }
 
-    private create() {
+    // Create events if needed
 
-        this.scene.events.on('moving', () => {
-            this.walk();
-        });
-        
+    public create() {
 
+	this.scene.events.addListener("jump", () => {});
 
     }
 
     public update() {
 
+	this.debug();
+
         switch(this.state) {
+		
             case State.Moving:
-                this.scene.events.emit('moving');
+		
+                this.walk();
+		
                 break;
-        }
-    }
-
-    walk() {
-
-        if (this.direction) {
-            if (this.body.blocked.right || this.body.blocked.left) {
-                this.direction *= -1;
-            }
+		
         }
 
-        this.setVelocityX(100 * this.direction);
+	this.handleAnimations();
+
+	
+	
+    }
+
+    private handleAnimations() {
+
+	switch(this.state) {
+
+	    case State.Moving:
+
+		this.anims.play('legs_move', true);
+		break;
+		
+	}
+
+	switch (this.direction) {
+		
+	    case 1:
+		
+		this.flipX = true;
+		break;
+		
+	    case -1:
+		
+		this.flipX = false;
+		break;
+		
+	}
+	
+    }
+
+    private walk() {
+	
+        if (this.body.blocked.right || this.body.blocked.left) {
+	    
+            this.direction *= -1;
+	    
+        }
+        
+        this.setVelocityX(VELOCITY * this.direction);
 
     }
 
+    private checkDistanceFromPlayer(): number {
+
+	
+	
+    }
+
+    private debug(): void {
+
+	
+	
+    }
 
 }
+
+export default Legs;
 
 /*
     class statement

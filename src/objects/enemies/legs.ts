@@ -12,6 +12,7 @@ const enum State {
     
     Moving = 1,
     Attacking = 2,
+    Resting = 3,
     
 }
 
@@ -56,7 +57,7 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 	    key: 'legs_jump',
 	    frames: this.scene.anims.generateFrameNumbers('legs', {
 		
-		start: 8, end: 10
+		start: 8, end: 14
 		
 	    }),
 	    frameRate: FRAME_RATE
@@ -85,6 +86,7 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
         this.state = State.Moving;
+	this.setSize(25, 35);
 	this.direction = 1;
 
     }
@@ -93,23 +95,52 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 
     public create() {
 
-	this.scene.events.addListener("jump", () => {});
+	this.scene.events.addListener("jump", () => {
+
+	    this.anims.play("legs_jump");
+	    
+	    this.jump();
+
+	    this.scene.time.delayedCall(2000, () => {
+
+		this.setVelocityY(0);
+		this.state = State.Moving;
+		
+	    }, [], this)
+	    
+	});
 
     }
 
     public update() {
-
-	if (this.checkDistanceFromPlayer() <= AGGRO_RANGE) {
-	    this.jump();
-	}
 
         switch(this.state) {
 		
             case State.Moving:
 		
                 this.walk();
+
+		if (this.checkDistanceFromPlayer() <= AGGRO_RANGE) {
+		    
+		    this.state = State.Attacking;
+
+		    this.scene.events.emit("jump");
+		    
+		}
 		
                 break;
+
+	    case State.Attacking:
+
+		this.setVelocityY(-VELOCITY * 5);
+
+		break;
+
+	    case State.Resting:
+
+		this.walk();
+
+		break;
 		
         }
 
@@ -126,6 +157,18 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 	    case State.Moving:
 
 		this.anims.play('legs_move', true);
+		break;
+
+	    case State.Attacking:
+		 
+		
+		    
+		break;
+
+	    case State.Resting:
+
+		this.anims.play('legs_move', true);
+
 		break;
 		
 	}
@@ -167,7 +210,14 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
     }
 
     private jump(): void {
-	console.log("Close");
+
+	this.setVelocityY(-100);
+	this.setAccelerationY(-300);
+
+	console.log("Jump!");
+
+	this.state = State.Resting;
+	
     }
 
 }

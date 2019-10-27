@@ -10,12 +10,12 @@ class Projectile extends Phaser.GameObjects.Sprite {
     public body: Phaser.Physics.Arcade.Body;
     constructor(params: any){
         super(params.scene, params.x, params.y, params.texture, params.frame);
+        this.createAnimations();
         // Projectile settings
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
         this.body.allowGravity = false;
         this.body.setVelocityY(-100);
-        this.createAnimations();
         this.setDepth(-1);
         this.anims.play('loop');
         // Events
@@ -165,7 +165,9 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
                 this.shootProjectile();
                 break;
             case "shooting":
-                this.state = State.WALKING;
+                this.scene.time.delayedCall(500, () => {
+                   this.state =  State.WALKING;
+                }, [], this);
                 break;
         }
     }

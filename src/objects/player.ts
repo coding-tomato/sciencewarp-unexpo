@@ -20,14 +20,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     private currentScene: Phaser.Scene;
     //Debug
     private debugActive : boolean;
-    private debug: {
-        velocity: Phaser.GameObjects.Text,
-        acceleration: Phaser.GameObjects.Text
-        state: Phaser.GameObjects.Text,
-        direction: Phaser.GameObjects.Text,
-        fuel: Phaser.GameObjects.Text
-
-    };
+    private debug: Phaser.GameObjects.Text;
     //Variables
     private acceleration: number;
     public name: string
@@ -56,34 +49,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.currentScene = params.scene
         //Debug
         this.debugActive = true;
-        this.debug = {
-            state: this.currentScene.add.text(5,5, "State: ")
+        this.debug = this.currentScene.add.text(5,5, "Debug HUD error")
                 .setScrollFactor(0)
                 .setDepth(1)
                 .setFontSize(14)
-                .setVisible(this.debugActive),
-            velocity: this.currentScene.add.text(5,20, "Velocity: ")
-                .setScrollFactor(0)
-                .setDepth(1)
-                .setFontSize(14)
-                .setVisible(this.debugActive),
-            acceleration: this.currentScene.add.text(5,35, "Acceleration: ")
-                .setScrollFactor(0)
-                .setFontSize(14)
-                .setDepth(1)
-                .setVisible(this.debugActive),
-            direction: this.currentScene.add.text(5,50, "Direction: ")
-                .setScrollFactor(0)
-                .setDepth(1)
-                .setFontSize(14)
-                .setVisible(this.debugActive),
-            fuel: this.currentScene.add.text(5,65, "Fuel: ")
-                .setScrollFactor(0)
-                .setDepth(1)
-                .setFontSize(14)
-                .setVisible(this.debugActive)
-        }
-
+                .setVisible(this.debugActive);
         //Input
         this.keys = this.currentScene.input.keyboard.createCursorKeys();
 
@@ -257,11 +227,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     //Debug
     public debugUpdate(): void {
-        this.debug.state.setText(`State: ${this.state}`)
-        this.debug.velocity.setText(`Velocity: X ${this.body.velocity.x.toFixed(1)} Y ${this.body.velocity.y.toFixed(1)}`)
-        this.debug.acceleration.setText(`Acceleration: X ${this.body.acceleration.x.toFixed(1)} Y ${this.body.acceleration.y.toFixed(1)}`)
-        this.debug.direction.setText(`Direction: X ${this.direction.x} Y ${this.direction.y}`)
-        this.debug.fuel.setText(`Fuel: ${this.fuel.vFuel}`)
+        const r = Phaser.Math.RoundTo;
+        const debugUpdate: string[] = [
+            `State:     ${this.state}`,
+            `Position:  x: ${r(this.body.x, 0)} y: ${r(this.body.y, 0)}`,
+            `Fuel:      ${this.fuel.vFuel}`
+        ];
+        this.debug.setText(debugUpdate);
     }
-
 }

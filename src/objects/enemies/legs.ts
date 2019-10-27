@@ -17,7 +17,7 @@ const enum State {
 
 const VELOCITY = 50;
 const FRAME_RATE = 12;
-const EPSILON = 1e-2;
+const AGGRO_RANGE = 75;
 
 class Legs extends Phaser.Physics.Arcade.Sprite {
 
@@ -99,7 +99,9 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 
     public update() {
 
-	this.debug();
+	if (this.checkDistanceFromPlayer() <= AGGRO_RANGE) {
+	    this.jump();
+	}
 
         switch(this.state) {
 		
@@ -158,14 +160,14 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 
     private checkDistanceFromPlayer(): number {
 
-	
+	const player = (this.scene as any).children.scene.player;
+
+	return Phaser.Math.Distance.Between(player.x, player.y, this.x, this.y);
 	
     }
 
-    private debug(): void {
-
-	
-	
+    private jump(): void {
+	console.log("Close");
     }
 
 }

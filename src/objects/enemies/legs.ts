@@ -1,10 +1,8 @@
 import "phaser";
 
-import { isObjectNear } from "../../utils/libmon";
-
 interface Legs {
     
-    direction: number;
+    direction: Direction;
     
 }
 
@@ -12,13 +10,24 @@ const enum State {
     
     Moving = 1,
     Attacking = 2,
-    Resting = 3,
+    Resting = 3
     
 }
 
-const VELOCITY = 50;
-const FRAME_RATE = 12;
-const AGGRO_RANGE = 75;
+const enum Direction {
+
+    Left = -1,
+    Right = 1
+    
+}
+
+const VELOCITY =        50;
+const FRAME_RATE =      12;
+const AGGRO_RANGE =     75;
+const SIZE =            { x: 25, y: 35 };
+const JUMP_AMOUNT =     -250;
+const ACCELERATION =    200;
+const RESET_TIME =      2000;
 
 class Legs extends Phaser.Physics.Arcade.Sprite {
 
@@ -86,8 +95,8 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
         this.state = State.Moving;
-	this.setSize(25, 35);
-	this.direction = 1;
+	this.setSize(SIZE.x, SIZE.y);
+	this.direction = Direction.Right;
 
     }
 
@@ -103,7 +112,6 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 
 	    this.scene.time.delayedCall(2000, () => {
 
-		this.setVelocityY(0);
 		this.state = State.Moving;
 		
 	    }, [], this)
@@ -118,9 +126,9 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 		
             case State.Moving:
 		
-                this.walk();
-
-		if (this.checkDistanceFromPlayer() <= AGGRO_RANGE) {
+                this.walk();  
+		
+		if (this.checkDistanceFromPlayer() <= AGGRO_RANGE && this.checkIfPlayerOnSight()) {
 		    
 		    this.state = State.Attacking;
 
@@ -175,12 +183,12 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 
 	switch (this.direction) {
 		
-	    case 1:
+	    case Direction.Right:
 		
 		this.flipX = true;
 		break;
 		
-	    case -1:
+	    case Direction.Left:
 		
 		this.flipX = false;
 		break;
@@ -193,7 +201,7 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 	
         if (this.body.blocked.right || this.body.blocked.left) {
 	    
-            this.direction *= -1;
+            this.direction *= Direction.Left;
 	    
         }
         
@@ -209,10 +217,19 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 	
     }
 
+    private checkIfPlayerOnSight(): boolean {
+
+	const player = (this.scene as any).children.scene.player;
+
+	return (this.direction == Direction.Left && this.x > player.x) ||
+	    (this.direction == Direction.Right && this.x < player.x);
+	
+    }
+
     private jump(): void {
 
-	this.setVelocityY(-100);
-	this.setAccelerationY(-300);
+	this.setVelocityY(JUMP_AMOUNT);
+	this.setAcceleration(ACCELERATION, - ACCELERATION);
 
 	console.log("Jump!");
 
@@ -223,65 +240,3 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 }
 
 export default Legs;
-
-/*
-    class statement
-
-    constructor() {
-
-        animSetup();
-        physicsSetup();
-        
-    }
-
-    create() {
-
-        tweens.walk();
-
-        events.on('walk') {
-
-            if (OutOfBounds) {
-                remove();
-            }
-
-            if (checkPlayerDistance() is NEAR) {
-
-                state = Attacking;
-                attack();
-
-            }
-
-        }        
-
-    }
-
-    update() {
-
-        switch(state) {
-
-            case State.Moving:
-                walk();
-
-        }
-
-    }
-
-    attack() {
-
-        jump();
-
-        delayedCall(TIME, () => { state = Moving });
-
-    }
-
-    jump() {
-
-        playAnimation();
-
-        setVelocity(X, Y);
-
-        delayedCall(TIME, () => { setVelocity (X, Y) });
-
-    }
-
-*/

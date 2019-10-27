@@ -110,7 +110,7 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 	    
 	    this.jump();
 
-	    this.scene.time.delayedCall(2000, () => {
+	    this.scene.time.delayedCall(RESET_TIME, () => {
 
 		this.state = State.Moving;
 		

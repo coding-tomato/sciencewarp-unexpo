@@ -15,7 +15,13 @@ interface Fuel {
     fuelBar: Phaser.GameObjects.Graphics;
 }
 
-export default class Player extends Phaser.GameObjects.Sprite {
+interface Player {
+    lives: number
+}
+
+const MAX_LIVES = 5;
+
+class Player extends Phaser.GameObjects.Sprite {
     public body: Phaser.Physics.Arcade.Body;
     private currentScene: Phaser.Scene;
     //Debug
@@ -59,6 +65,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         this.name = "player";
 
+	// Lives
+
+	this.lives = MAX_LIVES;
+
         // State
         this.state = State.WALKING;
 
@@ -77,6 +87,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
         }
         this.jetAcceleration = -15;
         this.jetMaxSpeed = -150;
+
+	this.gameShutdown();
 
         //Fuel
         this.fuel = {
@@ -115,6 +127,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.handleFuel(delta);
         this.handleAnimations();
         this.debugUpdate();
+	this.checkIfAlive();
     }
 
     private handleInput() {
@@ -235,4 +248,26 @@ export default class Player extends Phaser.GameObjects.Sprite {
         ];
         this.debug.setText(debugUpdate);
     }
+
+    private checkIfAlive(): void {
+
+	if (this.lives <= 0) {
+	    
+	    this.currentScene.events.emit('gameOver');
+	    
+	}
+    }
+
+    private gameShutdown(): void {
+
+	this.currentScene.events.once("gameOver", () => {
+	    console.log("GameOver");
+	    this.currentScene.scene.stop('DialogBox');
+	    this.currentScene.scene.start('Menu');
+	    
+	})
+	
+    }
 }
+
+export default Player;

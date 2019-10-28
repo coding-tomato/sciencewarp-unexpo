@@ -13,6 +13,7 @@ import Platform from '../objects/hazards/h_plat'
 import Disappear from '../objects/hazards/h_diss'
 
 import { Second, Entrance } from '../utils/text'
+import { addOrTakeLives } from '../utils/libplayer.ts'
 
 export default class TestLevel extends Phaser.Scene {
     private player: Player;
@@ -23,7 +24,7 @@ export default class TestLevel extends Phaser.Scene {
     private colo: any;
     private colo2: any;
     private vroomba: any;
-    private debugControl: any;
+    private debugControl: any[];
     private debugGraphics: any;
 
     constructor() {
@@ -51,7 +52,13 @@ export default class TestLevel extends Phaser.Scene {
         this.nobo.push(legs);
         this.nobo.push(vroomba);
 
-	this.debugControl = this.input.keyboard.addKey('F2');
+	// Controls
+	this.debugControl = [];
+	
+	this.debugControl[0] = this.input.keyboard.addKey('F2');
+	this.debugControl[1] = this.input.keyboard.addKey('G');
+	
+	///////////////////////////////////////////
 
         this.mapManager.setStaticLayers(['Ground'], this.nobo);
         this.player.setFuelHUD();
@@ -98,6 +105,8 @@ export default class TestLevel extends Phaser.Scene {
 	this.colo = new Cannon({ scene: this, x: 300, y: 200, texture: 'cannon' });
 
 	this.debugGraphics = this.physics.world.createDebugGraphic();
+
+
        
        
     }
@@ -105,12 +114,12 @@ export default class TestLevel extends Phaser.Scene {
     public update(time: number, delta: number): void {
 
         // Make Player and Coils interact
+
+
+	
         
-
-
         this.player.update(delta);
 
-    
         this.nobo.forEach( element => {
             element.update(delta);
         });
@@ -119,20 +128,29 @@ export default class TestLevel extends Phaser.Scene {
 
 	let debugGraphics;
 
-	if (Phaser.Input.Keyboard.JustDown(this.debugControl)) {
+	if (Phaser.Input.Keyboard.JustDown(this.debugControl[0])) {
 	    if (this.debugGraphics.active) {
 		this.debugGraphics.destroy();
 	    } else {
 		this.debugGraphics = this.physics.world.createDebugGraphic();
 	    }
 	}
-        
+
+	if (Phaser.Input.Keyboard.JustDown(this.debugControl[1])) {
+	    addOrTakeLives(this.player, -5);
+	}
+ 
     }
 
     private hurt(element1: any, element2: any) {
         this.physics.world.removeCollider(this.firstCollide);
- 
+
+	console.log(`You had ${this.player.lives} lives.`);
+	addOrTakeLives(this.player, -1);
+	console.log(`Now you have ${this.player.lives} lives.`);
         this.events.emit('attack', 3400);
        
     }
-} 
+}
+
+

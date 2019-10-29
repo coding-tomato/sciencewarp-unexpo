@@ -152,6 +152,7 @@ class Player extends Phaser.GameObjects.Sprite {
         else { this.direction.y = 0 }
 
 	if (Phaser.Input.Keyboard.JustDown(this.keys.space)) {
+	    this.body.setVelocityX(500);
 	    this.state = State.DASHING; 
 	}
     }

@@ -148,8 +148,6 @@ export default class TestLevel extends Phaser.Scene {
 
 	if (element1.state == "DASHING") {
 
-	    
-	    
 	    this.cleanCollider(this.firstCollide);
 	    console.log("Am DASHING!");
 	    element2.destroy();

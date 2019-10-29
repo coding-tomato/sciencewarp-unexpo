@@ -2,7 +2,8 @@ import "phaser"
 
 const enum State {
     WALKING = "WALKING",
-    FLYING = "FLYING"
+    FLYING = "FLYING",
+    DASHING = "DASHING",
 }
 
 interface Fuel {
@@ -51,8 +52,10 @@ class Player extends Phaser.GameObjects.Sprite {
     private anim_json: Phaser.Types.Animations.JSONAnimations
 
     constructor(params: any) {
+	
         super(params.scene, params.x, params.y, params.key, params.frame);
         this.currentScene = params.scene
+	
         //Debug
         this.debugActive = true;
         this.debug = this.currentScene.add.text(5,5, "Debug HUD error")
@@ -100,6 +103,7 @@ class Player extends Phaser.GameObjects.Sprite {
             fuelBox: this.currentScene.add.graphics(),
             fuelBar: this.currentScene.add.graphics(),
         };
+	
         this.setFuelHUD();
 
         //Animations
@@ -120,23 +124,36 @@ class Player extends Phaser.GameObjects.Sprite {
         this.body.setOffset(8,4)
     }
 
-    //Cycle
+    // Cycle
     public update(delta: number): void {
-        this.handleInput();
-        this.handleMovement(delta);
-        this.handleFuel(delta);
-        this.handleAnimations();
-        this.debugUpdate();
-	this.checkIfAlive();
-    }
 
+	// All controls go here
+        this.handleInput();
+	// Movement
+        this.handleMovement(delta);
+	// Check for fuel
+        this.handleFuel(delta);
+	// Check for constant animations
+        this.handleAnimations();
+	// Debug functions
+        this.debugUpdate();
+	// Is player out of lives? If so, quit the game
+	this.checkIfAlive();
+	
+    }
+    
     private handleInput() {
+	
         if(this.keys.right.isDown)     { this.direction.x = 1  }
         else if(this.keys.left.isDown) { this.direction.x = -1 }
         else { this.direction.x = 0 }
 
         if(this.keys.up.isDown) { this.direction.y = -1 }
         else { this.direction.y = 0 }
+
+	if (Phaser.Input.Keyboard.JustDown(this.keys.space)) {
+	    this.state = State.DASHING; 
+	}
     }
 
     private handleMovement(delta: number /*, player_state: State*/) {
@@ -260,12 +277,14 @@ class Player extends Phaser.GameObjects.Sprite {
 
     private gameShutdown(): void {
 
+	// Player has lost all of its five lives
 	this.currentScene.events.once("gameOver", () => {
+	    
 	    console.log("GameOver");
 	    this.currentScene.scene.stop('DialogBox');
 	    this.currentScene.scene.start('Menu');
 	    
-	})
+	});
 	
     }
 }

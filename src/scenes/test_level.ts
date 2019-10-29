@@ -86,10 +86,6 @@ export default class TestLevel extends Phaser.Scene {
 
         this.events.on('attack', () => {
             
-            this.time.delayedCall(1500, () => {
-                this.firstCollide = this.physics.add.overlap(this.player, this.nobo, this.hurt, null, this);
-            }, [], this);
-
             this.tweens.add({
                 targets: this.player,
                 alpha: 0.1,
@@ -106,27 +102,21 @@ export default class TestLevel extends Phaser.Scene {
 
 	this.debugGraphics = this.physics.world.createDebugGraphic();
 
-
-       
-       
     }
 
     public update(time: number, delta: number): void {
 
         // Make Player and Coils interact
-
-
-	
         
         this.player.update(delta);
 
         this.nobo.forEach( element => {
-            element.update(delta);
+	    if (element.active) {
+		element.update(delta);
+	    }            
         });
 
         this.colo.update();
-
-	let debugGraphics;
 
 	if (Phaser.Input.Keyboard.JustDown(this.debugControl[0])) {
 	    if (this.debugGraphics.active) {
@@ -143,13 +133,39 @@ export default class TestLevel extends Phaser.Scene {
     }
 
     private hurt(element1: any, element2: any) {
-        this.physics.world.removeCollider(this.firstCollide);
 
-	console.log(`You had ${this.player.lives} lives.`);
-	addOrTakeLives(this.player, -1);
-	console.log(`Now you have ${this.player.lives} lives.`);
-        this.events.emit('attack', 3400);
-       
+	if (element1.state != "DASHING") {
+	    
+	    this.cleanCollider(this.firstCollide);
+
+	    console.log(`You had ${this.player.lives} lives.`);
+	    addOrTakeLives(this.player, -1);
+	    console.log(`Now you have ${this.player.lives} lives.`);
+
+	    this.events.emit('attack');
+	    
+	}
+
+	if (element1.state == "DASHING") {
+
+	    
+	    
+	    this.cleanCollider(this.firstCollide);
+	    console.log("Am DASHING!");
+	    element2.destroy();
+	    
+	}
+	       
+    }
+
+    private cleanCollider(collider: any) {
+
+	this.physics.world.removeCollider(collider);
+	
+	this.time.delayedCall(1500, () => {
+	    
+                this.firstCollide = this.physics.add.overlap(this.player, this.nobo, this.hurt, null, this);
+            }, [], this);	
     }
 }
 

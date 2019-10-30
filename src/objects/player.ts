@@ -1,4 +1,6 @@
-import "phaser"
+import "phaser";
+
+import { changeState } from "../utils/libplayer.ts";
 
 const enum State {
     WALKING = "WALKING",
@@ -21,6 +23,7 @@ interface Player {
 }
 
 const MAX_LIVES = 5;
+const DASH_COOLDOWN = 3000;
 
 class Player extends Phaser.GameObjects.Sprite {
     public body: Phaser.Physics.Arcade.Body;
@@ -51,6 +54,9 @@ class Player extends Phaser.GameObjects.Sprite {
     // Animation
     private anim_json: Phaser.Types.Animations.JSONAnimations
 
+    private dash_cool: boolean;
+    
+
     constructor(params: any) {
 	
         super(params.scene, params.x, params.y, params.key, params.frame);
@@ -74,6 +80,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         // State
         this.state = State.WALKING;
+	this.dash_cool = false;
 
         //Movement variables
         this.jumpHeight = -300;
@@ -151,9 +158,19 @@ class Player extends Phaser.GameObjects.Sprite {
         if(this.keys.up.isDown) { this.direction.y = -1 }
         else { this.direction.y = 0 }
 
-	if (Phaser.Input.Keyboard.JustDown(this.keys.space)) {
+	if (Phaser.Input.Keyboard.JustDown(this.keys.space) && !this.dash_cool) {
+	    this.state = State.DASHING;
 	    this.body.setVelocityX(500);
-	    this.state = State.DASHING; 
+	    
+
+	    this.dash_cool = true;
+
+	    changeState(this, 150, State.WALKING);
+
+	    this.currentScene.time.delayedCall(DASH_COOLDOWN, () => {
+		this.dash_cool = false;
+	    }, [], this);
+	    
 	}
     }
 

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "start": "webpack --watch & live-server --port=8085"
+    "start": "webpack --watch & live-server --port=8085 --wait=800"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "@types/glob": "^7.1.1",
-    "@types/node": "^12.7.2",
-    "live-server": "^1.2.1"
+    "@types/node": "^12.7.2"
   }
 }

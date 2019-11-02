@@ -50,6 +50,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
     }
 
     update(delta: number): void {
+		//Update handlers
         this.animationHandler();
         this.moveHandler();
     }

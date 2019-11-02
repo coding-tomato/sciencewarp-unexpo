@@ -128,7 +128,7 @@ class Player extends Phaser.GameObjects.Sprite {
 		// Check for constant animations
 		this.handleAnimations();
 		// Debug functions
-		this.debugUpdate();
+		this.debugUpdate(delta);
 		// Is player out of lives? If so, quit the game
 		this.checkIfAlive();
 	}
@@ -360,13 +360,14 @@ class Player extends Phaser.GameObjects.Sprite {
 	}
 
 	//Debug
-	public debugUpdate(): void {
+	public debugUpdate(delta: number): void {
 		const r = Phaser.Math.RoundTo;
 		const debugUpdate: string[] = [
 			`State:     ${this.state}`,
 			`Position:  x: ${r(this.body.x, 0)} y: ${r(this.body.y, 0)}`,
 			`Fuel:      ${this.fuel.vFuel}`,
-			`Lives:     ${this.lives}`
+			`Lives:     ${this.lives}              `,
+			`Delta:		${delta}`
 		];
 		this.debug.setText(debugUpdate);
 	}

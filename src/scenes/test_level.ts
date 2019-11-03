@@ -80,7 +80,7 @@ export default class TestLevel extends Phaser.Scene {
 			this
 		);
 
-		this.cameras.main.startFollow(this.player);
+		this.cameras.main.startFollow(this.player).setLerp(0.15);
 
 		// Launch scene Dialog Box
 		this.scene.launch("DialogBox", { text: [Entrance] });

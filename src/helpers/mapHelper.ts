@@ -1,6 +1,6 @@
 /*
-    Phaser 3 Map Helper
-    Author: Humberto Rondon
+  Phaser 3 Map Helper
+  Author: Humberto Rondon
 */
 
 import "phaser";
@@ -29,17 +29,6 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         this.map = this.scene.add.tilemap(mapData.name);
         this.level = [];
         this.background = [];
-
-        /*
-        console.log(this.map.objects[0]);
-
-        console.log(this.map.objects.forEach((element: any) => {
-            if (element.name == 'pointer') {
-                console.log(element);
-            }
-
-        }));
-        */
 
         this.createBackground();
 
@@ -88,7 +77,7 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         return player;   
     }
 
-    public createObjects<T extends Phaser.GameObjects.Sprite>(layer_n: string, obj_n: string, class_n: any): any[] {
+    public createObjects<T extends Phaser.GameObjects.Sprite>(layer_n: string, obj_n: string, class_n: any, texture: any): any[] {
         let obj_arr: any[] = [];
 
         let obj_layer: Phaser.Tilemaps.ObjectLayer = null;
@@ -107,7 +96,7 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
                         newProps[element.name] = element.value
                     })
                 };
-                obj_arr[index] = new class_n({ scene: this.scene, x: element.x, y: element.y, props: newProps, key: 'coil' });
+                obj_arr[index] = new class_n({ scene: this.scene, x: element.x, y: element.y, props: newProps, key: texture });
             }
         });
 
@@ -121,9 +110,9 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
     private createBackground(): void {
         for(let i=0; i<4; i++) {
             this.background[i] = this.currentScene.add.image(0, Math.max(0, 200 - i*100), `bg${i}`)
-                                    .setOrigin(0, 0)
-                                    .setScrollFactor(0, 0.2 - i * 0.05)
-                                    .setDepth(-i-1);
+                .setOrigin(0, 0)
+                .setScrollFactor(0, 0.2 - i * 0.05)
+                .setDepth(-i-1);
         }
-    }
+    }  
 }

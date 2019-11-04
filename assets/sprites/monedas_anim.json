@@ -1,0 +1,36 @@
+{
+    "anims": [
+        {
+            "key": "moneda",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 9,
+            "frames": [
+                {
+                    "key": "monedas",
+                    "frame": "moneda_0"
+                },
+                {
+                    "key": "monedas",
+                    "frame": "moneda_1"
+                },
+                {
+                    "key": "monedas",
+                    "frame": "moneda_2"
+                },
+                {
+                    "key": "monedas",
+                    "frame": "moneda_3"
+                },
+                {
+                    "key": "monedas",
+                    "frame": "moneda_4"
+                },
+                {
+                    "key": "monedas",
+                    "frame": "moneda_5"
+                }
+            ]
+        }
+    ]
+}

@@ -19,7 +19,7 @@ export class Projectile extends Phaser.GameObjects.Sprite {
 		// Visual settings
 		this.createAnimations();
 		this.setDepth(-1);
-		this.anims.play('loop');
+		this.anims.play(`${this.texture.key}_loop`);
         // Physics settings
         this.scene.physics.world.enable(this);
         this.body.allowGravity = false;
@@ -30,13 +30,13 @@ export class Projectile extends Phaser.GameObjects.Sprite {
 		else this.defaultSetup();
 		// Events
         this.scene.time.delayedCall(this.lifetime, () => {
-            this.anims.play('vanish');
+            this.anims.play(`${this.texture.key}_vanish`);
         }, [], this);
 
 		this.scene.add.existing(this);
     }
     createAnimations(): void {
-		let texture_key: string = this.texture.key;
+		const texture_key: string = this.texture.key;
         this.scene.anims.create({
             key: `${texture_key}_loop`,
             frames: this.scene.anims.generateFrameNumbers(texture_key, 

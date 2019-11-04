@@ -16,191 +16,185 @@ import { Second, Entrance } from "../utils/text";
 import { addOrTakeLives } from "../utils/libplayer.ts";
 
 export default class TestLevel extends Phaser.Scene {
-    
-    private player: Player;
-    private mapManager: MapHelper;
-    private nobo: any[];
-    private firstCollide: Phaser.Physics.Arcade.Collider;
-    private plat: any;
-    private colo: any;
-    private colo2: any;
-    private vroomba: any;
-    private debugControl: any[];
-    private debugGraphics: any;
-    
-    constructor() {
-        super({
-            key: "TestLevel"
-        });
 
-        this.nobo = [];
-	
-        }
+	private player: Player;
+	private mapManager: MapHelper;
+	private nobo: any[];
+	private firstCollide: Phaser.Physics.Arcade.Collider;
+	private plat: any;
+	private colo: any;
+	private colo2: any;
+	private vroomba: any;
+	private debugControl: any[];
+	private debugGraphics: any;
 
-    public create(): void {
-        const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla" });
-	
-        this.mapManager = new MapHelper(
-            this,
-            teslaMapData,
-            "tesla_tileset",
-            "tileset"
-        );
+	constructor() {
+		super({
+			key: "TestLevel"
+		});
 
-        this.player = this.mapManager.createPlayer("Player", "p_respawn");
+		this.nobo = [];
+	}
 
-        this.nobo = this.mapManager.createObjects("pointer", "enemy", Coil, 'coil');
+	public create(): void {
+		const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla" });
+		this.mapManager = new MapHelper(
+			this,
+			teslaMapData,
+			"tesla_tileset",
+			"tileset"
+		);
 
-        this.nobo.push(this.player);
+		this.player = this.mapManager.createPlayer("Player", "p_respawn");
 
-        const legs = new Legs({ scene: this, x: 100, y: 200, texture: "legs" });
-        const vroomba = new Vroomba({
-            scene: this,
-            x: 150,
-            y: 750,
-            texture: "vroomba"
-        });
+		this.nobo = this.mapManager.createObjects("pointer", "enemy", Coil);
 
-        this.nobo.push(legs);
-        this.nobo.push(vroomba);
+		this.nobo.push(this.player);
 
-	let coins = this.mapManager.createObjects("Coins", "Coin", Coil, 'coil');
+		const legs = new Legs({ scene: this, x: 100, y: 200, texture: "legs" });
+		const vroomba = new Vroomba({
+			scene: this,
+			x: 150,
+			y: 750,
+			texture: "vroomba"
+		});
 
-        // Controls
-        this.debugControl = [];
+		this.nobo.push(legs);
+		this.nobo.push(vroomba);
 
-        this.debugControl[0] = this.input.keyboard.addKey("F2");
-        this.debugControl[1] = this.input.keyboard.addKey("G");
+		// Controls
+		this.debugControl = [];
 
-        ///////////////////////////////////////////
+		this.debugControl[0] = this.input.keyboard.addKey("F2");
+		this.debugControl[1] = this.input.keyboard.addKey("G");
 
-        this.mapManager.setStaticLayers(["Ground"], this.nobo);
-        this.player.setFuelHUD();
+		///////////////////////////////////////////
 
-        this.firstCollide = this.physics.add.overlap(
-            this.player,
-            this.nobo,
-            this.hurt,
-            null,
-            this
-        );
+		this.mapManager.setStaticLayers(["Ground"], this.nobo);
+		this.player.setFuelHUD();
 
-        this.cameras.main.startFollow(this.player);
+		this.firstCollide = this.physics.add.overlap(
+			this.player,
+			this.nobo,
+			this.hurt,
+			null,
+			this
+		);
 
-        // Launch scene Dialog Box
-        this.scene.launch("DialogBox", { text: [Entrance] });
-        ///////////////////////////////
+		this.cameras.main.startFollow(this.player).setLerp(0.15);
 
-        this.plat = new Platform({
-            scene: this,
-            x: 200,
-            y: 100,
-            texture: "platform"
-        });
+		// Launch scene Dialog Box
+		this.scene.launch("DialogBox", { text: [Entrance] });
+		///////////////////////////////
 
-        this.physics.add.collider(this.player, this.plat);
+		this.plat = new Platform({
+			scene: this,
+			x: 200,
+			y: 100,
+			texture: "platform"
+		});
 
-        const diss = new Disappear({
-            scene: this,
-            x: 300,
-            y: 100,
-            texture: "platform"
-        });
+		this.physics.add.collider(this.player, this.plat);
 
-        this.physics.add.collider(this.player, diss, () => {
-            diss.disable();
-        });
+		const diss = new Disappear({
+			scene: this,
+			x: 300,
+			y: 100,
+			texture: "platform"
+		});
 
-        ////////
-        ///// EVENTS /////////
+		this.physics.add.collider(this.player, diss, () => {
+			diss.disable();
+		});
 
-        this.events.on("attack", () => {
-            this.tweens.add({
-                targets: this.player,
-                alpha: 0.1,
-                duration: 50,
-                repeat: 15,
-                yoyo: true,
-                onComplete: () => {
-                    this.player.setAlpha(1, 1, 1, 1);
-                }
-            });
-        });
+		////////
+		///// EVENTS /////////
 
-        this.colo = new Cannon({
-            scene: this,
-            x: 300,
-            y: 200,
-            texture: "cannon"
-        });
+		this.events.on("attack", () => {
+			this.tweens.add({
+				targets: this.player,
+				alpha: 0.1,
+				duration: 50,
+				repeat: 15,
+				yoyo: true,
+				onComplete: () => {
+					this.player.setAlpha(1, 1, 1, 1);
+				}
+			});
+		});
 
-        this.debugGraphics = this.physics.world.createDebugGraphic();
-	
-    }
+		this.colo = new Cannon({
+			scene: this,
+			x: 300,
+			y: 200,
+			texture: "cannon"
+		});
 
-    public update(time: number, delta: number): void {
-	
-        // Make Player and Coils interact
+		this.debugGraphics = this.physics.world.createDebugGraphic();
+	}
 
-        this.player.update(delta);
+	public update(time: number, delta: number): void {
+		// Make Player and Coils interact
 
-        this.nobo.forEach(element => {
-            if (element.active) {
-                element.update(delta);
-            }
-        });
+		this.player.update(delta);
 
-        this.colo.update();
+		this.nobo.forEach(element => {
+			if (element.active) {
+				element.update(delta);
+			}
+		});
 
-        if (Phaser.Input.Keyboard.JustDown(this.debugControl[0])) {
-            if (this.debugGraphics.active) {
-                this.debugGraphics.destroy();
-                this.player.debug.setVisible(false);
-            } else {
-                this.player.debug.setVisible(true);
-                this.debugGraphics = this.physics.world.createDebugGraphic();
-            }
-        }
+		this.colo.update();
 
-        if (Phaser.Input.Keyboard.JustDown(this.debugControl[1])) {
-            addOrTakeLives(this.player, -5);
-        }
-    }
+		if (Phaser.Input.Keyboard.JustDown(this.debugControl[0])) {
+			if (this.debugGraphics.active) {
+				this.debugGraphics.destroy();
+				this.player.debug.setVisible(false);
+			} else {
+				this.player.debug.setVisible(true);
+				this.debugGraphics = this.physics.world.createDebugGraphic();
+			}
+		}
 
-    private hurt(element1: any, element2: any) {
-        if (element1.state != "DASHING") {
-            this.cleanCollider(this.firstCollide);
+		if (Phaser.Input.Keyboard.JustDown(this.debugControl[1])) {
+			addOrTakeLives(this.player, -5);
+		}
+	}
 
-            console.log(`You had ${this.player.lives} lives.`);
-            addOrTakeLives(this.player, -1);
-            console.log(`Now you have ${this.player.lives} lives.`);
+	private hurt(element1: any, element2: any) {
+		if (element1.state != "DASHING") {
+			this.cleanCollider(this.firstCollide);
 
-            this.events.emit("attack");
-        }
+			console.log(`You had ${this.player.lives} lives.`);
+			addOrTakeLives(this.player, -1);
+			console.log(`Now you have ${this.player.lives} lives.`);
 
-        if (element1.state == "DASHING") {
-            this.cleanCollider(this.firstCollide);
-            console.log("Am DASHING!");
-            element2.destroy();
-        }
-    }
+			this.events.emit("attack");
+		}
 
-    private cleanCollider(collider: any) {
-        this.physics.world.removeCollider(collider);
+		if (element1.state == "DASHING") {
+			this.cleanCollider(this.firstCollide);
+			console.log("Am DASHING!");
+			element2.destroy();
+		}
+	}
 
-        this.time.delayedCall(
-            1500,
-            () => {
-                this.firstCollide = this.physics.add.overlap(
-                    this.player,
-                    this.nobo,
-                    this.hurt,
-                    null,
-                    this
-                );
-            },
-            [],
-            this
-        );
-    }
+	private cleanCollider(collider: any) {
+		this.physics.world.removeCollider(collider);
+
+		this.time.delayedCall(
+			1500,
+			() => {
+				this.firstCollide = this.physics.add.overlap(
+					this.player,
+					this.nobo,
+					this.hurt,
+					null,
+					this
+				);
+			},
+			[],
+			this
+		);
+	}
 }

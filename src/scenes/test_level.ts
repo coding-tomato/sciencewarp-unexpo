@@ -13,7 +13,7 @@ import Platform from "../objects/hazards/h_plat";
 import Disappear from "../objects/hazards/h_diss";
 
 import { Second, Entrance } from "../utils/text";
-import { addOrTakeLives } from "../utils/libplayer.ts";
+import { addOrTakeLives } from "../utils/libplayer";
 
 export default class TestLevel extends Phaser.Scene {
 
@@ -47,7 +47,7 @@ export default class TestLevel extends Phaser.Scene {
 
 		this.player = this.mapManager.createPlayer("Player", "p_respawn");
 
-		this.nobo = this.mapManager.createObjects("pointer", "enemy", Coil);
+		this.nobo = this.mapManager.createObjects("pointer", "enemy", Coil, "coil");
 
 		this.nobo.push(this.player);
 

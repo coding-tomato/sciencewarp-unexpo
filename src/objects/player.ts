@@ -1,6 +1,6 @@
 import "phaser";
 
-import { changeState } from "../utils/libplayer.ts";
+import { changeState } from "../utils/libplayer";
 
 const enum State {
     WALKING = "WALKING",
@@ -152,6 +152,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
     private handleInput() {
         if (!this.dash_cool) {
+
             if (this.keys.right.isDown) {
                 this.direction.x = 1;
             } else if (this.keys.left.isDown) {
@@ -159,15 +160,17 @@ class Player extends Phaser.GameObjects.Sprite {
             } else {
                 this.direction.x = 0;
             }
+
             if (this.keys.up.isDown) {
                 this.direction.y = -1;
             } else {
                 this.direction.y = 0;
             }
+
             if (
                 Phaser.Input.Keyboard.JustDown(this.keys.space) &&
                 !this.dash_cool &&
-                !this.body.blocked.down &&
+                //!this.body.blocked.down &&
                 this.fuel.vFuel > 0
             ) {
                 this.state = State.DASHING;
@@ -176,9 +179,11 @@ class Player extends Phaser.GameObjects.Sprite {
         
     }
 
-    private handleMovement(delta: number /*, player_state: State*/) {
+    private handleMovement(delta: number) {
+
         //Air control
         switch (this.state) {
+
             case State.WALKING:
                 this.walkUpdate();
                 if (this.direction.y === -1 && this.body.blocked.down) {
@@ -206,6 +211,7 @@ class Player extends Phaser.GameObjects.Sprite {
                 }
                 this.lastDirection.y = this.direction.y;
                 break;
+
             //Flying
             case State.FLYING:
                 this.walkUpdate();
@@ -219,8 +225,10 @@ class Player extends Phaser.GameObjects.Sprite {
                         this.body.setVelocityY(this.jetMaxSpeed);
                 }
                 break;
+
             //Dashing
             case State.DASHING:
+                console.log("Starting to Dash");
                 const facing_dir = (this.flipX ? -1 : 1);
                 this.body.resetFlags();
                 this.direction.x = facing_dir;
@@ -235,6 +243,8 @@ class Player extends Phaser.GameObjects.Sprite {
                         this.dash_cool = false;
                         this.body.allowGravity = true;
                         this.body.setVelocityX(DASH_VELOCITY * facing_dir - 350 * facing_dir);
+
+                        // Change state back to WALKING
                         this.currentScene.time.delayedCall(50, 
                             () => {
                                 this.state = State.WALKING;   
@@ -251,6 +261,7 @@ class Player extends Phaser.GameObjects.Sprite {
     private handleAnimations() {
         if (this.direction.x !== 0) this.setFlipX(this.direction.x === -1);
         switch (this.state) {
+
             case State.WALKING:
                 if (this.body.velocity.y > 200) this.play("fall", true);
                 else if (
@@ -262,6 +273,7 @@ class Player extends Phaser.GameObjects.Sprite {
                     this.play("idle", true);
                 else if (this.body.blocked.down) this.play("run", true);
                 break;
+
             case State.FLYING:
                 if (this.direction.y === -1 && this.fuel.vFuel > 0) {
                     this.play("jetpack", true);
@@ -270,6 +282,7 @@ class Player extends Phaser.GameObjects.Sprite {
                     this.play("jetpack_fall", true);
                 else this.play("jetpack_still");
                 break;
+
             case State.DASHING:
                 if(this.anims.getCurrentKey() !== "dash" && this.dash_cool) this.play("dash", true);
                 break;

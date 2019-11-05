@@ -184,14 +184,13 @@ class Player extends Phaser.GameObjects.Sprite {
                 this.dash_cool = true;
     
 
-                
-
                 this.currentScene.time.delayedCall(300, () => {
                     this.state = State.WALKING;
                     this.body.allowGravity = true;
+                    this.body.velocity.x /= 2;
                 }, [], this);
 
-                this.currentScene.time.delayedCall(1500, () => {
+                this.currentScene.time.delayedCall(350, () => {
                     this.dash_cool = false;
                 }, [], this);
 

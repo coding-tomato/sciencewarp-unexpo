@@ -23,7 +23,7 @@ interface Player {
 }
 
 const MAX_LIVES = 5;
-const DASH_COOLDOWN = 400;
+const DASH_COOLDOWN = 2000;
 const DASH_VELOCITY = 400;
 
 class Player extends Phaser.GameObjects.Sprite {
@@ -151,7 +151,7 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     private handleInput() {
-        if (!this.dash_cool) {
+        
 
             if (this.keys.right.isDown) {
                 this.direction.x = 1;
@@ -167,13 +167,34 @@ class Player extends Phaser.GameObjects.Sprite {
                 this.direction.y = 0;
             }
 
+        if (!this.dash_cool) {
             if (
                 Phaser.Input.Keyboard.JustDown(this.keys.space) &&
                 !this.dash_cool &&
                 //!this.body.blocked.down &&
                 this.fuel.vFuel > 0
             ) {
+
+                let velo = this.flipX ? -1 : 1;
+                this.body.setVelocityY(0);
+                this.body.allowGravity = false;
+                this.body.setVelocityX(500 * velo);
+                
                 this.state = State.DASHING;
+                this.dash_cool = true;
+    
+
+                
+
+                this.currentScene.time.delayedCall(300, () => {
+                    this.state = State.WALKING;
+                    this.body.allowGravity = true;
+                }, [], this);
+
+                this.currentScene.time.delayedCall(1500, () => {
+                    this.dash_cool = false;
+                }, [], this);
+
             }
         }
         
@@ -229,31 +250,9 @@ class Player extends Phaser.GameObjects.Sprite {
             //Dashing
             case State.DASHING:
                 console.log("Starting to Dash");
-                const facing_dir = (this.flipX ? -1 : 1);
-                this.body.resetFlags();
-                this.direction.x = facing_dir;
-                this.lastDirection.x = -1 * facing_dir;
-                this.body.allowGravity = false;
-                this.body.setVelocityY(0);
-                this.body.setVelocityX(DASH_VELOCITY * facing_dir);
-                this.dash_cool = true; 
-                this.currentScene.time.delayedCall(
-                    DASH_COOLDOWN,
-                    () => {
-                        this.dash_cool = false;
-                        this.body.allowGravity = true;
-                        this.body.setVelocityX(DASH_VELOCITY * facing_dir - 350 * facing_dir);
 
-                        // Change state back to WALKING
-                        this.currentScene.time.delayedCall(50, 
-                            () => {
-                                this.state = State.WALKING;   
-                            }
-                        , [], this);
-                    },
-                    [],
-                    this
-                );
+                
+    
                 break;
         }
     }
@@ -284,7 +283,7 @@ class Player extends Phaser.GameObjects.Sprite {
                 break;
 
             case State.DASHING:
-                if(this.anims.getCurrentKey() !== "dash" && this.dash_cool) this.play("dash", true);
+                this.play("dash", true);
                 break;
         }
     }

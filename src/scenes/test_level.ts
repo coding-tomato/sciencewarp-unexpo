@@ -47,7 +47,15 @@ export default class TestLevel extends Phaser.Scene {
 
 		this.player = this.mapManager.createPlayer("Player", "p_respawn");
 
-		this.nobo = this.mapManager.createObjects("pointer", "enemy", Coil, "coil");
+		this.nobo = this.mapManager.createObjects(
+            "Enemies", 
+            "enemy", 
+            {
+                coil: Coil,
+                cannon: Cannon,
+                vroomba: Vroomba,
+                legs: Legs
+            });
 
 		this.nobo.push(this.player);
 

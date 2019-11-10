@@ -59,6 +59,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
         let center = this.body.center;
         switch(this.state){
             case State.WALKING:
+                if (!this.body.blocked.down) break;
                 //	Check for player in sight
                 if(this.isPlayerAbove()) { this.state = State.WINDUP }
                 //	Checks for cliffs to turn (bounce property takes cares of walls)

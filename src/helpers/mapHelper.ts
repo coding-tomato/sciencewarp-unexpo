@@ -5,7 +5,6 @@
 
 import "phaser";
 import "../objects/enemies/coil";
-import Coil from "../objects/enemies/coil";
 import Player from "../objects/player"
 import { prependOnceListener } from "cluster";
 
@@ -77,26 +76,43 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         return player;   
     }
 
-    public createObjects<T extends Phaser.GameObjects.Sprite>(layer_n: string, obj_n: string, class_n: any, texture: any): any[] {
+    public createObjectsFromArray<T extends Phaser.GameObjects.Sprite>(layer_n: string, obj_n: string, class_n: any, texture: any): any[] {
         let obj_arr: any[] = [];
-
+        
         let obj_layer: Phaser.Tilemaps.ObjectLayer = null;
 
-        this.map.objects.forEach( (element: any) => {
-            if (element.name == layer_n) {
-                obj_layer = element
+        return obj_arr;
+        
+    }
+    public createObjects<T extends Phaser.GameObjects.Sprite>(layer_n: string, obj_n: string, classes: any): any[] {
+        let obj_arr: any[] = [];
+        
+        let obj_layer: Phaser.Tilemaps.ObjectLayer = null;
+
+        console.log(this.map.objects)
+
+        this.map.objects.forEach( (layer: any) => {
+            if (layer.name == layer_n) {
+                obj_layer = layer;
             }
         });
 
         obj_layer.objects.forEach( (element: any, index: number) => {
-            if (element.name == obj_n) {
-                let newProps: objectProp = {}
+            if (element.type == obj_n) {
+                const class_n = classes[element.name];
+                let newProps: objectProp = {};
                 if (element.hasOwnProperty('properties')) {
                     element.properties.forEach( (element: any) => {
                         newProps[element.name] = element.value
                     })
                 };
-                obj_arr[index] = new class_n({ scene: this.scene, x: element.x, y: element.y, props: newProps, key: texture });
+                obj_arr[index] = new class_n({ 
+                    scene: this.scene, 
+                    x: element.x + element.width/2, 
+                    y: element.y - element.height/2, 
+                    props: newProps, 
+                    key: element.name 
+                });
             }
         });
 

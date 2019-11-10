@@ -35,9 +35,6 @@ class Player extends Phaser.GameObjects.Sprite {
         jumpActive: boolean;
         jetpActive: boolean;
     }
-    public dashActive: boolean;
-    public jumpActive: boolean;
-    public jetpActive: boolean;
     //Variables
     private acceleration: number;
     public name: string;
@@ -51,6 +48,7 @@ class Player extends Phaser.GameObjects.Sprite {
         x: number;
         y: number;
     };
+    private isJumping: boolean;
     private jetAcceleration: number;
     private jetMaxSpeed: number;
     private jumpHeight: number;
@@ -105,6 +103,7 @@ class Player extends Phaser.GameObjects.Sprite {
             x: 0,
             y: 0
         };
+        this.isJumping = false;
         this.jetAcceleration = -15;
         this.jetMaxSpeed = -150;
         this.gameShutdown();
@@ -166,6 +165,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         if (!this.dash_cool) {
             if (Phaser.Input.Keyboard.JustDown(this.keys.space) &&
+                this.powerup.dashActive &&
                 !this.dash_cool &&
                 this.fuel.vFuel > 0) {
 
@@ -216,28 +216,32 @@ class Player extends Phaser.GameObjects.Sprite {
             case State.WALKING:
                 this.walkUpdate();
                 if (this.direction.y === -1 && this.body.blocked.down) {
-                    this.body.setVelocityY(this.jumpHeight);
+                    this.isJumping = true;
+                    this.body.setVelocityY(this.powerup.jumpActive ? (this.jumpHeight - 100) : this.jumpHeight);
                     this.lastDirection.y = this.direction.y;
                 }
-                switch (true) {
-                    //If player hasn't let go jump button, he won't fly
-                    case this.lastDirection.y === -1 && this.direction.y === -1:
-                        break;
-                    case this.lastDirection.y === -1 && this.direction.y === 0:
-                        this.body.setVelocityY(this.body.velocity.y / 2);
-                        break;
+                //If player hasn't let go jump button, he won't fly
+                else if ((this.lastDirection.y === -1) && 
+                        (this.direction.y === 0) &&
+                        this.isJumping) {
+                    this.isJumping = false;
+                    this.body.setVelocityY(this.body.velocity.y / 2);
+                }
+                else if(this.powerup.jetpActive) {
                     //Player will start flying if:
                     //(a) releases jump button
-                    case this.lastDirection.y === 0 && this.direction.y === -1:
+                    if  ((this.lastDirection.y === 0) && 
+                        (this.direction.y === -1)) {
                         this.state = State.FLYING;
-                        break;
+                    }
                     // (b) starts falling
-                    case this.body.velocity.y > 0 &&
-                        this.direction.y === -1 &&
-                        this.lastDirection.y === 0:
+                    else if ((this.body.velocity.y > 0) &&
+                            (this.direction.y === -1) &&
+                            (this.lastDirection.y === 0)) {
                         this.state = State.FLYING;
-                        break;
+                    }
                 }
+                
                 this.lastDirection.y = this.direction.y;
                 break;
 
@@ -267,11 +271,11 @@ class Player extends Phaser.GameObjects.Sprite {
 
             case State.WALKING:
                 if (this.body.velocity.y > 200) this.play("fall", true);
-                else if (
-                    this.body.velocity.y < 0 &&
-                    this.anims.getCurrentKey() !== "jumping"
-                )
-                    this.play("jumping", true);
+                else if ( this.body.velocity.y < 0 ) {
+                    const jumpType = this.powerup.jumpActive ? "jet_jump" : "jumping";
+                    if(this.anims.getCurrentKey() !== jumpType) 
+                        this.play(jumpType, true);
+                }
                 else if (this.body.blocked.down && this.body.velocity.x === 0)
                     this.play("idle", true);
                 else if (this.body.blocked.down) this.play("run", true);
@@ -329,6 +333,9 @@ class Player extends Phaser.GameObjects.Sprite {
     
 
     private walkUpdate(): void {
+        if (this.body.blocked.down) {
+            this.isJumping = false;
+        }
         // Lateral movement
         // If the player turns X direction, velocity splits in half
         if (this.lastDirection.x !== this.direction.x) {
@@ -462,7 +469,7 @@ class Player extends Phaser.GameObjects.Sprite {
             repeat: 0
         });
         this.currentScene.anims.create({
-            key: "jetjump",
+            key: "jet_jump",
             frames: this.currentScene.anims.generateFrameNumbers("moran", {
                 start: 30,
                 end: 34

@@ -51,17 +51,6 @@ export default class TestLevel extends Phaser.Scene {
 
 		this.nobo.push(this.player);
 
-		const legs = new Legs({ scene: this, x: 100, y: 200, texture: "legs" });
-		const vroomba = new Vroomba({
-			scene: this,
-			x: 150,
-			y: 750,
-			texture: "vroomba"
-		});
-
-		this.nobo.push(legs);
-		this.nobo.push(vroomba);
-
 		// Controls
 		this.debugControl = [];
 
@@ -87,26 +76,6 @@ export default class TestLevel extends Phaser.Scene {
 		this.scene.launch("DialogBox", { text: [Entrance] });
 		///////////////////////////////
 
-		this.plat = new Platform({
-			scene: this,
-			x: 200,
-			y: 100,
-			texture: "platform"
-		});
-
-		this.physics.add.collider(this.player, this.plat);
-
-		const diss = new Disappear({
-			scene: this,
-			x: 300,
-			y: 100,
-			texture: "platform"
-		});
-
-		this.physics.add.collider(this.player, diss, () => {
-			diss.disable();
-		});
-
 		////////
 		///// EVENTS /////////
 
@@ -123,13 +92,6 @@ export default class TestLevel extends Phaser.Scene {
 			});
 		});
 
-		this.colo = new Cannon({
-			scene: this,
-			x: 300,
-			y: 200,
-			texture: "cannon"
-		});
-
 		this.debugGraphics = this.physics.world.createDebugGraphic();
 	}
 
@@ -143,8 +105,6 @@ export default class TestLevel extends Phaser.Scene {
 				element.update(delta);
 			}
 		});
-
-		this.colo.update();
 
 		if (Phaser.Input.Keyboard.JustDown(this.debugControl[0])) {
 			if (this.debugGraphics.active) {

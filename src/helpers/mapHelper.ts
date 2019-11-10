@@ -41,7 +41,7 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
     ////////////////////////////////////////
     
     private setTilesetImage(tilesetInTiled: string, tilesetInBoot: string): void {
-        this.tileset = this.map.addTilesetImage(tilesetInTiled, tilesetInBoot);
+        this.tileset = this.map.addTilesetImage(tilesetInTiled, tilesetInBoot, 16, 16, 1, 2);
         
     }
 

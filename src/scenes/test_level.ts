@@ -19,12 +19,8 @@ export default class TestLevel extends Phaser.Scene {
 
 	private player: Player;
 	private mapManager: MapHelper;
-	private nobo: any[];
+	private allSprites: any[];
 	private firstCollide: Phaser.Physics.Arcade.Collider;
-	private plat: any;
-	private colo: any;
-	private colo2: any;
-	private vroomba: any;
 	private debugControl: any[];
 	private debugGraphics: any;
 
@@ -33,10 +29,12 @@ export default class TestLevel extends Phaser.Scene {
 			key: "TestLevel"
 		});
 
-		this.nobo = [];
+		this.allSprites = [];
 	}
 
 	public create(): void {
+
+		// Create Map Manager
 		const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla" });
 		this.mapManager = new MapHelper(
 			this,
@@ -45,9 +43,13 @@ export default class TestLevel extends Phaser.Scene {
 			"tileset"
 		);
 
+		// Create Player
 		this.player = this.mapManager.createPlayer("Player", "p_respawn");
 
-		this.nobo = this.mapManager.createObjects(
+		// Create Enemies 
+		// Hold all sprites in a variable
+		// For easier collision
+		this.allSprites = this.mapManager.createObjects(
             "Enemies", 
             "enemy", 
             {
@@ -57,7 +59,7 @@ export default class TestLevel extends Phaser.Scene {
                 legs: Legs
             });
 
-		this.nobo.push(this.player);
+		this.allSprites.push(this.player);
 
 		// Controls
 		this.debugControl = [];
@@ -67,12 +69,12 @@ export default class TestLevel extends Phaser.Scene {
 
 		///////////////////////////////////////////
 
-		this.mapManager.setStaticLayers(["Ground"], this.nobo);
+		this.mapManager.setStaticLayers(["Ground"], this.allSprites);
 		this.player.setFuelHUD();
 
 		this.firstCollide = this.physics.add.overlap(
 			this.player,
-			this.nobo,
+			this.allSprites,
 			this.hurt,
 			null,
 			this
@@ -104,11 +106,7 @@ export default class TestLevel extends Phaser.Scene {
 	}
 
 	public update(time: number, delta: number): void {
-		// Make Player and Coils interact
-
-		this.player.update(delta);
-
-		this.nobo.forEach(element => {
+		this.allSprites.forEach(element => {
 			if (element.active) {
 				element.update(delta);
 			}
@@ -155,7 +153,7 @@ export default class TestLevel extends Phaser.Scene {
 			() => {
 				this.firstCollide = this.physics.add.overlap(
 					this.player,
-					this.nobo,
+					this.allSprites,
 					this.hurt,
 					null,
 					this

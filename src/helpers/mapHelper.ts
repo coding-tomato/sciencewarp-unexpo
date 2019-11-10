@@ -29,9 +29,9 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         this.level = [];
         this.background = [];
 
-        this.createBackground();
-
         // Functions called at Initialization
+        
+        this.createBackground();
         this.setBounds();
         this.setTilesetImage(tilesetInTiled, tilesetInBoot);
     }

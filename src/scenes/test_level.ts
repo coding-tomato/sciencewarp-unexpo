@@ -11,6 +11,7 @@ import MapHelper from "../helpers/mapHelper";
 
 import Platform from "../objects/hazards/h_plat";
 import Disappear from "../objects/hazards/h_diss";
+import Coins from "../objects/coins";
 
 import { Second, Entrance } from "../utils/text";
 import { addOrTakeLives } from "../utils/libplayer";
@@ -61,6 +62,13 @@ export default class TestLevel extends Phaser.Scene {
 
 		this.allSprites.push(this.player);
 
+		this.mapManager.createObjects(
+			"Coins",
+			"collect",
+			{
+				coins: Coins
+			});
+
 		// Controls
 		this.debugControl = [];
 
@@ -81,6 +89,8 @@ export default class TestLevel extends Phaser.Scene {
 		);
 
 		this.cameras.main.startFollow(this.player).setLerp(0.15);
+
+		this.add.sprite(500, 1456, "coins");
 
 		// Launch scene Dialog Box
 		this.scene.launch("DialogBox", { text: [Entrance] });
@@ -103,6 +113,8 @@ export default class TestLevel extends Phaser.Scene {
 		});
 
 		this.debugGraphics = this.physics.world.createDebugGraphic();
+
+
 	}
 
 	public update(time: number, delta: number): void {

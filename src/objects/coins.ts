@@ -1,17 +1,18 @@
+import "phaser";
 
 class Coins extends Phaser.GameObjects.Sprite {
     constructor(params: any) {
-	super(params.scene, params.x, params.y, params.texture);
+        super(params.scene, params.x, params.y, params.key);
+        this.scene.add.existing(this);
     }
 
     public create(): void {
-
-	this.scene.add.existing(this);
-	
+	    
     }
 
     private animSetup(): void {
-	this
     }
     
 }
+
+export default Coins;

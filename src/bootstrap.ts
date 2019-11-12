@@ -21,13 +21,22 @@ export default class Bootstrap extends Phaser.Scene {
 			this.load.image(`layer0${i}`, `../assets/temp_layer0${i}.png`)
 		}
 		////////////////////////////////////////////////////////////////////
+
+		// Audio
+		this.load.audio('coin_sfx', 'audio/coin.ogg');
+		this.load.audio('jump_sfx', 'audio/jump.ogg');
+		this.load.audio('hurt_sfx', 'audio/hurt.ogg');
 	
 		// Sprites
 		this.load.spritesheet('moran', 'sprites/player/moran.png', 
 				{ frameWidth: 80, frameHeight: 72} );
 
-		this.load.json('coins_anim', 'sprites/monedas_anim.json');
-		this.load.atlas('coins', 'sprites/monedas.png', 'sprites/monedas_atlas.json');
+		this.load.spritesheet('coins', 'sprites/monedas.png', {
+			frameWidth: 16,
+			frameHeight: 16
+		});
+
+		
 
 		this.load.spritesheet('coil', 'sprites/enemies/tesla/coil.png', 
 			      { frameWidth: 30, frameHeight: 30 });

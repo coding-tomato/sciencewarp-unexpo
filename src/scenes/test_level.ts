@@ -24,6 +24,7 @@ export default class TestLevel extends Phaser.Scene {
 	private firstCollide: Phaser.Physics.Arcade.Collider;
 	private debugControl: any[];
 	private debugGraphics: any;
+	private allCoins: any[];
 
 	constructor() {
 		super({
@@ -31,6 +32,7 @@ export default class TestLevel extends Phaser.Scene {
 		});
 
 		this.allSprites = [];
+		this.allCoins = [];
 	}
 
 	public create(): void {
@@ -43,6 +45,17 @@ export default class TestLevel extends Phaser.Scene {
 			"tesla_tileset",
 			"tileset"
 		);
+
+		// Audio
+		this.sound.add('coin_sfx', {
+			loop: false,
+			volume: 0.2,
+		});
+
+		this.sound.add('hurt_sfx', {
+			loop: false,
+			volume: 0.2,
+		});
 
 		// Create Player
 		this.player = this.mapManager.createPlayer("Player", "p_respawn");
@@ -62,7 +75,7 @@ export default class TestLevel extends Phaser.Scene {
 
 		this.allSprites.push(this.player);
 
-		this.mapManager.createObjects(
+		this.allCoins = this.mapManager.createObjects(
 			"Coins",
 			"collect",
 			{
@@ -88,9 +101,15 @@ export default class TestLevel extends Phaser.Scene {
 			this
 		);
 
-		this.cameras.main.startFollow(this.player).setLerp(0.15);
+		this.physics.add.overlap(
+			this.player,
+			this.allCoins,
+			this.getCoin,
+			null,
+			this
+		);
 
-		this.add.sprite(500, 1456, "coins");
+		this.cameras.main.startFollow(this.player).setLerp(0.15);
 
 		// Launch scene Dialog Box
 		this.scene.launch("DialogBox", { text: [Entrance] });
@@ -114,11 +133,16 @@ export default class TestLevel extends Phaser.Scene {
 
 		this.debugGraphics = this.physics.world.createDebugGraphic();
 
-
 	}
 
 	public update(time: number, delta: number): void {
 		this.allSprites.forEach(element => {
+			if (element.active) {
+				element.update(delta);
+			}
+		});
+
+		this.allCoins.forEach(element => {
 			if (element.active) {
 				element.update(delta);
 			}
@@ -143,6 +167,7 @@ export default class TestLevel extends Phaser.Scene {
 		if (element1.state != "DASHING") {
 			this.cleanCollider(this.firstCollide);
 
+			this.sound.play('hurt_sfx');
 			console.log(`You had ${this.player.lives} lives.`);
 			addOrTakeLives(this.player, -1);
 			console.log(`Now you have ${this.player.lives} lives.`);
@@ -174,5 +199,10 @@ export default class TestLevel extends Phaser.Scene {
 			[],
 			this
 		);
+	}
+
+	private getCoin(element1: any, element2: any) {
+		element2.destroy();
+		this.sound.play('coin_sfx');
 	}
 }

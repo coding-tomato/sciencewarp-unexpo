@@ -157,7 +157,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
 			x: center.x, 
 			y: center.y - 10, 
 			texture: 'vroomba_part',
-			lifetime: 5000,
+			lifetime: 7000,
 			velocity: -100,
 			setup: function() { this.body.setVelocity(0, this.velocity) }
 		});

@@ -13,6 +13,7 @@ export class Projectile extends Phaser.GameObjects.Sprite {
     public body: Phaser.Physics.Arcade.Body;
     private lifetime: number;
 	private velocity: number;
+    private timer: Phaser.Time.TimerEvent;
 
 	constructor(params: any){
         super(params.scene, params.x, params.y, params.texture, params.frame);
@@ -29,18 +30,26 @@ export class Projectile extends Phaser.GameObjects.Sprite {
 		if(params.setup !== undefined) params.setup.call(this);
 		else this.defaultSetup();
 		// Events
-        this.scene.time.delayedCall(this.lifetime, () => {
-            if ( this.anims !== undefined &&
-                 (this as any).animationManager !== null
-               ) this.anims.play(`${this.texture.key}_vanish`);
-        }, [], this);
+
+        this.timer = this.scene.time.addEvent({
+            delay: this.lifetime,
+            callback: () => {
+                this.anims.play(`${this.texture.key}_vanish`);
+                this.scene.time.delayedCall(200, () => this.destroy(), [], this);
+            },
+            callbackScope: this,
+            loop: false,
+            repeat: 0
+        });
 
 		this.scene.add.existing(this);
     }
     update(delta: number) {
         if(!this.body.blocked.none) {
+            this.timer.destroy();
             this.body.setVelocity(0, 0);
-            this.anims.play(`${this.texture.key}_vanish`)
+            this.anims.play(`${this.texture.key}_vanish`);
+            this.scene.time.delayedCall(200, () => this.destroy(), [], this);
         } 
     }
     createAnimations(): void {
@@ -62,12 +71,6 @@ export class Projectile extends Phaser.GameObjects.Sprite {
             }),
             frameRate: 12
         });
-        this.on('animationcomplete', this.animCompleteHandler, this);
-    }
-    animCompleteHandler(animation: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame): void{
-        if(this.anims.getCurrentKey() === `${this.texture.key}_vanish`) {
-            this.destroy();
-        }
     }
 	defaultSetup(): void {
 		this.body.setVelocity(this.velocity, 0);

@@ -86,6 +86,12 @@ class Player extends Phaser.GameObjects.Sprite {
         // Lives
         this.lives = MAX_LIVES;
 
+        // Audio
+        this.currentScene.sound.add('jump_sfx', {
+            loop: false,
+            volume: 0.2,
+		});
+
         // State
         this.state = State.WALKING;
         this.dash_cool = false;
@@ -145,6 +151,14 @@ class Player extends Phaser.GameObjects.Sprite {
         this.debugUpdate(delta);
         // Is player out of lives? If so, quit the game
         this.checkIfAlive();
+        // Audio
+        this.handleAudio();
+    }
+
+    private handleAudio() {
+        if (Phaser.Input.Keyboard.JustDown(this.keys.up)) {
+            //this.currentScene.sound.play('jump_sfx');
+        }
     }
 
     private handleInput() {
@@ -217,6 +231,7 @@ class Player extends Phaser.GameObjects.Sprite {
                 this.walkUpdate();
                 if (this.direction.y === -1 && this.body.blocked.down) {
                     this.isJumping = true;
+                    this.currentScene.sound.play('jump_sfx');
                     this.body.setVelocityY(this.powerup.jumpActive ? (this.jumpHeight - 100) : this.jumpHeight);
                     this.lastDirection.y = this.direction.y;
                 }

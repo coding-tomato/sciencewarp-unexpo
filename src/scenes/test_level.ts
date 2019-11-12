@@ -35,7 +35,7 @@ export default class TestLevel extends Phaser.Scene {
 	public create(): void {
 
 		// Create Map Manager
-		const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla" });
+		const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla_level1" });
 		this.mapManager = new MapHelper(
 			this,
 			teslaMapData,
@@ -83,7 +83,7 @@ export default class TestLevel extends Phaser.Scene {
 		this.cameras.main.startFollow(this.player).setLerp(0.15);
 
 		// Launch scene Dialog Box
-		this.scene.launch("DialogBox", { text: [Entrance] });
+		// this.scene.launch("DialogBox", { text: [Entrance] });
 		///////////////////////////////
 
 		////////

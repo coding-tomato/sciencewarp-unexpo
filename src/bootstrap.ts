@@ -33,8 +33,14 @@ export default class Bootstrap extends Phaser.Scene {
 		this.load.spritesheet('cannon', 'sprites/enemies/tesla/cannoncopter_48x48.png', 
 			      { frameWidth: 48, frameHeight: 48 });
 	
-		this.load.spritesheet('cannon_part', 'sprites/enemies/tesla/cannoncopter_particle_14x14.png', 
-			      { frameWidth: 14, frameHeight: 14 });
+		this.load.spritesheet(
+            'cannon_part', 
+            'sprites/enemies/tesla/cannoncopter_particle_14x14.png', 
+			{ 
+                frameWidth: 14, 
+                frameHeight: 14 
+            }
+        );
 
         this.load.spritesheet('legs', 'sprites/enemies/tesla/legs-luthor_49x45.png', { frameWidth: 49, frameHeight: 45 });
 
@@ -50,7 +56,7 @@ export default class Bootstrap extends Phaser.Scene {
         // Tilemaps
         this.load.image('platform', 'h_block.png');
         this.load.image('tileset', 'tilesets/tesla_tileset_extruded.png');
-		this.load.tilemapTiledJSON('tesla', 'tilemaps/tesla_tilemap_0.json');
-		
+		this.load.tilemapTiledJSON('tesla_level0', 'tilemaps/tesla_tilemap_0.json');
+		this.load.tilemapTiledJSON('tesla_level1', 'tilemaps/tesla_tilemap_1.json');
     }
 }

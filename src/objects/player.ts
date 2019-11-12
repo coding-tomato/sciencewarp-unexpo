@@ -78,7 +78,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         //Powerup initialization
         this.powerup = {
-            dashActive: false,
+            dashActive: true,
             jumpActive: false,
             jetpActive: false
         }

@@ -30,10 +30,18 @@ export class Projectile extends Phaser.GameObjects.Sprite {
 		else this.defaultSetup();
 		// Events
         this.scene.time.delayedCall(this.lifetime, () => {
-            this.anims.play(`${this.texture.key}_vanish`);
+            if ( this.anims !== undefined &&
+                 (this as any).animationManager !== null
+               ) this.anims.play(`${this.texture.key}_vanish`);
         }, [], this);
 
 		this.scene.add.existing(this);
+    }
+    update(delta: number) {
+        if(!this.body.blocked.none) {
+            this.body.setVelocity(0, 0);
+            this.anims.play(`${this.texture.key}_vanish`)
+        } 
     }
     createAnimations(): void {
 		const texture_key: string = this.texture.key;
@@ -56,8 +64,10 @@ export class Projectile extends Phaser.GameObjects.Sprite {
         });
         this.on('animationcomplete', this.animCompleteHandler, this);
     }
-    animCompleteHandler(animation: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame){
-        if(this.anims.getCurrentKey() === 'vanish') this.destroy();
+    animCompleteHandler(animation: Phaser.Animations.Animation, frame: Phaser.Animations.AnimationFrame): void{
+        if(this.anims.getCurrentKey() === `${this.texture.key}_vanish`) {
+            this.destroy();
+        }
     }
 	defaultSetup(): void {
 		this.body.setVelocity(this.velocity, 0);

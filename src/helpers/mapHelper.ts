@@ -41,7 +41,10 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
     
     private setTilesetImage(tilesetInTiled: string, tilesetInBoot: string): void {
         this.tileset = this.map.addTilesetImage(tilesetInTiled, tilesetInBoot, 16, 16, 1, 2);
-        
+    }
+
+    private setSpriteCollision(sprite: Phaser.GameObjects.Sprite): void {
+        this.currentScene.physics.add.collider(this.level[0], sprite);
     }
 
     /* Set Static Layers */
@@ -89,7 +92,6 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         
         let obj_layer: Phaser.Tilemaps.ObjectLayer = null;
 
-        console.log(this.map.objects)
 
         this.map.objects.forEach( (layer: any) => {
             if (layer.name == layer_n) {
@@ -124,6 +126,14 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
     }
 
     private createBackground(): void {
+        //for(let i=0; i<4; i++) {
+        //    this.background[i] = this.currentScene.add.tileSprite(0, Math.max(0, 200 - i*100), this.map.widthInPixels, 344, `bg${i}`)
+        //        .setTileScale(1)
+        //        .setScale(1)
+        //        .setOrigin(0, 0)
+        //        .setScrollFactor(0.4 - 0.1 * i, 0.2 - i * 0.05)
+        //        .setDepth(-i-1);
+        //
         for(let i=0; i<4; i++) {
             this.background[i] = this.currentScene.add.image(0, Math.max(0, 200 - i*100), `bg${i}`)
                 .setOrigin(0, 0)
@@ -132,3 +142,4 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         }
     }  
 }
+

@@ -161,7 +161,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
 			velocity: -100,
 			setup: function() { this.body.setVelocity(0, this.velocity) }
 		});
-        (this.scene as any).nobo.push(proj);
+        (this.scene as any).allSprites.push(proj);
     }
 }
 

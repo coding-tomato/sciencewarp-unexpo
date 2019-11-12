@@ -7,6 +7,9 @@ export function isObjectNear(range: number, firstObj: any, secondObj: any): numb
         if (firstObj.x <= secondObj.x + 100 && firstObj.x >= secondObj.x || 
             firstObj.x >= secondObj.x - 100 && firstObj.x <= secondObj.x) {
 
+            console.log(Math.abs(Phaser.Math.Distance.Between(
+                firstObj.x, firstObj.y, secondObj.x, secondObj.y)));
+
             return (Math.abs(Phaser.Math.Distance.Between(
                 firstObj.x, firstObj.y, secondObj.x, secondObj.y)));
         }

@@ -37,6 +37,14 @@ export default class TestLevel extends Phaser.Scene {
 
 	public create(): void {
 
+		if (!this.data.get('coins')) {
+			this.data.set('coins', 0);
+		}
+
+		if (!this.data.get('temp_coins')) {
+			this.data.set('temp_coins', 0);
+		}
+
 		// Create Map Manager
 		const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla_level0" });
 		this.mapManager = new MapHelper(
@@ -205,6 +213,8 @@ export default class TestLevel extends Phaser.Scene {
 
 	private getCoin(element1: any, element2: any) {
 		element2.destroy();
+		this.data.set('temp_coins', this.data.get('temp_coins') + 1);
+		console.log(this.data.get('temp_coins'));
 		this.sound.play('coin_sfx');
 	}
 }

@@ -126,6 +126,7 @@ export default class Cannon extends Phaser.GameObjects.Sprite {
         this.scene.time.delayedCall(
             2500,
             () => {
+                if (!this.active) return
                 if (this.moveTween.isPaused()) {
                     this.moveTween.resume();
                 }
@@ -152,6 +153,8 @@ export default class Cannon extends Phaser.GameObjects.Sprite {
     }
 
     createProjectiles() {
+        if (!this.active) return;
+
         let center = this.body.center;
         let direction = this.direction;
 

@@ -13,7 +13,7 @@ export class Projectile extends Phaser.GameObjects.Sprite {
     public body: Phaser.Physics.Arcade.Body;
     private lifetime: number;
 	private velocity: number;
-    private timer: Phaser.Time.TimerEvent;
+    private timer: number;
 
 	constructor(params: any){
         super(params.scene, params.x, params.y, params.texture, params.frame);
@@ -29,28 +29,32 @@ export class Projectile extends Phaser.GameObjects.Sprite {
 		this.velocity = params.velocity || PROJ_VELOCITY;
 		if(params.setup !== undefined) params.setup.call(this);
 		else this.defaultSetup();
-		// Events
-
-        this.timer = this.scene.time.addEvent({
-            delay: this.lifetime,
-            callback: () => {
-                this.anims.play(`${this.texture.key}_vanish`);
-                this.scene.time.delayedCall(200, () => this.destroy(), [], this);
-            },
-            callbackScope: this,
-            loop: false,
-            repeat: 0
-        });
+        // Timer
+        this.timer = 0;
 
 		this.scene.add.existing(this);
     }
     update(delta: number) {
-        if(!this.body.blocked.none) {
-            this.timer.destroy();
-            this.body.setVelocity(0, 0);
-            this.anims.play(`${this.texture.key}_vanish`);
-            this.scene.time.delayedCall(200, () => this.destroy(), [], this);
+        // Increase timer
+        this.timer += delta;
+       
+        // If timer reaches lifetime, projectile gets destroyed
+        if (this.timer > this.lifetime) { 
+            this.vanishAndDestroy();
+        }
+        // If projectile hits a wall, it gets destroyed
+        else if (!this.body.blocked.none && this.active) {
+            this.vanishAndDestroy();
         } 
+    }
+    vanishAndDestroy(): void {
+        // If projectile remains active, play animation
+        if (this.active) this.anims.play(`${this.texture.key}_vanish`, true);
+        // After animation ends, make inactive and destroy
+        this.scene.time.delayedCall(200, () => {
+            this.active = false;
+            this.destroy();
+        }, [], this);
     }
     createAnimations(): void {
 		const texture_key: string = this.texture.key;

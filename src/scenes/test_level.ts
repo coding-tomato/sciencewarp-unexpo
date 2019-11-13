@@ -41,9 +41,7 @@ export default class TestLevel extends Phaser.Scene {
 			this.data.set('coins', 0);
 		}
 
-		if (!this.data.get('temp_coins')) {
-			this.data.set('temp_coins', 0);
-		}
+		this.data.set('temp_coins', 0);
 
 		// Create Map Manager
 		const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla_level0" });
@@ -83,13 +81,7 @@ export default class TestLevel extends Phaser.Scene {
 
 		this.allSprites.push(this.player);
 
-		this.allCoins = this.mapManager.createObjects(
-			"Coins",
-			"collect",
-			{
-				coins: Coins
-			});
-
+		
 		
 
 		// Controls
@@ -102,6 +94,15 @@ export default class TestLevel extends Phaser.Scene {
 
 		this.mapManager.setStaticLayers(["Ground"], this.allSprites);
 		this.player.setFuelHUD();
+
+		this.allCoins = this.mapManager.createObjects(
+			"Coins",
+			"collect",
+			{
+				coins: Coins
+			}
+		);
+
 
 		this.firstCollide = this.physics.add.overlap(
 			this.player,

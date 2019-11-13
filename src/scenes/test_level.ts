@@ -90,6 +90,8 @@ export default class TestLevel extends Phaser.Scene {
 				coins: Coins
 			});
 
+		
+
 		// Controls
 		this.debugControl = [];
 
@@ -108,6 +110,13 @@ export default class TestLevel extends Phaser.Scene {
 			null,
 			this
 		);
+
+		this.allCoins.push(new Coins({
+			scene: this,
+			x: 150,
+			y: 1536,
+			key: 'coins'
+		}))
 
 		this.physics.add.overlap(
 			this.player,
@@ -212,7 +221,7 @@ export default class TestLevel extends Phaser.Scene {
 	}
 
 	private getCoin(element1: any, element2: any) {
-		element2.destroy();
+		element2.vanish();
 		this.data.set('temp_coins', this.data.get('temp_coins') + 1);
 		console.log(this.data.get('temp_coins'));
 		this.sound.play('coin_sfx');

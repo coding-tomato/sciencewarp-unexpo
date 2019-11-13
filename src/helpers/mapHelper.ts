@@ -13,7 +13,7 @@ interface objectProp {
 }
 
 export default class MapHelper extends Phaser.Tilemaps.Tilemap {
-    private map: any;
+    public map: any;
     private tileset: any;
     private level: any[];
     private currentScene: Phaser.Scene;

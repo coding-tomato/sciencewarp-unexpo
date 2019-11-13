@@ -3,8 +3,8 @@ import { reset, isObjectNear, shoot } from "../../utils/libmon";
 import { Projectile } from "../../helpers/proj" 
 
 enum State {
-    Moving = 1,
-    Attacking = 2
+    MOVING = 1,
+    ATTACKING = 2
 }
 
 enum Direction {
@@ -13,47 +13,48 @@ enum Direction {
 }
 
 const DIRECTION = Direction.RIGHT;
-const ALWAYS = false; // Always shooting
+const TURRET_MODE = false; // Always shooting stationary
 const MAX_DIS = 50; // Maximum movement in Y
 const VELOCITY = 50; // Velocity
 const RESTING_TIME = 300; // Time to hop from Resting to Moving
-const PROJ_TIME = 100; // Time between projectiles
-const AGGRO_RAN = 300; // Range before it detects player
-const AGGRO_WIDTH = 5; // Width of Y to detect player
-const PROJ_NUM = 2; // Number of projectiles
-const UPPER_P = 100;
-const LOWER_P = 250;
+const AGGRO_RAN = 200; // Range before it detects player
+const AGGRO_WIDTH = 3; // Width of Y to detect player
+const PROJ_NUM = 4; // Number of projectiles
 
-export default class Cannon extends Phaser.Physics.Arcade.Sprite {
+export default class Cannon extends Phaser.GameObjects.Sprite {
+    public body: Phaser.Physics.Arcade.Body;
     private moveTween: Phaser.Tweens.Tween;
-    private partGroup: Phaser.GameObjects.Group;
-    private moveEvent: Phaser.Events.EventEmitter;
+    private isAttacking: boolean;
+    //Properties
     private direction: Direction;
-    private always: boolean;
+    private turretMode: boolean;
+    private restingTime: number;
     public state: State;
 
     constructor(params: any) {
         super(params.scene, params.x, params.y, params.texture);
 
-        let always: boolean = false;
-        let direction: number = 1;
+        let turretMode: boolean = TURRET_MODE;
+        let direction: number = DIRECTION;
+        let restingTime: number = RESTING_TIME;
 
         if (Object.keys(params.props).length > 0) {
-          let always = params.props.always;
-          let direction = params.props.direction;
+          turretMode = params.props.turretMode;
+          direction = params.props.direction;
         }
 
-        this.state = State.Moving;
+        this.state = State.MOVING;
         this.direction = direction || DIRECTION;
-        this.always = always || ALWAYS; 
+        this.turretMode = turretMode || TURRET_MODE;
+        this.restingTime = restingTime || RESTING_TIME;
 
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
 
-        (this.body as any).allowGravity = false;
+        this.body.allowGravity = false;
 
-        this.setSize(20, 35);
-        this.setOffset(14, 10);
+        this.body.setSize(20, 35);
+        this.body.setOffset(14, 10);
         this.setFlipX(this.direction === Direction.LEFT ? false : true);
         this.createAnimations();
         this.create();
@@ -70,108 +71,74 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
             repeat: -1
         };
 
-        this.partGroup = this.scene.add.group();
-
         // We want for it to move up and down constantly
         this.moveTween = this.scene.add.tween(moveConfig);
-
-        // Get player from scene's children
-        let player = (this.scene as any).children.scene.player;
-
-        // While moving: check for player position
-        this.moveEvent = this.scene.events.on("moving", () => {
-            this.moving(player);
-        });
-
-        // If monsters spots the player
-        this.scene.events.addListener("shoot", () => {
-            this.moveEvent.off("moving");
-
-            if (!this.moveTween.isPaused()) {
-                this.moveTween.pause();
-            }
-
-            this.shootProjectiles();
-
-            this.scene.time.delayedCall(
-                3000,
-                () => {
-                    this.moveEvent = this.scene.events.on("moving", () => {
-                        this.moving(player);
-                    });
-
-                    if (this.moveTween.isPaused()) {
-                        this.moveTween.resume();
-                    }
-
-                    reset(this, State.Moving, 0);
-                },
-                [],
-                this
-            );
-        });
+        
+        if (this.turretMode) {
+            this.moveTween.pause();
+            this.restingTime = 0;
+        }  
     }
 
     update(): void {
+        if (this.turretMode) {
+           if(!this.isAttacking) this.attack();
+           return
+        }
         switch (this.state) {
-            case State.Moving:
-                this.scene.events.emit("moving");
-                this.anims.play("cannon_move", true);
-
+            case State.MOVING:
+                this.moving((this.scene as any).player);
                 break;
 
-            case State.Attacking:
-                this.anims.play("cannon_attack", true);
+            case State.ATTACKING:
+                if(!this.isAttacking) {
+                    this.attack();
+                }
+                break;
         }
-    }
-
-    change(state: State): void {
-        this.state = state;
     }
 
     moving(player: any): void {
         this.anims.play("cannon_move", true);
+    
+        if (this.isAttacking) return;
 
         // Player must be near for it to start attacking
         // And at the same height (y)
-
-        // This is using too many cycles for a simple X and Y check, should optimize
-        // the distance check
         const isPlayerNear = (this.direction === 1 ? 
-                              (player.x < this.x && player.x > this.x - AGGRO_RAN) : 
-                              (player.x > this.x && player.x < this.x + AGGRO_RAN)) &&
+                              (player.body.x < this.body.x && player.body.x > this.body.x - AGGRO_RAN) : 
+                              (player.body.x > this.body.x && player.body.x < this.body.x + this.body.width + AGGRO_RAN)) &&
                              (player.y < this.y + AGGRO_WIDTH && player.y > this.y - AGGRO_WIDTH);
 
         // Is player near? If so, start to attack
-
-        if (isPlayerNear || this.always) {
-            this.state = State.Attacking;
-            reset(this, State.Attacking, 0);
-            this.scene.events.emit("shoot");
-        }
+        if (isPlayerNear) this.state = State.ATTACKING;
     }
 
-    createAnimations(): void {
-        this.scene.anims.create({
-            key: "cannon_move",
-            frames: this.scene.anims.generateFrameNumbers("cannon", {
-                start: 0,
-                end: 7
-            }),
-            frameRate: 10
-        });
+    attack(): void {
+        this.isAttacking = true;
 
-        this.scene.anims.create({
-            key: "cannon_attack",
-            frames: this.scene.anims.generateFrameNumbers("cannon", {
-                start: 8,
-                end: 15
-            }),
-            frameRate: 12
-        });
+        if (!this.moveTween.isPaused()) {
+            this.moveTween.pause();
+        }
+
+        this.shootProjectiles();
+
+        this.scene.time.delayedCall(
+            2500,
+            () => {
+                if (this.moveTween.isPaused()) {
+                    this.moveTween.resume();
+                }
+                this.scene.time.delayedCall(this.restingTime, () => { this.isAttacking = false }, [], this)
+                this.state = State.MOVING;
+            },
+            [],
+            this
+        );
     }
 
     shootProjectiles() {
+        this.anims.play("cannon_attack", true);
         for (let i = 400; i <= 2500; i += 700) {
             this.scene.time.delayedCall(
                 i,
@@ -193,12 +160,36 @@ export default class Cannon extends Phaser.Physics.Arcade.Sprite {
 			x: center.x, 
 			y: center.y - 3, 
 			texture: 'cannon_part',
-			lifetime: 10000,
+			lifetime: 3000,
 			velocity: -100,
 			setup: function() { this.body.setVelocity(this.velocity * direction, 0) }
 		});
 
         (this.scene as any).allSprites.push(proj);
         (this.scene as any).mapManager.setSpriteCollision(proj);
+    }
+
+    createAnimations(): void {
+        this.scene.anims.create({
+            key: "cannon_move",
+            frames: this.scene.anims.generateFrameNumbers("cannon", {
+                start: 0,
+                end: 7
+            }),
+            frameRate: 10
+        });
+
+        let projNum = PROJ_NUM
+        if(this.turretMode) projNum = -1;
+
+        this.scene.anims.create({
+            key: "cannon_attack",
+            frames: this.scene.anims.generateFrameNumbers("cannon", {
+                start: 8,
+                end: 15
+            }),
+            repeat: projNum,
+            frameRate: 12
+        });
     }
 }

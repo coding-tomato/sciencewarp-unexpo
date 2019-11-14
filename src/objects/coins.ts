@@ -1,7 +1,6 @@
 import "phaser";
 
 interface Coins {
-    coinsAnim: any;
     isGone: boolean;
 }
 

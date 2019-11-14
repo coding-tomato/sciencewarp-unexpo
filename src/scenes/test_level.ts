@@ -12,6 +12,7 @@ import MapHelper from "../helpers/mapHelper";
 import Platform from "../objects/hazards/h_plat";
 import Disappear from "../objects/hazards/h_diss";
 import Coins from "../objects/coins";
+import Powerup from "../objects/collectables/power_jump"
 
 import { Second, Entrance } from "../utils/text";
 import { addOrTakeLives } from "../utils/libplayer";
@@ -25,6 +26,7 @@ export default class TestLevel extends Phaser.Scene {
 	private debugControl: any[];
 	private debugGraphics: any;
 	private allCoins: any[];
+	private allPowerups: any[];
 
 	constructor() {
 		super({
@@ -80,10 +82,7 @@ export default class TestLevel extends Phaser.Scene {
             });
 
 		this.allSprites.push(this.player);
-
 		
-		
-
 		// Controls
 		this.debugControl = [];
 
@@ -103,6 +102,13 @@ export default class TestLevel extends Phaser.Scene {
 			}
 		);
 
+		this.allPowerups = this.mapManager.createObjects(
+			"Powerups",
+			"powerup",
+			{
+				powerups: Powerup
+			}
+		);
 
 		this.firstCollide = this.physics.add.overlap(
 			this.player,
@@ -117,12 +123,20 @@ export default class TestLevel extends Phaser.Scene {
 			x: 150,
 			y: 1536,
 			key: 'coins'
-		}))
+		}));
 
 		this.physics.add.overlap(
 			this.player,
 			this.allCoins,
 			this.getCoin,
+			null,
+			this
+		);
+
+		this.physics.add.overlap(
+			this.player,
+			this.allPowerups,
+			this.getPowerup,
 			null,
 			this
 		);
@@ -163,6 +177,12 @@ export default class TestLevel extends Phaser.Scene {
 		});
 
 		this.allCoins.forEach(element => {
+			if (element.active) {
+				element.update(delta);
+			}
+		});
+
+		this.allPowerups.forEach(element => {
 			if (element.active) {
 				element.update(delta);
 			}
@@ -226,5 +246,9 @@ export default class TestLevel extends Phaser.Scene {
 		this.data.set('temp_coins', this.data.get('temp_coins') + 1);
 		console.log(this.data.get('temp_coins'));
 		this.sound.play('coin_sfx');
+	}
+
+	private getPowerup(element1: any, element2: any) {
+		element2.vanish(element1);
 	}
 }

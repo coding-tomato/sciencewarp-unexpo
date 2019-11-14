@@ -36,7 +36,10 @@ export default class Bootstrap extends Phaser.Scene {
 			frameHeight: 17
 		});
 
-		
+		this.load.spritesheet('powerups', 'sprites/collectables/powerups.png', {
+			frameWidth: 24,
+			frameHeight: 24
+		});
 
 		this.load.spritesheet('coil', 'sprites/enemies/tesla/coil.png', 
 			      { frameWidth: 30, frameHeight: 30 });

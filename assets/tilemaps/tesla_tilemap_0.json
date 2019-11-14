@@ -1590,6 +1590,71 @@
         }, 
         {
          "draworder":"topdown",
+         "id":27,
+         "name":"Powerups",
+         "objects":[
+                {
+                 "height":0,
+                 "id":280,
+                 "name":"powerups",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"typeOf",
+                         "type":"int",
+                         "value":0
+                        }],
+                 "rotation":0,
+                 "type":"powerup",
+                 "visible":true,
+                 "width":0,
+                 "x":297,
+                 "y":1560
+                }, 
+                {
+                 "height":0,
+                 "id":281,
+                 "name":"powerups",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"typeOf",
+                         "type":"int",
+                         "value":1
+                        }],
+                 "rotation":0,
+                 "type":"powerup",
+                 "visible":true,
+                 "width":0,
+                 "x":212,
+                 "y":1520
+                }, 
+                {
+                 "height":0,
+                 "id":282,
+                 "name":"powerups",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"typeOf",
+                         "type":"int",
+                         "value":2
+                        }],
+                 "rotation":0,
+                 "type":"powerup",
+                 "visible":true,
+                 "width":0,
+                 "x":242,
+                 "y":1534
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":12,
          "name":"Player",
          "objects":[
@@ -1611,11 +1676,11 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":27,
- "nextobjectid":280,
+ "nextlayerid":28,
+ "nextobjectid":283,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.2.5",
+ "tiledversion":"1.2.4",
  "tileheight":16,
  "tilesets":[
         {

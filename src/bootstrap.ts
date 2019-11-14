@@ -62,6 +62,8 @@ export default class Bootstrap extends Phaser.Scene {
         
         this.load.spritesheet('vroomba_part', 'sprites/enemies/tesla/vroomba_particle_32x32.png', {frameWidth: 32, frameHeight: 32});
 
+        this.load.spritesheet('explosion', 'sprites/enemies/explosions_50x52.png', {frameWidth: 50, frameHeight: 52});
+
         // Backgrounds
         for (let i=0; i < 4; i++) {
             this.load.image(`bg${i}`, `bg${i}.png`)

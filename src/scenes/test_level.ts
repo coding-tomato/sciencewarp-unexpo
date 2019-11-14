@@ -46,7 +46,7 @@ export default class TestLevel extends Phaser.Scene {
 		this.data.set('temp_coins', 0);
 
 		// Create Map Manager
-		const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla_level0" });
+		const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla_level1" });
 		this.mapManager = new MapHelper(
 			this,
 			teslaMapData,
@@ -118,13 +118,6 @@ export default class TestLevel extends Phaser.Scene {
 			this
 		);
 
-		this.allCoins.push(new Coins({
-			scene: this,
-			x: 150,
-			y: 1536,
-			key: 'coins'
-		}));
-
 		this.physics.add.overlap(
 			this.player,
 			this.allCoins,
@@ -145,10 +138,6 @@ export default class TestLevel extends Phaser.Scene {
 
 		// Launch scene Dialog Box
 		// this.scene.launch("DialogBox", { text: [Entrance] });
-		///////////////////////////////
-
-		////////
-		///// EVENTS /////////
 
 		this.events.on("attack", () => {
 			this.tweens.add({
@@ -164,7 +153,7 @@ export default class TestLevel extends Phaser.Scene {
 		});
 
 		this.debugGraphics = this.physics.world.createDebugGraphic();
-
+        
 	}
 
 	public update(time: number, delta: number): void {
@@ -216,8 +205,26 @@ export default class TestLevel extends Phaser.Scene {
 		}
 
 		if (element1.state == "DASHING") {
-			this.cleanCollider(this.firstCollide);
-			console.log("Am DASHING!");
+            let explosion = this.add.sprite(element2.x, element2.y, `explosion`)
+            
+            this.anims.create({
+                key: `explode`,
+                frames: this.anims.generateFrameNumbers(`explosion`,
+                {
+                    start: 0, end: 7
+                }),
+                frameRate: 12,
+                repeat: 0
+            });
+
+            explosion.anims.play(`explode`)
+            
+            explosion.on( `animationcomplete`, 
+                    (animation: any, frame: any) => { 
+                        explosion.destroy() 
+                    }
+                );
+
 			element2.destroy();
 		}
 	}

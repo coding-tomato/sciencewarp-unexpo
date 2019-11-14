@@ -389,10 +389,7 @@ class Player extends Phaser.GameObjects.Sprite {
             `Position:  x: ${r(this.body.x, 0)} y: ${r(this.body.y, 0)}`,
             `Fuel:      ${this.fuel.vFuel}`,
             `Lives:     ${this.lives}              `,
-            `Delta:     ${Phaser.Math.FloorTo(delta, 0)}`,
-            `Anim key:  ${this.anims.getCurrentKey()}`,
-            `Vel:       x: ${r(this.body.velocity.x, 0)} y: ${r(this.body.velocity.y, 0)}`,
-            `Acc:       x: ${r(this.body.acceleration.x, 0)} y: ${r(this.body.acceleration.y, 0)}`
+            `FPS:       ${Phaser.Math.FloorTo(1000/delta, 0)}`,
         ];
         this.debug.setText(debugUpdate);
     }

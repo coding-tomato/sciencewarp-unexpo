@@ -17,7 +17,7 @@ const TURRET_MODE = false; // Always shooting stationary
 const MAX_DIS = 50; // Maximum movement in Y
 const VELOCITY = 50; // Velocity
 const RESTING_TIME = 300; // Time to hop from Resting to Moving
-const AGGRO_RAN = 200; // Range before it detects player
+const AGGRO_RAN = 300; // Range before it detects player
 const AGGRO_WIDTH = 3; // Width of Y to detect player
 const PROJ_NUM = 4; // Number of projectiles
 

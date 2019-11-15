@@ -14,10 +14,11 @@ interface objectProp {
 
 export default class MapHelper extends Phaser.Tilemaps.Tilemap {
     public map: any;
+    private lastPlayerXPos: number;
     private tileset: any;
     private level: any[];
     private currentScene: Phaser.Scene;
-    private background: Phaser.GameObjects.Image[];
+    private background: Phaser.GameObjects.TileSprite[];
     
     constructor(scene: Phaser.Scene, mapData: Phaser.Tilemaps.MapData, tilesetInTiled: string, tilesetInBoot:string) {
         super(scene, mapData);
@@ -28,6 +29,7 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         this.map = this.scene.add.tilemap(mapData.name);
         this.level = [];
         this.background = [];
+        this.lastPlayerXPos = 0;
 
         // Functions called at Initialization
         
@@ -126,20 +128,23 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
     }
 
     private createBackground(): void {
-        //for(let i=0; i<4; i++) {
-        //    this.background[i] = this.currentScene.add.tileSprite(0, Math.max(0, 200 - i*100), this.map.widthInPixels, 344, `bg${i}`)
-        //        .setTileScale(1)
-        //        .setScale(1)
-        //        .setOrigin(0, 0)
-        //        .setScrollFactor(0.4 - 0.1 * i, 0.2 - i * 0.05)
-        //        .setDepth(-i-1);
-        //
+        // Manually adjusted values to make parallax height scroll look good
+        const scrollValues = [0.5, 0.3, 0.05, 0]
+        const tileSpriteYValues = [500, 200, 25, 0]
+
         for(let i=0; i<4; i++) {
-            this.background[i] = this.currentScene.add.image(0, Math.max(0, 200 - i*100), `bg${i}`)
+            this.background[i] = this.currentScene.add.tileSprite(0, tileSpriteYValues[i], 512, 512, `bg${i}`)
+                .setScale(1)
                 .setOrigin(0, 0)
-                .setScrollFactor(0, 0.2 - i * 0.05)
+                .setScrollFactor(0, scrollValues[i])
                 .setDepth(-i-1);
         }
-    }  
+    }
+
+    public parallaxUpdate(): void {
+        this.background.forEach( (i, index) => {
+            i.tilePositionX = this.currentScene.cameras.main.scrollX/(index + 1.5);
+        })
+    }
 }
 

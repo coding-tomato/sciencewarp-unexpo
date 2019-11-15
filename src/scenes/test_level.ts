@@ -46,7 +46,7 @@ export default class TestLevel extends Phaser.Scene {
 		this.data.set('temp_coins', 0);
 
 		// Create Map Manager
-		const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla_level1" });
+		const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla_level0" });
 		this.mapManager = new MapHelper(
 			this,
 			teslaMapData,
@@ -158,6 +158,8 @@ export default class TestLevel extends Phaser.Scene {
 
 	public update(time: number, delta: number): void {
 		if (this.player.body.y > this.mapManager.map.heightInPixels + 10) addOrTakeLives(this.player, -5)
+        
+        this.mapManager.parallaxUpdate();
 
         this.allSprites.forEach(element => {
 			if (element.active) {

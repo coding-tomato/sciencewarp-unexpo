@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="500" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="27" nextobjectid="280">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="500" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="28" nextobjectid="295">
  <tileset firstgid="1" name="tesla_tileset" tilewidth="16" tileheight="16" tilecount="66" columns="11">
   <image source="../../assets/tilesets/tesla_tileset.png" width="176" height="96"/>
   <tile id="0">
@@ -393,6 +393,7 @@
    </properties>
   </object>
  </objectgroup>
+ <objectgroup id="27" name="Powerups"/>
  <objectgroup id="13" name="Coins">
   <object id="179" name="coins" type="collect" x="686.405" y="1406.33">
    <point/>
@@ -675,7 +676,7 @@
   </object>
  </objectgroup>
  <objectgroup id="12" name="Player">
-  <object id="28" name="p_respawn" x="86.166" y="1561.19">
+  <object id="28" name="p_respawn" x="61.666" y="1556.69">
    <point/>
   </object>
  </objectgroup>

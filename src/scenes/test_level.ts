@@ -17,12 +17,19 @@ import Powerup from "../objects/collectables/power_jump"
 import { Second, Entrance } from "../utils/text";
 import { addOrTakeLives } from "../utils/libplayer";
 
+interface explosionContainer {
+    particle: any;
+    emitter: any
+}
+
 export default class TestLevel extends Phaser.Scene {
 
 	private player: Player;
 	private mapManager: MapHelper;
 	private allSprites: any[];
-	private firstCollide: Phaser.Physics.Arcade.Collider;
+    private allProj: any[];
+	private enemyCollider: Phaser.Physics.Arcade.Collider;
+    private projCollider: Phaser.Physics.Arcade.Collider;
 	private debugControl: any[];
 	private debugGraphics: any;
 	private allCoins: any[];
@@ -35,6 +42,7 @@ export default class TestLevel extends Phaser.Scene {
 
 		this.allSprites = [];
 		this.allCoins = [];
+        this.allProj = [];
 	}
 
 	public create(): void {
@@ -46,7 +54,7 @@ export default class TestLevel extends Phaser.Scene {
 		this.data.set('temp_coins', 0);
 
 		// Create Map Manager
-		const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla_level0" });
+		const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla_level1" });
 		this.mapManager = new MapHelper(
 			this,
 			teslaMapData,
@@ -92,6 +100,7 @@ export default class TestLevel extends Phaser.Scene {
 		///////////////////////////////////////////
 
 		this.mapManager.setStaticLayers(["Ground"], this.allSprites);
+
 		this.player.setFuelHUD();
 
 		this.allCoins = this.mapManager.createObjects(
@@ -110,10 +119,18 @@ export default class TestLevel extends Phaser.Scene {
 			}
 		);
 
-		this.firstCollide = this.physics.add.overlap(
+		this.enemyCollider = this.physics.add.overlap(
 			this.player,
 			this.allSprites,
-			this.hurt,
+			this.hurtEnemy,
+			null,
+			this
+		);
+        
+        this.projCollider = this.physics.add.overlap(
+			this.player,
+			this.allProj,
+			this.hurtProj,
 			null,
 			this
 		);
@@ -160,9 +177,15 @@ export default class TestLevel extends Phaser.Scene {
 		if (this.player.body.y > this.mapManager.map.heightInPixels + 10) addOrTakeLives(this.player, -5)
         
         this.mapManager.parallaxUpdate();
+        
+        this.allProj.forEach(element => {
+            if (element.active) {
+				element.update(delta);
+			}
+		});
 
         this.allSprites.forEach(element => {
-			if (element.active) {
+            if (element.active) {
 				element.update(delta);
 			}
 		});
@@ -194,21 +217,38 @@ export default class TestLevel extends Phaser.Scene {
 		}
 	}
 
-	private hurt(element1: any, element2: any) {
+    private hurt(): any {
+        this.sound.play('hurt_sfx');
+		console.log(`You had ${this.player.lives} lives.`);
+		addOrTakeLives(this.player, -1);
+		console.log(`Now you have ${this.player.lives} lives.`);
+    }
+
+	private hurtEnemy(element1: any, element2: any) {
 		if (element1.state != "DASHING") {
-			this.cleanCollider(this.firstCollide);
-
-			this.sound.play('hurt_sfx');
-			console.log(`You had ${this.player.lives} lives.`);
-			addOrTakeLives(this.player, -1);
-			console.log(`Now you have ${this.player.lives} lives.`);
-
+			this.cleanCollider();
+            this.hurt();
 			this.events.emit("attack");
 		}
 
 		if (element1.state == "DASHING") {
-            let explosion = this.add.sprite(element2.x, element2.y, `explosion`)
-            
+            let explosion = this.add.sprite(element2.x, element2.y, `explosion`);
+
+            for (let i=0; i<3; i++) {
+                let particle = this.add.particles(`explosion-particle${i}`);
+                particle.setDepth(-1);
+                let emitter = particle.createEmitter({
+                    lifespan: 2000,
+                    angle: { min: 240, max: 300},
+                    speed: { min: 200, max: 300},
+                    quantity: {min: 1, max: 2},
+                    rotate: { start: 0, end: 720, ease: `Back.easeOut` },
+                    gravityY: 800,
+                    on: false
+                });
+                emitter.emitParticleAt(element2.x, element2.y);
+            }
+
             this.anims.create({
                 key: `explode`,
                 frames: this.anims.generateFrameNumbers(`explosion`,
@@ -231,16 +271,30 @@ export default class TestLevel extends Phaser.Scene {
 		}
 	}
 
-	private cleanCollider(collider: any) {
-		this.physics.world.removeCollider(collider);
+    private hurtProj(element1: any, element2: any) {
+		this.cleanCollider();
+        this.hurt();
+		this.events.emit("attack");
+	}
+
+	private cleanCollider() {
+		this.physics.world.removeCollider(this.enemyCollider);
+        this.physics.world.removeCollider(this.projCollider);
 
 		this.time.delayedCall(
 			1500,
 			() => {
-				this.firstCollide = this.physics.add.overlap(
+				this.enemyCollider = this.physics.add.overlap(
 					this.player,
 					this.allSprites,
-					this.hurt,
+					this.hurtEnemy,
+					null,
+					this
+				);
+                this.projCollider = this.physics.add.overlap(
+					this.player,
+					this.allProj,
+					this.hurtProj,
 					null,
 					this
 				);
@@ -253,7 +307,6 @@ export default class TestLevel extends Phaser.Scene {
 	private getCoin(element1: any, element2: any) {
 		element2.vanish();
 		this.data.set('temp_coins', this.data.get('temp_coins') + 1);
-		console.log(this.data.get('temp_coins'));
 		this.sound.play('coin_sfx');
 	}
 

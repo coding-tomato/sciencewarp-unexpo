@@ -66,7 +66,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         //Debug
         this.debug = this.currentScene.add
-            .text(5, 5, "Debug HUD error")
+            .text(5, 5, "")
             .setScrollFactor(0)
             .setDepth(1)
             .setFontSize(14)
@@ -390,6 +390,7 @@ class Player extends Phaser.GameObjects.Sprite {
             `Fuel:      ${this.fuel.vFuel}`,
             `Lives:     ${this.lives}              `,
             `FPS:       ${Phaser.Math.FloorTo(1000/delta, 0)}`,
+            `Temp coins:${this.scene.data.get(`temp_coins`)}`
         ];
         this.debug.setText(debugUpdate);
     }

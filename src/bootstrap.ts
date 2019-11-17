@@ -11,16 +11,13 @@ export default class Bootstrap extends Phaser.Scene {
 
 		// Load level on complete
 		this.load.on('complete', () => {
-			this.scene.start("TestLevel");
+			this.scene.start("Menu");
 		});
 
-		this.load.path = '../assets/'
+		this.load.path = '../assets/';
 
-		// TEST CODE ///////////////////////////////////////////////////////
-		for (let i = 1; i <= 4; i++) {
-			this.load.image(`layer0${i}`, `../assets/temp_layer0${i}.png`)
-		}
-		////////////////////////////////////////////////////////////////////
+		// Menu Title
+		this.load.image('menu_title', 'menu_title.png');
 
 		// Audio
 		this.load.audio('coin_sfx', 'audio/coin.ogg');

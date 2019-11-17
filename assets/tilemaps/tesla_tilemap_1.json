@@ -4155,18 +4155,6 @@
                  "width":0,
                  "x":4976,
                  "y":1504
-                }, 
-                {
-                 "height":0,
-                 "id":559,
-                 "name":"p_respawn",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1283,
-                 "y":1250
                 }],
          "opacity":1,
          "type":"objectgroup",

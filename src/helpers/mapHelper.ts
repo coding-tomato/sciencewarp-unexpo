@@ -75,20 +75,13 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         obj_layer.objects.forEach( (element: any, index: number) => {
             if (element.name == obj_n) {
                 player = new Player({ scene: this.scene, x: element.x, y: element.y, key: 'moran' });
+                (this as any).currentScene.checkpointPos = { x: element.x, y: element.y };
             }
         });
 
         return player;   
     }
 
-    public createObjectsFromArray<T extends Phaser.GameObjects.Sprite>(layer_n: string, obj_n: string, class_n: any, texture: any): any[] {
-        let obj_arr: any[] = [];
-        
-        let obj_layer: Phaser.Tilemaps.ObjectLayer = null;
-
-        return obj_arr;
-        
-    }
     public createObjects<T extends Phaser.GameObjects.Sprite>(layer_n: string, obj_n: string, classes: any): any[] {
         let obj_arr: any[] = [];
         

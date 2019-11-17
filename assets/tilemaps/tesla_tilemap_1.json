@@ -2214,7 +2214,7 @@
                  "type":"enemy",
                  "visible":true,
                  "width":48,
-                 "x":700.666666666667,
+                 "x":700.667,
                  "y":1388
                 }, 
                 {
@@ -2238,7 +2238,7 @@
                  "visible":true,
                  "width":48,
                  "x":7626,
-                 "y":1414.66666666667
+                 "y":1414.67
                 }, 
                 {
                  "gid":101,
@@ -2260,7 +2260,7 @@
                  "type":"enemy",
                  "visible":true,
                  "width":48,
-                 "x":7666.33333333333,
+                 "x":7666.33,
                  "y":1411
                 }, 
                 {
@@ -2283,8 +2283,8 @@
                  "type":"enemy",
                  "visible":true,
                  "width":48,
-                 "x":7708.66666666667,
-                 "y":1421.66666666667
+                 "x":7708.67,
+                 "y":1421.67
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2846,8 +2846,8 @@
                  "type":"collect",
                  "visible":true,
                  "width":0,
-                 "x":2783,
-                 "y":1505
+                 "x":2752,
+                 "y":1440
                 }, 
                 {
                  "height":0,
@@ -4119,6 +4119,54 @@
                  "width":0,
                  "x":55,
                  "y":1558.5
+                }, 
+                {
+                 "height":0,
+                 "id":553,
+                 "name":"checkpoint",
+                 "point":true,
+                 "rotation":0,
+                 "type":"checkpoint",
+                 "visible":true,
+                 "width":0,
+                 "x":1360,
+                 "y":1184
+                }, 
+                {
+                 "height":0,
+                 "id":554,
+                 "name":"checkpoint",
+                 "point":true,
+                 "rotation":0,
+                 "type":"checkpoint",
+                 "visible":true,
+                 "width":0,
+                 "x":2768,
+                 "y":1488
+                }, 
+                {
+                 "height":0,
+                 "id":555,
+                 "name":"checkpoint",
+                 "point":true,
+                 "rotation":0,
+                 "type":"checkpoint",
+                 "visible":true,
+                 "width":0,
+                 "x":4976,
+                 "y":1504
+                }, 
+                {
+                 "height":0,
+                 "id":559,
+                 "name":"p_respawn",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1283,
+                 "y":1250
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -4127,7 +4175,7 @@
          "y":0
         }],
  "nextlayerid":29,
- "nextobjectid":553,
+ "nextobjectid":560,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.5",

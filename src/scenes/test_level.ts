@@ -9,31 +9,34 @@ import Vroomba from "../objects/enemies/vroomba";
 
 import MapHelper from "../helpers/mapHelper";
 
-import Platform from "../objects/hazards/h_plat";
-import Disappear from "../objects/hazards/h_diss";
 import Coins from "../objects/coins";
 import Powerup from "../objects/collectables/power_jump"
+import Checkpoint from "../objects/collectables/checkpoint"
 
 import { Second, Entrance } from "../utils/text";
 import { addOrTakeLives } from "../utils/libplayer";
 
-interface explosionContainer {
-    particle: any;
-    emitter: any
-}
-
 export default class TestLevel extends Phaser.Scene {
-
+    // Player
 	private player: Player;
+    private checkpointPos: {
+        x: number,
+        y: number
+    }
+    // Map manager
 	private mapManager: MapHelper;
-	private allSprites: any[];
-    private allProj: any[];
+    // Colliders
 	private enemyCollider: Phaser.Physics.Arcade.Collider;
     private projCollider: Phaser.Physics.Arcade.Collider;
+    // Debug
 	private debugControl: any[];
 	private debugGraphics: any;
+    // Map objects
+    private allCheckpoints: any[];
 	private allCoins: any[];
 	private allPowerups: any[];
+    private allSprites: any[];
+    private allProj: any[];
 
 	constructor() {
 		super({
@@ -99,7 +102,6 @@ export default class TestLevel extends Phaser.Scene {
 		
 		// Controls
 		this.debugControl = [];
-
 		this.debugControl[0] = this.input.keyboard.addKey("F2");
 		this.debugControl[1] = this.input.keyboard.addKey("G");
 
@@ -107,7 +109,7 @@ export default class TestLevel extends Phaser.Scene {
 
 		this.mapManager.setStaticLayers(["Ground"], this.allSprites);
 
-		this.player.setFuelHUD();
+        // Creating game objects
 
 		this.allCoins = this.mapManager.createObjects(
 			"Coins",
@@ -124,6 +126,16 @@ export default class TestLevel extends Phaser.Scene {
 				powerups: Powerup
 			}
 		);
+
+        this.allCheckpoints = this.mapManager.createObjects(
+			"Player",
+			"checkpoint",
+			{
+				checkpoint: Checkpoint
+			}
+		);
+
+        // Setting up collision callbacks
 
 		this.enemyCollider = this.physics.add.overlap(
 			this.player,
@@ -157,6 +169,14 @@ export default class TestLevel extends Phaser.Scene {
 			this
 		);
 
+        this.physics.add.overlap(
+			this.player,
+			this.allCheckpoints,
+			this.getPowerup,
+			null,
+			this
+		);
+
 		this.cameras.main.startFollow(this.player).setLerp(0.15);
 
 		// Launch scene Dialog Box
@@ -180,7 +200,33 @@ export default class TestLevel extends Phaser.Scene {
 	}
 
 	public update(time: number, delta: number): void {
-		if (this.player.body.y > this.mapManager.map.heightInPixels + 10) addOrTakeLives(this.player, -5)
+		if (this.player.body.y > this.mapManager.map.heightInPixels + 10) {
+            let checkpoint = this.checkpointPos
+            let teleport = this.add.sprite(checkpoint.x, checkpoint.y + 20, `checkpoint`);
+            
+            this.anims.create({
+                key: `teleport`,
+                frames: this.anims.generateFrameNumbers(`checkpoint`,
+                {
+                    start: 11, end: 14
+                }),
+                frameRate: 12,
+                repeat: 0
+            });
+            
+            this.time.delayedCall(100, () => teleport.anims.play(`teleport`), [], this);
+            
+            teleport.on( `animationcomplete`, 
+                (animation: any, frame: any) => { 
+                    teleport.destroy() 
+                }
+            );
+
+            this.player.x = checkpoint.x;
+            this.player.y = checkpoint.y;
+            this.cleanCollider();
+            this.events.emit(`attack`);
+        }
         
         this.mapManager.parallaxUpdate();
         
@@ -207,6 +253,12 @@ export default class TestLevel extends Phaser.Scene {
 				element.update(delta);
 			}
 		});
+        
+        this.allCheckpoints.forEach(element => {
+			if (element.active) {
+				element.update(delta);
+			}
+		});
 
 		if (Phaser.Input.Keyboard.JustDown(this.debugControl[0])) {
 			if (this.debugGraphics.active) {
@@ -224,10 +276,14 @@ export default class TestLevel extends Phaser.Scene {
 	}
 
     private hurt(): any {
+        this.player.maxSpeed = 80;
         this.sound.play('hurt_sfx');
 		console.log(`You had ${this.player.lives} lives.`);
 		addOrTakeLives(this.player, -1);
 		console.log(`Now you have ${this.player.lives} lives.`);
+        this.time.delayedCall(1000, () => {
+            if(this.player !== null) this.player.maxSpeed = 150
+        }, [], this)
     }
 
 	private hurtEnemy(element1: any, element2: any) {
@@ -288,7 +344,7 @@ export default class TestLevel extends Phaser.Scene {
         this.physics.world.removeCollider(this.projCollider);
 
 		this.time.delayedCall(
-			1500,
+			1000,
 			() => {
 				this.enemyCollider = this.physics.add.overlap(
 					this.player,

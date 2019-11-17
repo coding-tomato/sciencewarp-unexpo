@@ -38,7 +38,7 @@ class Player extends Phaser.GameObjects.Sprite {
     //Variables
     private acceleration: number;
     public name: string;
-    private maxSpeed: number;
+    public maxSpeed: number;
     private friction: number;
     private direction: {
         x: number;

@@ -25,6 +25,8 @@ export default class TestLevel extends Phaser.Scene {
     }
     // Map manager
 	private mapManager: MapHelper;
+    private currentLevel: number;
+    private inputDisabled: boolean;
     // Colliders
 	private enemyCollider: Phaser.Physics.Arcade.Collider;
     private projCollider: Phaser.Physics.Arcade.Collider;
@@ -46,16 +48,11 @@ export default class TestLevel extends Phaser.Scene {
 		this.allSprites = [];
 		this.allCoins = [];
         this.allProj = [];
+
+        this.inputDisabled = true;
 	}
 
 	public create(): void {
-
-		this.cameras.main.fadeOut(0);
-
-		this.cameras.main.once('camerafadeoutcomplete', (camera: any) => {
-			camera.fadeIn(2000);
-		})
-
 		if (!this.data.get('coins')) {
 			this.data.set('coins', 0);
 		}
@@ -63,7 +60,7 @@ export default class TestLevel extends Phaser.Scene {
 		this.data.set('temp_coins', 0);
 
 		// Create Map Manager
-		const teslaMapData = new Phaser.Tilemaps.MapData({ name: "tesla_level1" });
+		const teslaMapData = new Phaser.Tilemaps.MapData({ name: `tesla_level${this.currentLevel}` });
 		this.mapManager = new MapHelper(
 			this,
 			teslaMapData,
@@ -97,8 +94,6 @@ export default class TestLevel extends Phaser.Scene {
                 vroomba: Vroomba,
                 legs: Legs
             });
-
-		this.allSprites.push(this.player);
 		
 		// Controls
 		this.debugControl = [];
@@ -108,7 +103,8 @@ export default class TestLevel extends Phaser.Scene {
 		///////////////////////////////////////////
 
 		this.mapManager.setStaticLayers(["Ground"], this.allSprites);
-
+        this.mapManager.setSpriteCollision(this.player);
+        
         // Creating game objects
 
 		this.allCoins = this.mapManager.createObjects(
@@ -196,7 +192,14 @@ export default class TestLevel extends Phaser.Scene {
 		});
 
 		this.debugGraphics = this.physics.world.createDebugGraphic();
-        
+
+        this.cameras.main.fadeOut(0);
+
+		this.cameras.main.once('camerafadeoutcomplete', (camera: any) => {
+			camera.fadeIn(500);
+		})
+
+        this.inputDisabled = false;
 	}
 
 	public update(time: number, delta: number): void {
@@ -229,7 +232,9 @@ export default class TestLevel extends Phaser.Scene {
         }
         
         this.mapManager.parallaxUpdate();
-        
+       
+        if(!this.inputDisabled) this.player.update(delta);
+
         this.allProj.forEach(element => {
             if (element.active) {
 				element.update(delta);
@@ -274,6 +279,10 @@ export default class TestLevel extends Phaser.Scene {
 			addOrTakeLives(this.player, -5);
 		}
 	}
+
+    public init(data: any): void {
+        this.currentLevel = data.level;
+    }
 
     private hurt(): any {
         this.player.maxSpeed = 80;

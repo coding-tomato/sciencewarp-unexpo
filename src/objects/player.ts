@@ -124,10 +124,7 @@ class Player extends Phaser.GameObjects.Sprite {
             fuelBox: this.currentScene.add.graphics(),
             fuelBar: this.currentScene.add.graphics()
         };
-        this.setFuelHUD();
-
         this.createAnimations();
-
         this.play("idle", true);
 
         //Settings
@@ -366,19 +363,6 @@ class Player extends Phaser.GameObjects.Sprite {
             this.body.setAccelerationX(0);
             this.body.setDragX(this.friction);
         }
-    }
-
-    //HUD
-    public setFuelHUD(): void {
-        const black: Phaser.Display.Color = Phaser.Display.Color.HexStringToColor(
-            "#0000"
-        );
-        this.fuel.fuelBox.fillStyle(black.color, 0.5);
-        this.fuel.fuelBox.setScrollFactor(0, 0);
-
-        const { width, height } = this.currentScene.cameras.main;
-
-        this.fuel.fuelBox.fillRect(width, 0, -20, height);
     }
 
     //Debug

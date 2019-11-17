@@ -21,7 +21,7 @@ export default class Menu extends Phaser.Scene {
 		const height = this.cameras.main.height;
 
 		// Background
-		this.bg[0] = this.add.tileSprite(0, 0, width, height, 'menu_title').setOrigin(0, 0).setScrollFactor(0);
+		this.bg[0] = this.add.image(0, 0, 'menu_title').setOrigin(0, 0).setScrollFactor(0);
 
 		const list = [
 			this.add.text(this.cameras.main.centerX, this.cameras.main.centerY - 20, "Level One").setScrollFactor(0),
@@ -75,28 +75,18 @@ export default class Menu extends Phaser.Scene {
 		} 
 
 		if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
-			switch(this.data.get('item_selected')) {
-				case 0: 
-					
-
-					this.cameras.main.once('camerafadeoutcomplete', (camera: any) => {
-
-						//camera.fadeIn(6000);
-						this.scene.start('TestLevel');
-						
-				
-					});
-
-	
-					this.cameras.main.fadeOut(4000);
-
+            let item_selected = this.data.get(`item_selected`);
+			this.cameras.main.once(
+                'camerafadeoutcomplete', 
+                (camera: any) => {
+					this.scene.start('TestLevel', { level: item_selected });
+				}
+            );
+			this.cameras.main.fadeOut(500);
 					// this.time.delayedCall(1000, () => {
 					// 	this.scene.start('TestLevel');
 					// }, [], this);
 					// break;
-			}
 		}
-
-		
 	}
 }

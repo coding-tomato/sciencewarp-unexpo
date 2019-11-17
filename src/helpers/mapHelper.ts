@@ -45,7 +45,7 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         this.tileset = this.map.addTilesetImage(tilesetInTiled, tilesetInBoot, 16, 16, 1, 2);
     }
 
-    private setSpriteCollision(sprite: Phaser.GameObjects.Sprite): void {
+    public setSpriteCollision(sprite: Phaser.GameObjects.Sprite): void {
         this.currentScene.physics.add.collider(this.level[0], sprite);
     }
 

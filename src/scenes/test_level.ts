@@ -50,7 +50,7 @@ export default class TestLevel extends Phaser.Scene {
 		this.cameras.main.fadeOut(0);
 
 		this.cameras.main.once('camerafadeoutcomplete', (camera: any) => {
-			camera.fadeIn(2000);
+			camera.fadeIn(500);
 		})
 
 		if (!this.data.get('coins')) {

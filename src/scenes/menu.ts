@@ -77,26 +77,13 @@ export default class Menu extends Phaser.Scene {
 		if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
 			switch(this.data.get('item_selected')) {
 				case 0: 
-					
-
 					this.cameras.main.once('camerafadeoutcomplete', (camera: any) => {
-
-						//camera.fadeIn(6000);
 						this.scene.start('TestLevel');
-						
-				
+
 					});
 
-	
-					this.cameras.main.fadeOut(4000);
-
-					// this.time.delayedCall(1000, () => {
-					// 	this.scene.start('TestLevel');
-					// }, [], this);
-					// break;
+					this.cameras.main.fadeOut(1000);
 			}
 		}
-
-		
 	}
 }

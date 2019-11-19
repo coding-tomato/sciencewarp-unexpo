@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="500" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#bfbfbf" nextlayerid="29" nextobjectid="560">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="500" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#bfbfbf" nextlayerid="29" nextobjectid="561">
  <tileset firstgid="1" name="tesla_tileset" tilewidth="16" tileheight="16" tilecount="99" columns="11">
   <image source="../../assets/tilesets/tesla_tileset.png" width="176" height="144"/>
   <tile id="0">
@@ -1324,12 +1324,6 @@
   <object id="494" name="coins" type="collect" x="7761.75" y="1553.83">
    <point/>
   </object>
-  <object id="495" name="coins" type="collect" x="7809" y="1553.08">
-   <point/>
-  </object>
-  <object id="496" name="coins" type="collect" x="7857" y="1553.33">
-   <point/>
-  </object>
   <object id="509" name="coins" type="collect" x="4414" y="838">
    <point/>
   </object>
@@ -1372,6 +1366,12 @@
    <point/>
   </object>
   <object id="555" name="checkpoint" type="checkpoint" x="4976" y="1504">
+   <point/>
+  </object>
+  <object id="560" name="portal" type="portal" x="7808" y="1552">
+   <properties>
+    <property name="level" type="int" value="0"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

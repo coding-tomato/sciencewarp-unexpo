@@ -79,7 +79,10 @@ export default class Menu extends Phaser.Scene {
 			this.cameras.main.once(
                 'camerafadeoutcomplete', 
                 (camera: any) => {
-					this.scene.start('TestLevel', { level: item_selected });
+					this.scene.start('TestLevel', { 
+                        level: item_selected,
+                        coins: 0
+                    });
 				}
             );
 			this.cameras.main.fadeOut(500);

@@ -374,7 +374,7 @@ class Player extends Phaser.GameObjects.Sprite {
             `Fuel:      ${this.fuel.vFuel}`,
             `Lives:     ${this.lives}              `,
             `FPS:       ${Phaser.Math.FloorTo(1000/delta, 0)}`,
-            `Temp coins:${this.scene.data.get(`temp_coins`)}`
+            `Coins:     ${this.scene.data.get(`coins`)}`
         ];
         this.debug.setText(debugUpdate);
     }

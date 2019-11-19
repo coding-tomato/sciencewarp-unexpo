@@ -3955,30 +3955,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":495,
-                 "name":"coins",
-                 "point":true,
-                 "rotation":0,
-                 "type":"collect",
-                 "visible":true,
-                 "width":0,
-                 "x":7809,
-                 "y":1553.08
-                }, 
-                {
-                 "height":0,
-                 "id":496,
-                 "name":"coins",
-                 "point":true,
-                 "rotation":0,
-                 "type":"collect",
-                 "visible":true,
-                 "width":0,
-                 "x":7857,
-                 "y":1553.33
-                }, 
-                {
-                 "height":0,
                  "id":509,
                  "name":"coins",
                  "point":true,
@@ -4155,6 +4131,24 @@
                  "width":0,
                  "x":4976,
                  "y":1504
+                }, 
+                {
+                 "height":0,
+                 "id":560,
+                 "name":"portal",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"level",
+                         "type":"int",
+                         "value":0
+                        }],
+                 "rotation":0,
+                 "type":"portal",
+                 "visible":true,
+                 "width":0,
+                 "x":7808,
+                 "y":1552
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -4163,7 +4157,7 @@
          "y":0
         }],
  "nextlayerid":29,
- "nextobjectid":560,
+ "nextobjectid":561,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.5",

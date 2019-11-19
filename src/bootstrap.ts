@@ -63,6 +63,8 @@ export default class Bootstrap extends Phaser.Scene {
 
         this.load.spritesheet('checkpoint', 'sprites/collectables/checkpoint.png', {frameWidth: 32, frameHeight: 32});
 
+        this.load.spritesheet('portal', 'sprites/collectables/portal.png', {frameWidth: 32, frameHeight: 32});
+
         // Particles
         this.load.image('explosion-particle0', 'sprites/enemies/explosion-particles0_16x16.png');
         this.load.image('explosion-particle1', 'sprites/enemies/explosion-particles1_16x16.png');

@@ -9,9 +9,10 @@ import Vroomba from "../objects/enemies/vroomba";
 
 import MapHelper from "../helpers/mapHelper";
 
-import Coins from "../objects/coins";
-import Powerup from "../objects/collectables/power_jump"
-import Checkpoint from "../objects/collectables/checkpoint"
+import Coins from "../objects/collectables/coins";
+import Powerup from "../objects/collectables/power_jump";
+import Checkpoint from "../objects/collectables/checkpoint";
+import Portal from "../objects/collectables/portal";
 
 import { Second, Entrance } from "../utils/text";
 import { addOrTakeLives } from "../utils/libplayer";
@@ -27,6 +28,7 @@ export default class TestLevel extends Phaser.Scene {
 	private mapManager: MapHelper;
     private currentLevel: number;
     private inputDisabled: boolean;
+    private warping: boolean;
     // Colliders
 	private enemyCollider: Phaser.Physics.Arcade.Collider;
     private projCollider: Phaser.Physics.Arcade.Collider;
@@ -34,11 +36,12 @@ export default class TestLevel extends Phaser.Scene {
 	private debugControl: any[];
 	private debugGraphics: any;
     // Map objects
-    private allCheckpoints: any[];
+    private allCheckpoints: Checkpoint[];
 	private allCoins: any[];
 	private allPowerups: any[];
     private allSprites: any[];
     private allProj: any[];
+    private allPortals: any[];
 
 	constructor() {
 		super({
@@ -48,15 +51,10 @@ export default class TestLevel extends Phaser.Scene {
 		this.allSprites = [];
 		this.allCoins = [];
         this.allProj = [];
-
-        this.inputDisabled = true;
 	}
 
 	public create(): void {
-		if (!this.data.get('coins')) {
-			this.data.set('coins', 0);
-		}
-
+        this.cameras.main.fadeOut(0);
 		this.data.set('temp_coins', 0);
 
 		// Create Map Manager
@@ -131,6 +129,13 @@ export default class TestLevel extends Phaser.Scene {
 			}
 		);
 
+        this.allPortals = this.mapManager.createObjects(
+			"Player",
+			"portal",
+			{
+				portal: Portal
+			}
+		);
         // Setting up collision callbacks
 
 		this.enemyCollider = this.physics.add.overlap(
@@ -172,6 +177,14 @@ export default class TestLevel extends Phaser.Scene {
 			null,
 			this
 		);
+        
+        this.physics.add.overlap(
+			this.player,
+			this.allPortals,
+			this.getPortal,
+			null,
+			this
+		);
 
 		this.cameras.main.startFollow(this.player).setLerp(0.15);
 
@@ -193,12 +206,12 @@ export default class TestLevel extends Phaser.Scene {
 
 		this.debugGraphics = this.physics.world.createDebugGraphic();
 
-        this.cameras.main.fadeOut(0);
 
 		this.cameras.main.once('camerafadeoutcomplete', (camera: any) => {
 			camera.fadeIn(500);
 		})
 
+        this.warping = false;
         this.inputDisabled = false;
 	}
 
@@ -261,7 +274,7 @@ export default class TestLevel extends Phaser.Scene {
         
         this.allCheckpoints.forEach(element => {
 			if (element.active) {
-				element.update(delta);
+				element.update();
 			}
 		});
 
@@ -282,6 +295,7 @@ export default class TestLevel extends Phaser.Scene {
 
     public init(data: any): void {
         this.currentLevel = data.level;
+        this.data.set(`coins`, data.coins);
     }
 
     private hurt(): any {
@@ -384,4 +398,20 @@ export default class TestLevel extends Phaser.Scene {
 	private getPowerup(element1: any, element2: any) {
 		element2.vanish(element1);
 	}
+
+    private getPortal(element1: any, element2: any) {
+        const next_level: number = element2.getLevel();
+        
+        if (this.warping) return 
+
+        this.allPortals.forEach((element, index) => element.vanish());
+
+        this.warping = true;
+        this.inputDisabled = true;
+		this.time.delayedCall(600, () => this.scene.restart({ 
+            level: next_level,
+            coins: this.data.get(`temp_coins`)
+		}), [], this);
+        this.cameras.main.fadeOut(200); 
+    }
 }

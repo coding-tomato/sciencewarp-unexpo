@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="500" height="100" tilewidth="16" tileheight="16" infinite="0" nextlayerid="28" nextobjectid="298">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="500" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#a3a3a3" nextlayerid="28" nextobjectid="315">
  <tileset firstgid="1" name="tesla_tileset" tilewidth="16" tileheight="16" tilecount="99" columns="11">
   <image source="../../assets/tilesets/tesla_tileset.png" width="176" height="144"/>
   <tile id="0">
@@ -681,10 +681,22 @@
   </object>
  </objectgroup>
  <objectgroup id="12" name="Player">
-  <object id="28" name="p_respawn" x="61.666" y="1556.69">
+  <object id="296" name="checkpoint" type="checkpoint" x="4848" y="1232">
    <point/>
   </object>
-  <object id="296" name="checkpoint" type="checkpoint" x="4848" y="1232">
+  <object id="301" name="portal" type="portal" x="7856" y="1456">
+   <properties>
+    <property name="level" type="int" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="312" name="p_respawn" x="80" y="1552">
+   <point/>
+  </object>
+  <object id="313" name="portal" type="portal" x="7856" y="1408">
+   <properties>
+    <property name="level" type="int" value="1"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

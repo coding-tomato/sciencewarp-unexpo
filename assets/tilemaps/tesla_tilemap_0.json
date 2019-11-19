@@ -1,4 +1,5 @@
-{ "height":100,
+{ "backgroundcolor":"#a3a3a3",
+ "height":100,
  "infinite":false,
  "layers":[
         {
@@ -1606,18 +1607,6 @@
          "objects":[
                 {
                  "height":0,
-                 "id":28,
-                 "name":"p_respawn",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":61.666,
-                 "y":1556.69
-                }, 
-                {
-                 "height":0,
                  "id":296,
                  "name":"checkpoint",
                  "point":true,
@@ -1627,6 +1616,54 @@
                  "width":0,
                  "x":4848,
                  "y":1232
+                }, 
+                {
+                 "height":0,
+                 "id":301,
+                 "name":"portal",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"level",
+                         "type":"int",
+                         "value":1
+                        }],
+                 "rotation":0,
+                 "type":"portal",
+                 "visible":true,
+                 "width":0,
+                 "x":7856,
+                 "y":1456
+                }, 
+                {
+                 "height":0,
+                 "id":312,
+                 "name":"p_respawn",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":80,
+                 "y":1552
+                }, 
+                {
+                 "height":0,
+                 "id":313,
+                 "name":"portal",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"level",
+                         "type":"int",
+                         "value":1
+                        }],
+                 "rotation":0,
+                 "type":"portal",
+                 "visible":true,
+                 "width":0,
+                 "x":7856,
+                 "y":1408
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1635,7 +1672,7 @@
          "y":0
         }],
  "nextlayerid":28,
- "nextobjectid":298,
+ "nextobjectid":315,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.5",

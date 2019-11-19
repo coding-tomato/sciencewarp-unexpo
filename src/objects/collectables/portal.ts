@@ -23,7 +23,7 @@ class Portal extends Phaser.Physics.Arcade.Sprite {
 
     vanish () {
         this.disableBody();
-        this.anims.play(`checkpoint_vanish`);
+        this.anims.play(`portal_vanish`);
     }
 
     getLevel(): number{

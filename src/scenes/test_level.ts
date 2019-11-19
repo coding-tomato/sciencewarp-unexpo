@@ -400,8 +400,10 @@ export default class TestLevel extends Phaser.Scene {
 	}
 
     private getPortal(element1: any, element2: any) {
-        const next_level: number = element2.getLevel();
-        
+        let next_level = element2.getLevel();
+       
+        console.log(next_level)
+
         if (this.warping) return 
 
         this.allPortals.forEach((element, index) => element.vanish());

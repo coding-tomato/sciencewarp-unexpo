@@ -80,5 +80,7 @@ export default class Bootstrap extends Phaser.Scene {
         this.load.image('tileset', 'tilesets/tesla_tileset_extruded.png');
 		this.load.tilemapTiledJSON('tesla_level0', 'tilemaps/tesla_tilemap_0.json');
 		this.load.tilemapTiledJSON('tesla_level1', 'tilemaps/tesla_tilemap_1.json');
+		this.load.tilemapTiledJSON('tesla_level2', 'tilemaps/tesla_tilemap_2.json');
+		this.load.tilemapTiledJSON('tesla_level3', 'tilemaps/tesla_tilemap_3.json');
     }
 }

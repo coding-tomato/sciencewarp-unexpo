@@ -4,7 +4,8 @@ export default class Menu extends Phaser.Scene {
 
 	bg: Array<any>;
 
-	private controlKeys: any;
+	private controlKeys: Phaser.Types.Input.Keyboard.CursorKeys;
+	private enterKey: Phaser.Input.Keyboard.Key;
 
 	constructor() {
 		super({
@@ -15,11 +16,13 @@ export default class Menu extends Phaser.Scene {
 	}
 
 	public create(): void {
+
 		const width = this.cameras.main.width;
 		const height = this.cameras.main.height;
 
 		// Background
-		this.bg[0] = this.add.tileSprite(0, 0, width, height, 'layer01').setOrigin(0, 0).setScrollFactor(0);
+		this.bg[0] = this.add.image(0, 0, 'menu_title').setOrigin(0, 0).setScrollFactor(0);
+
 		const list = [
 			this.add.text(this.cameras.main.centerX, this.cameras.main.centerY - 20, "Level One").setScrollFactor(0),
 			this.add.text(this.cameras.main.centerX, this.cameras.main.centerY - 10, "Level Two").setScrollFactor(0),
@@ -48,9 +51,7 @@ export default class Menu extends Phaser.Scene {
 		});
 
 		this.controlKeys = this.input.keyboard.createCursorKeys();
-
-
-
+		this.enterKey = this.input.keyboard.addKey('ENTER');
 	}
 
 	public update(): void {
@@ -62,10 +63,8 @@ export default class Menu extends Phaser.Scene {
 			}
 		}
 
-		this.cameras.main.scrollX++;
-		this.bg[0].tilePositionX = this.cameras.main.scrollX * 0.8;
-
-
+		// this.cameras.main.scrollX++;
+		// this.bg[0].tilePositionX = this.cameras.main.scrollX * 0.8;
 
 		if (Phaser.Input.Keyboard.JustDown(this.controlKeys.down)) {
 			if (this.data.get('item_selected') != 2) {
@@ -73,6 +72,21 @@ export default class Menu extends Phaser.Scene {
 				this.data.set('item_selected', previous + 1);
 				this.events.emit('change', previous);
 			}
+		} 
+
+		if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
+            let item_selected = this.data.get(`item_selected`);
+			this.cameras.main.once(
+                'camerafadeoutcomplete', 
+                (camera: any) => {
+					this.scene.start('TestLevel', { level: item_selected });
+				}
+            );
+			this.cameras.main.fadeOut(500);
+					// this.time.delayedCall(1000, () => {
+					// 	this.scene.start('TestLevel');
+					// }, [], this);
+					// break;
 		}
 	}
 }

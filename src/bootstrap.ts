@@ -11,16 +11,13 @@ export default class Bootstrap extends Phaser.Scene {
 
 		// Load level on complete
 		this.load.on('complete', () => {
-			this.scene.start("TestLevel");
+			this.scene.start("Menu");
 		});
 
-		this.load.path = '../assets/'
+		this.load.path = '../assets/';
 
-		// TEST CODE ///////////////////////////////////////////////////////
-		for (let i = 1; i <= 4; i++) {
-			this.load.image(`layer0${i}`, `../assets/temp_layer0${i}.png`)
-		}
-		////////////////////////////////////////////////////////////////////
+		// Menu Title
+		this.load.image('menu_title', 'menu_title.png');
 
 		// Audio
 		this.load.audio('coin_sfx', 'audio/coin.ogg');
@@ -63,6 +60,13 @@ export default class Bootstrap extends Phaser.Scene {
         this.load.spritesheet('vroomba_part', 'sprites/enemies/tesla/vroomba_particle_32x32.png', {frameWidth: 32, frameHeight: 32});
 
         this.load.spritesheet('explosion', 'sprites/enemies/explosions_50x52.png', {frameWidth: 50, frameHeight: 52});
+
+        this.load.spritesheet('checkpoint', 'sprites/collectables/checkpoint.png', {frameWidth: 32, frameHeight: 32});
+
+        // Particles
+        this.load.image('explosion-particle0', 'sprites/enemies/explosion-particles0_16x16.png');
+        this.load.image('explosion-particle1', 'sprites/enemies/explosion-particles1_16x16.png');
+        this.load.image('explosion-particle2', 'sprites/enemies/explosion-particles2_16x16.png');
 
         // Backgrounds
         for (let i=0; i < 4; i++) {

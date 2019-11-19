@@ -38,7 +38,7 @@ class Player extends Phaser.GameObjects.Sprite {
     //Variables
     private acceleration: number;
     public name: string;
-    private maxSpeed: number;
+    public maxSpeed: number;
     private friction: number;
     private direction: {
         x: number;
@@ -66,7 +66,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         //Debug
         this.debug = this.currentScene.add
-            .text(5, 5, "Debug HUD error")
+            .text(5, 5, "")
             .setScrollFactor(0)
             .setDepth(1)
             .setFontSize(14)
@@ -124,10 +124,7 @@ class Player extends Phaser.GameObjects.Sprite {
             fuelBox: this.currentScene.add.graphics(),
             fuelBar: this.currentScene.add.graphics()
         };
-        this.setFuelHUD();
-
         this.createAnimations();
-
         this.play("idle", true);
 
         //Settings
@@ -368,19 +365,6 @@ class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
-    //HUD
-    public setFuelHUD(): void {
-        const black: Phaser.Display.Color = Phaser.Display.Color.HexStringToColor(
-            "#0000"
-        );
-        this.fuel.fuelBox.fillStyle(black.color, 0.5);
-        this.fuel.fuelBox.setScrollFactor(0, 0);
-
-        const { width, height } = this.currentScene.cameras.main;
-
-        this.fuel.fuelBox.fillRect(width, 0, -20, height);
-    }
-
     //Debug
     public debugUpdate(delta: number): void {
         const r = Phaser.Math.RoundTo;
@@ -390,6 +374,7 @@ class Player extends Phaser.GameObjects.Sprite {
             `Fuel:      ${this.fuel.vFuel}`,
             `Lives:     ${this.lives}              `,
             `FPS:       ${Phaser.Math.FloorTo(1000/delta, 0)}`,
+            `Temp coins:${this.scene.data.get(`temp_coins`)}`
         ];
         this.debug.setText(debugUpdate);
     }

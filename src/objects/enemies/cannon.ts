@@ -168,7 +168,7 @@ export default class Cannon extends Phaser.GameObjects.Sprite {
 			setup: function() { this.body.setVelocity(this.velocity * direction, 0) }
 		});
 
-        (this.scene as any).allSprites.push(proj);
+        (this.scene as any).allProj.push(proj);
         (this.scene as any).mapManager.setSpriteCollision(proj);
     }
 

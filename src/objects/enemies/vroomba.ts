@@ -143,7 +143,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
                 this.scene.time.delayedCall(500, () => {
                    this.state =  State.WALKING;
 				   // Return to our original direction
-				   this.body.setVelocityX(this.velocity * this.direction);
+				   if(this.body !== undefined) this.body.setVelocityX(this.velocity * this.direction);
                 }, [], this);
                 break;
         }
@@ -161,7 +161,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
 			velocity: -100,
 			setup: function() { this.body.setVelocity(0, this.velocity) }
 		});
-        (this.scene as any).allSprites.push(proj);
+        (this.scene as any).allProj.push(proj);
     }
 }
 

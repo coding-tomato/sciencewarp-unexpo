@@ -43,7 +43,10 @@ export default class TestLevel extends Phaser.Scene {
     private allProj: any[];
     private allPortals: any[];
     // Audio
-    private music: any;
+	private music: any;
+	// HUD
+	private coinScore: any;
+	private numbFont: Phaser.Types.GameObjects.BitmapText.RetroFontConfig;
 
 	constructor() {
 		super({
@@ -56,7 +59,12 @@ export default class TestLevel extends Phaser.Scene {
 	}
 
 	public create(): void {
-        this.cameras.main.fadeOut(0);
+		this.cameras.main.fadeOut(0);
+		
+		if (!this.data.get('coins')) {
+			this.data.set('coins', 0);
+		}
+
 		this.data.set('temp_coins', 0);
 
 		// Create Map Manager
@@ -67,6 +75,11 @@ export default class TestLevel extends Phaser.Scene {
 			"tesla_tileset",
 			"tileset"
 		);
+
+		this.numbFont = this.cache.json.get('numbers_json');
+
+		this.cache.bitmapFont.add('numbers', 
+			Phaser.GameObjects.RetroFont.Parse(this, this.numbFont));
 
 		// Audio
         this.music = this.sound.add('song', {
@@ -197,7 +210,17 @@ export default class TestLevel extends Phaser.Scene {
 			this
 		);
 
+		
+		this.coinScore = this.add.bitmapText(
+			this.cameras.main.centerX, 
+			0 + 50, 'numbers', 
+			this.data.get('coins'));
+		this.coinScore.setScrollFactor(0, 0);
+		
 		this.cameras.main.startFollow(this.player).setLerp(0.15);
+
+		// Create Score
+		
 
 		// Launch scene Dialog Box
 		// this.scene.launch("DialogBox", { text: [Entrance] });
@@ -311,7 +334,9 @@ export default class TestLevel extends Phaser.Scene {
 
     private hurt(): any {
         this.player.maxSpeed = 80;
-        this.sound.play('hurt_sfx');
+        this.sound.play('hurt_sfx', {
+			volume: 0.2
+		});
 		console.log(`You had ${this.player.lives} lives.`);
 		addOrTakeLives(this.player, -1);
 		console.log(`Now you have ${this.player.lives} lives.`);
@@ -403,7 +428,10 @@ export default class TestLevel extends Phaser.Scene {
 	private getCoin(element1: any, element2: any) {
 		element2.vanish();
 		this.data.set('temp_coins', this.data.get('temp_coins') + 1);
-		this.sound.play('coin_sfx');
+		this.sound.play('coin_sfx', {
+			volume: 0.4
+		});
+		this.coinScore.setText((this.data.get('temp_coins') + this.data.get('coins')));
 	}
 
 	private getPowerup(element1: any, element2: any) {
@@ -413,11 +441,12 @@ export default class TestLevel extends Phaser.Scene {
     private getPortal(element1: any, element2: any) {
         let next_level = element2.getLevel();
        
-        console.log(next_level)
+		console.log(next_level)
+	
 
         if (this.warping) return 
 
-        this.allPortals.forEach((element, index) => element.vanish());
+		this.allPortals.forEach((element, index) => element.vanish());
 
         this.music.destroy();
 

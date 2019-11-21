@@ -2270,7 +2270,7 @@
                         {
                          "name":"level",
                          "type":"int",
-                         "value":3
+                         "value":0
                         }],
                  "rotation":0,
                  "type":"portal",

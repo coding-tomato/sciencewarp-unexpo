@@ -2295,7 +2295,7 @@
                         {
                          "name":"level",
                          "type":"int",
-                         "value":0
+                         "value":3
                         }],
                  "rotation":0,
                  "type":"portal",
@@ -2313,7 +2313,7 @@
                         {
                          "name":"level",
                          "type":"int",
-                         "value":0
+                         "value":3
                         }],
                  "rotation":0,
                  "type":"portal",
@@ -2331,7 +2331,7 @@
                         {
                          "name":"level",
                          "type":"int",
-                         "value":0
+                         "value":3
                         }],
                  "rotation":0,
                  "type":"portal",
@@ -2349,7 +2349,7 @@
                         {
                          "name":"level",
                          "type":"int",
-                         "value":0
+                         "value":3
                         }],
                  "rotation":0,
                  "type":"portal",

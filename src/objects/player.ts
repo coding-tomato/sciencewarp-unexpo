@@ -72,6 +72,8 @@ class Player extends Phaser.GameObjects.Sprite {
             .setFontSize(14)
             .setBackgroundColor("rgba(0,0,0,0.3)");
 
+        this.debug.setVisible(false);
+
         //Input
         this.keys = this.currentScene.input.keyboard.createCursorKeys();
         this.name = "player";
@@ -374,7 +376,8 @@ class Player extends Phaser.GameObjects.Sprite {
             `Fuel:      ${this.fuel.vFuel}`,
             `Lives:     ${this.lives}              `,
             `FPS:       ${Phaser.Math.FloorTo(1000/delta, 0)}`,
-            `Coins:     ${this.scene.data.get(`coins`)}`
+            `Coins:     ${this.scene.data.get(`coins`)}`,
+            `Temp_coins:${this.scene.data.get(`temp_coins`)}`
         ];
         this.debug.setText(debugUpdate);
     }

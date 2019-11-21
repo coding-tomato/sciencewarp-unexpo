@@ -42,6 +42,8 @@ export default class TestLevel extends Phaser.Scene {
     private allSprites: any[];
     private allProj: any[];
     private allPortals: any[];
+    // Audio
+    private music: any;
 
 	constructor() {
 		super({
@@ -67,14 +69,23 @@ export default class TestLevel extends Phaser.Scene {
 		);
 
 		// Audio
+        this.music = this.sound.add('song', {
+			loop: true
+		});
+    
+        if(!this.music.isPlaying) 
+            this.music.play({
+                volume: 0.1
+            });
+
 		this.sound.add('coin_sfx', {
 			loop: false,
-			volume: 0.2,
+			volume: 0.05
 		});
 
 		this.sound.add('hurt_sfx', {
 			loop: false,
-			volume: 0.2,
+			volume: 0.05
 		});
 
 		// Create Player
@@ -205,7 +216,7 @@ export default class TestLevel extends Phaser.Scene {
 		});
 
 		this.debugGraphics = this.physics.world.createDebugGraphic();
-
+        this.debugGraphics.destroy();
 
 		this.cameras.main.once('camerafadeoutcomplete', (camera: any) => {
 			camera.fadeIn(500);
@@ -408,12 +419,17 @@ export default class TestLevel extends Phaser.Scene {
 
         this.allPortals.forEach((element, index) => element.vanish());
 
+        this.music.destroy();
+
         this.warping = true;
         this.inputDisabled = true;
-		this.time.delayedCall(600, () => this.scene.restart({ 
-            level: next_level,
-            coins: this.data.get(`temp_coins`)
-		}), [], this);
+		this.time.delayedCall(600, () => {
+                this.scene.restart({ 
+                    level: next_level,
+                    coins: this.data.get(`temp_coins`) + this.data.get(`coins`)
+		        })
+            }
+            , [], this);
         this.cameras.main.fadeOut(200); 
     }
 }

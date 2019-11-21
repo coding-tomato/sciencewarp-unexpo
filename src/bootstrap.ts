@@ -23,7 +23,8 @@ export default class Bootstrap extends Phaser.Scene {
 		this.load.audio('coin_sfx', 'audio/coin.ogg');
 		this.load.audio('jump_sfx', 'audio/jump.ogg');
 		this.load.audio('hurt_sfx', 'audio/hurt.ogg');
-	
+		this.load.audio('song', 'audio/edzes.mp3');
+
 		// Sprites
 		this.load.spritesheet('moran', 'sprites/player/moran.png', 
 				{ frameWidth: 80, frameHeight: 72} );

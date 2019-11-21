@@ -391,9 +391,7 @@ class Player extends Phaser.GameObjects.Sprite {
     private gameShutdown(): void {
         // Player has lost all of its five lives
         this.currentScene.events.once("gameOver", () => {
-            console.log("GameOver");
-            this.currentScene.scene.stop("DialogBox");
-            this.currentScene.scene.start("Menu");
+            this.currentScene.scene.stop("TestLevel");
         });
     }
 

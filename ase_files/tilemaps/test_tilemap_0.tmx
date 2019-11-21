@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#4da6ff" nextlayerid="14" nextobjectid="44">
- <tileset firstgid="1" name="tesla_tileset" tilewidth="16" tileheight="16" tilecount="66" columns="11">
-  <image source="../../assets/tilesets/tesla_tileset.png" width="176" height="96"/>
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="100" height="50" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#4da6ff" nextlayerid="15" nextobjectid="57">
+ <tileset firstgid="1" name="tesla_tileset" tilewidth="16" tileheight="16" tilecount="99" columns="11">
+  <image source="../../assets/tilesets/tesla_tileset.png" width="176" height="144"/>
   <tile id="0">
    <properties>
     <property name="collides" type="bool" value="true"/>
@@ -36,6 +36,21 @@
    <properties>
     <property name="collides" type="bool" value="true"/>
    </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="100" name="enemies" tilewidth="48" tileheight="48" tilecount="4" columns="0">
+  <grid orientation="orthogonal" width="1" height="1"/>
+  <tile id="0">
+   <image width="48" height="48" source="templates/enemies/assets/cannon.png"/>
+  </tile>
+  <tile id="1">
+   <image width="48" height="48" source="templates/enemies/assets/coil.png"/>
+  </tile>
+  <tile id="2">
+   <image width="48" height="48" source="templates/enemies/assets/legs.png"/>
+  </tile>
+  <tile id="3">
+   <image width="48" height="48" source="templates/enemies/assets/vroomba.png"/>
   </tile>
  </tileset>
  <layer id="11" name="Ground" width="100" height="50">
@@ -92,58 +107,40 @@
 23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23
 </data>
  </layer>
- <objectgroup id="10" name="pointer">
-  <object id="22" name="enemy" x="151" y="474">
+ <objectgroup id="14" name="Powerups">
+  <object id="54" name="powerups" type="powerup" x="144" y="176">
    <properties>
-    <property name="alpha" type="float" value="0.5"/>
+    <property name="typeOf" type="int" value="0"/>
    </properties>
    <point/>
   </object>
-  <object id="26" name="enemy" x="364" y="361">
-   <point/>
-  </object>
-  <object id="27" name="enemy" x="505" y="235">
-   <point/>
-  </object>
-  <object id="26" name="enemy" x="138" y="173">
-   <point/>
-  </object>
-  <object id="27" name="enemy" x="495" y="103">
+  <object id="55" name="powerups" type="powerup" x="176" y="176">
    <properties>
-    <property name="dir_x" type="int" value="1"/>
-    <property name="dir_y" type="int" value="1"/>
+    <property name="typeOf" type="int" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="56" name="powerups" type="powerup" x="208" y="176">
+   <properties>
+    <property name="typeOf" type="int" value="2"/>
    </properties>
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="13" name="Coins">
-  <object id="29" name="Coin" x="318" y="691">
-   <point/>
-  </object>
-  <object id="37" name="Coin" x="700" y="448">
-   <point/>
-  </object>
-  <object id="38" name="Coin" x="512" y="609">
-   <point/>
-  </object>
-  <object id="39" name="Coin" x="247" y="749">
-   <point/>
-  </object>
-  <object id="40" name="Coin" x="71" y="749">
-   <point/>
-  </object>
-  <object id="41" name="Coin" x="115" y="749">
-   <point/>
-  </object>
-  <object id="42" name="Coin" x="160" y="749">
-   <point/>
-  </object>
-  <object id="43" name="Coin" x="204" y="749">
-   <point/>
-  </object>
+ <objectgroup id="10" name="Enemies">
+  <object id="44" name="cannon" type="enemy" gid="100" x="566.833" y="392" width="48" height="48"/>
+  <object id="45" name="coil" type="enemy" gid="101" x="248.5" y="297.667" width="48" height="48"/>
+  <object id="46" name="legs" type="enemy" gid="102" x="142.5" y="751" width="48" height="48"/>
+  <object id="47" name="vroomba" type="enemy" gid="103" x="114.833" y="630.666" width="48" height="48"/>
+  <object id="48" name="cannon" type="enemy" gid="100" x="248" y="489.333" width="48" height="48"/>
+  <object id="49" name="legs" type="enemy" gid="102" x="408" y="757.333" width="48" height="48"/>
+  <object id="50" name="coil" type="enemy" gid="101" x="252" y="406.667" width="48" height="48"/>
+  <object id="51" name="vroomba" type="enemy" gid="103" x="578.667" y="770.667" width="48" height="48"/>
+  <object id="52" name="cannon" type="enemy" gid="100" x="565.333" y="242.667" width="48" height="48"/>
  </objectgroup>
+ <objectgroup id="13" name="Coins"/>
  <objectgroup id="12" name="Player">
-  <object id="28" name="p_respawn" x="363" y="108">
+  <object id="28" name="p_respawn" x="89.1667" y="172.333">
    <point/>
   </object>
  </objectgroup>

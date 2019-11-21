@@ -47,6 +47,7 @@ export default class TestLevel extends Phaser.Scene {
     private coin: any;
 	// HUD
 	private coinScore: any;
+    private lives: any;
 	private numbFont: Phaser.Types.GameObjects.BitmapText.RetroFontConfig;
 
 	constructor() {
@@ -93,6 +94,7 @@ export default class TestLevel extends Phaser.Scene {
 
 		// Create Player
 		this.player = this.mapManager.createPlayer("Player", "p_respawn");
+        this.player.lives = 5;
 
 		// Create Enemies 
 		// Hold all sprites in a variable
@@ -207,7 +209,13 @@ export default class TestLevel extends Phaser.Scene {
 			this.data.get('coins'));
 		this.coinScore.setScrollFactor(0, 0);
 		
-		this.cameras.main.startFollow(this.player).setLerp(0.15);
+        this.lives = this.add.bitmapText(
+			20, 
+			240, 'numbers', 
+			this.player.lives.toString());
+		this.lives.setScrollFactor(0, 0);
+
+        this.cameras.main.startFollow(this.player).setLerp(0.15);
 
 		// Create Score
 		
@@ -333,6 +341,7 @@ export default class TestLevel extends Phaser.Scene {
         this.time.delayedCall(1000, () => {
             if(this.player !== null) this.player.maxSpeed = 150
         }, [], this)
+		this.lives.setText(this.player.lives.toString());
     }
 
 	private hurtEnemy(element1: any, element2: any) {

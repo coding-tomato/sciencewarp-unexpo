@@ -92,6 +92,7 @@ export default class Menu extends Phaser.Scene {
                         level: item_selected,
                         coins: 0
                     });
+                    this.cameras.main.fadeIn(0);
 				}
             );
 			this.cameras.main.fadeOut(500);

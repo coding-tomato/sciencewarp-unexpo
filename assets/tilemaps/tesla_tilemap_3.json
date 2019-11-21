@@ -36,6 +36,18 @@
                  "width":0,
                  "x":1036.67,
                  "y":1411.33
+                }, 
+                {
+                 "height":0,
+                 "id":565,
+                 "name":"checkpoint",
+                 "point":true,
+                 "rotation":0,
+                 "type":"checkpoint",
+                 "visible":true,
+                 "width":0,
+                 "x":128,
+                 "y":1504
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2270,7 +2282,7 @@
                         {
                          "name":"level",
                          "type":"int",
-                         "value":0
+                         "value":4
                         }],
                  "rotation":0,
                  "type":"portal",
@@ -2298,7 +2310,7 @@
          "y":0
         }],
  "nextlayerid":30,
- "nextobjectid":565,
+ "nextobjectid":566,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.5",

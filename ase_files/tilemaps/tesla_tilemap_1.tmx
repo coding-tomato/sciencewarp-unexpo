@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="246" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#a3a3a3" nextlayerid="29" nextobjectid="316">
+<map version="1.2" tiledversion="1.2.5" orientation="orthogonal" renderorder="right-down" width="246" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#a3a3a3" nextlayerid="29" nextobjectid="317">
  <tileset firstgid="1" name="tesla_tileset" tilewidth="16" tileheight="16" tilecount="99" columns="11">
   <image source="../../assets/tilesets/tesla_tileset.png" width="176" height="144"/>
   <tile id="0">
@@ -547,6 +547,9 @@
    <point/>
   </object>
   <object id="315" name="p_respawn" x="80" y="1488">
+   <point/>
+  </object>
+  <object id="316" name="checkpoint" type="checkpoint" x="80" y="1472">
    <point/>
   </object>
  </objectgroup>

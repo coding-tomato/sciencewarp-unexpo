@@ -6,6 +6,7 @@ export default class Menu extends Phaser.Scene {
 
 	private controlKeys: Phaser.Types.Input.Keyboard.CursorKeys;
 	private enterKey: Phaser.Input.Keyboard.Key;
+    private music: any;
 
 	constructor() {
 		super({
@@ -19,6 +20,14 @@ export default class Menu extends Phaser.Scene {
 
 		const width = this.cameras.main.width;
 		const height = this.cameras.main.height;
+        
+        // Music
+        this.music = this.sound.add(`song`);
+        if(!this.music.isPlaying) 
+            this.music.play({
+                volume: 0.3,
+                loop: true
+        });
 
 		// Background
 		this.bg[0] = this.add.image(0, 0, 'menu_title').setOrigin(0, 0).setScrollFactor(0);
@@ -79,7 +88,7 @@ export default class Menu extends Phaser.Scene {
 			this.cameras.main.once(
                 'camerafadeoutcomplete', 
                 (camera: any) => {
-					this.scene.start('TestLevel', { 
+					this.scene.launch('TestLevel', { 
                         level: item_selected,
                         coins: 0
                     });

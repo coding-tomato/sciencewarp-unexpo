@@ -44,6 +44,7 @@ export default class TestLevel extends Phaser.Scene {
     private allPortals: any[];
     // Audio
 	private music: any;
+    private coin: any;
 	// HUD
 	private coinScore: any;
 	private numbFont: Phaser.Types.GameObjects.BitmapText.RetroFontConfig;
@@ -82,23 +83,12 @@ export default class TestLevel extends Phaser.Scene {
 			Phaser.GameObjects.RetroFont.Parse(this, this.numbFont));
 
 		// Audio
-        this.music = this.sound.add('song', {
-			loop: true
-		});
-    
-        if(!this.music.isPlaying) 
-            this.music.play({
-                volume: 0.1
-            });
-
-		this.sound.add('coin_sfx', {
-			loop: false,
-			volume: 0.05
+		this.coin = this.sound.add('coin_sfx', {
+			loop: false
 		});
 
 		this.sound.add('hurt_sfx', {
-			loop: false,
-			volume: 0.05
+			loop: false
 		});
 
 		// Create Player
@@ -212,8 +202,8 @@ export default class TestLevel extends Phaser.Scene {
 
 		
 		this.coinScore = this.add.bitmapText(
-			this.cameras.main.centerX, 
-			0 + 50, 'numbers', 
+			20, 
+			10, 'numbers', 
 			this.data.get('coins'));
 		this.coinScore.setScrollFactor(0, 0);
 		
@@ -335,7 +325,7 @@ export default class TestLevel extends Phaser.Scene {
     private hurt(): any {
         this.player.maxSpeed = 80;
         this.sound.play('hurt_sfx', {
-			volume: 0.2
+			volume: 0.1
 		});
 		console.log(`You had ${this.player.lives} lives.`);
 		addOrTakeLives(this.player, -1);
@@ -428,7 +418,7 @@ export default class TestLevel extends Phaser.Scene {
 	private getCoin(element1: any, element2: any) {
 		element2.vanish();
 		this.data.set('temp_coins', this.data.get('temp_coins') + 1);
-		this.sound.play('coin_sfx', {
+		this.coin.play({
 			volume: 0.4
 		});
 		this.coinScore.setText((this.data.get('temp_coins') + this.data.get('coins')));
@@ -440,15 +430,10 @@ export default class TestLevel extends Phaser.Scene {
 
     private getPortal(element1: any, element2: any) {
         let next_level = element2.getLevel();
-       
-		console.log(next_level)
-	
 
         if (this.warping) return 
 
 		this.allPortals.forEach((element, index) => element.vanish());
-
-        this.music.destroy();
 
         this.warping = true;
         this.inputDisabled = true;

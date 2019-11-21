@@ -83,14 +83,15 @@ class Player extends Phaser.GameObjects.Sprite {
             dashActive: false,
             jumpActive: false,
             jetpActive: false
-        };
+        }
 
         // Lives
         this.lives = MAX_LIVES;
 
         // Audio
         this.currentScene.sound.add('jump_sfx', {
-            loop: false
+            loop: false,
+            volume: 0.2,
 		});
 
         // State
@@ -229,9 +230,7 @@ class Player extends Phaser.GameObjects.Sprite {
                 this.walkUpdate();
                 if (this.direction.y === -1 && this.body.blocked.down) {
                     this.isJumping = true;
-                    this.currentScene.sound.play('jump_sfx', {
-                        volume: 0.2
-                    });
+                    this.currentScene.sound.play('jump_sfx', { volume: 0.2 });
                     this.body.setVelocityY(this.powerup.jumpActive ? (this.jumpHeight - 100) : this.jumpHeight);
                     this.lastDirection.y = this.direction.y;
                 }
@@ -396,6 +395,10 @@ class Player extends Phaser.GameObjects.Sprite {
             this.currentScene.scene.stop("DialogBox");
             this.currentScene.scene.start("Menu");
         });
+    }
+
+    public drawHearts(): void {
+        
     }
 
     //Create animations

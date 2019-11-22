@@ -250,7 +250,7 @@ export default class TestLevel extends Phaser.Scene {
 	public update(time: number, delta: number): void {
 		if (this.player.body.y > this.mapManager.map.heightInPixels + 10) {
             let checkpoint = this.checkpointPos
-            let teleport = this.add.sprite(checkpoint.x, checkpoint.y + 20, `checkpoint`);
+            let teleport = this.add.sprite(checkpoint.x, checkpoint.y - 16, `checkpoint`);
             
             this.anims.create({
                 key: `teleport`,
@@ -272,8 +272,9 @@ export default class TestLevel extends Phaser.Scene {
 
             this.player.x = checkpoint.x;
             this.player.y = checkpoint.y;
+            this.player.body.setVelocityY(-40);
+            this.player.setFuel(2000);
             this.cleanCollider();
-            this.events.emit(`attack`);
         }
         
         this.mapManager.parallaxUpdate();

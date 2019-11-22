@@ -7,9 +7,9 @@ const enum State {
     SHOOTING = 3
 }
 
-const SIGHT_RANGE = 200;
+const SIGHT_RANGE = 400;
 const VELOCITY = 100;
-const REST_TIME = 1000;
+const REST_TIME = 2000;
 const DIRECTION = 1;
 const PROJ_VEL = -100;
 

@@ -228,7 +228,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
             case State.WALKING:
                 this.walkUpdate();
-                if (this.direction.y === -1 && this.body.blocked.down) {
+                if (this.direction.y === -1 && this.body.blocked.down && !this.body.blocked.up) {
                     this.isJumping = true;
                     this.currentScene.sound.play('jump_sfx', { volume: 0.2 });
                     this.body.setVelocityY(this.powerup.jumpActive ? (this.jumpHeight - 100) : this.jumpHeight);
@@ -397,6 +397,10 @@ class Player extends Phaser.GameObjects.Sprite {
 
     public drawHearts(): void {
         
+    }
+
+    public setFuel(amount: number): void {
+        this.fuel.vFuel = amount;
     }
 
     //Create animations

@@ -7,7 +7,7 @@ const enum State {
     SHOOTING = 3
 }
 
-const SIGHT_RANGE = 200;
+const SIGHT_RANGE = 400;
 const VELOCITY = 100;
 const REST_TIME = 1000;
 const DIRECTION = 1;
@@ -140,7 +140,8 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
                 this.shootProjectile();
                 break;
             case "shooting":
-                this.scene.time.delayedCall(500, () => {
+                const rest_time = this.rest_time;
+                this.scene.time.delayedCall(rest_time, () => {
                    this.state =  State.WALKING;
 				   // Return to our original direction
 				   if(this.body !== undefined) this.body.setVelocityX(this.velocity * this.direction);

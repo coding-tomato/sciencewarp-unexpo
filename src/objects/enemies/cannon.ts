@@ -12,42 +12,34 @@ enum Direction {
     LEFT = 1
 }
 
-const DIRECTION = Direction.RIGHT;
-const TURRET_MODE = false; // Always shooting stationary
-const MAX_DIS = 50; // Maximum movement in Y
-const VELOCITY = 50; // Velocity
-const RESTING_TIME = 300; // Time to hop from Resting to Moving
-const AGGRO_RAN = 300; // Range before it detects player
-const AGGRO_WIDTH = 3; // Width of Y to detect player
-const PROJ_NUM = 4; // Number of projectiles
+const DIRECTION = Direction.LEFT;
+const TRAVEL_DIST = 150;            // Distance the cannoncopter moves down
+const TRAVEL_TIME = 2000;           // Time to travel the moving distance
+const VELOCITY = 50;                // Velocity
+const RESTING_TIME = 300;           // Time to hop from Resting to Moving
+const AGGRO_RAN = 300;              // Range before it detects player
+const AGGRO_WIDTH = 3;              // Width of Y to detect player
 
 export default class Cannon extends Phaser.GameObjects.Sprite {
     public body: Phaser.Physics.Arcade.Body;
     private moveTween: Phaser.Tweens.Tween;
     private isAttacking: boolean;
     //Properties
+    private travel_time: number;
+    private travel_dist: number;
     private direction: Direction;
-    private turretMode: boolean;
     private restingTime: number;
     public state: State;
 
     constructor(params: any) {
         super(params.scene, params.x, params.y, params.texture);
 
-        let turretMode: boolean = TURRET_MODE;
-        let direction: number = DIRECTION;
-        let restingTime: number = RESTING_TIME;
-
-        if (Object.keys(params.props).length > 0) {
-          turretMode = params.props.turretMode;
-          direction = params.props.direction;
-        }
+        this.direction   = params.props.direction   || DIRECTION;
+        this.travel_dist = params.props.travel_dist || TRAVEL_DIST;
+        this.travel_time = params.props.travel_time || TRAVEL_TIME;
+        this.restingTime = params.props.restingTime || RESTING_TIME;
 
         this.state = State.MOVING;
-        this.direction = direction || DIRECTION;
-        this.turretMode = turretMode || TURRET_MODE;
-        this.restingTime = restingTime || RESTING_TIME;
-
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
 
@@ -64,8 +56,8 @@ export default class Cannon extends Phaser.GameObjects.Sprite {
         // Y is calculated from original position
         const moveConfig = {
             targets: this,
-            y: "+=150",
-            duration: 2000,
+            y: `+=${this.travel_dist}`,
+            duration: this.travel_time,
             ease: "Linear",
             yoyo: true,
             repeat: -1
@@ -73,18 +65,9 @@ export default class Cannon extends Phaser.GameObjects.Sprite {
 
         // We want for it to move up and down constantly
         this.moveTween = this.scene.add.tween(moveConfig);
-        
-        if (this.turretMode) {
-            this.moveTween.pause();
-            this.restingTime = 0;
-        }  
     }
 
     update(): void {
-        if (this.turretMode) {
-           if(!this.isAttacking) this.attack();
-           return
-        }
         switch (this.state) {
             case State.MOVING:
                 this.moving((this.scene as any).player);
@@ -182,16 +165,13 @@ export default class Cannon extends Phaser.GameObjects.Sprite {
             frameRate: 10
         });
 
-        let projNum = PROJ_NUM
-        if(this.turretMode) projNum = -1;
-
         this.scene.anims.create({
             key: "cannon_attack",
             frames: this.scene.anims.generateFrameNumbers("cannon", {
                 start: 8,
                 end: 15
             }),
-            repeat: projNum,
+            repeat: 4,
             frameRate: 12
         });
     }

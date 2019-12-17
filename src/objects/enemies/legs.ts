@@ -15,9 +15,9 @@ interface Legs {
     direction: Direction;
 }
 
-const VELOCITY = 125;
+const VELOCITY = 150;
 const FRAME_RATE = 12;
-const AGGRO_RANGE = 75;
+const AGGRO_RANGE = 100;
 const SIZE = { x: 25, y: 35 };
 const JUMP_AMOUNT = -300;
 const ACCELERATION = 200;
@@ -39,7 +39,7 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
         this.scene.physics.world.enable(this);
         this.state = State.MOVING;
         this.setSize(SIZE.x, SIZE.y);
-        this.setOffset(10, 10)
+        this.setOffset(10, 8)
         this.direction = Direction.RIGHT;
     }
 

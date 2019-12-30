@@ -1,4 +1,5 @@
 { "backgroundcolor":"#bfbfbf",
+ "compressionlevel":0,
  "height":100,
  "infinite":false,
  "layers":[
@@ -2313,7 +2314,7 @@
  "nextobjectid":566,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.2.5",
+ "tiledversion":"1.3.0",
  "tileheight":16,
  "tilesets":[
         {

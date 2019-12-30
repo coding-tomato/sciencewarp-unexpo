@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="270" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#a3a3a3" nextlayerid="30" nextobjectid="739">
+<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="270" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#a3a3a3" nextlayerid="30" nextobjectid="741">
+ <editorsettings>
+  <export target="../../assets/tilemaps/tesla_tilemap_0.json" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" name="tesla_tileset" tilewidth="16" tileheight="16" tilecount="99" columns="11">
   <image source="../../assets/tilesets/tesla_tileset.png" width="176" height="144"/>
   <tile id="0">
@@ -1515,7 +1518,7 @@
    </properties>
    <point/>
   </object>
-  <object id="722" name="p_respawn" x="64" y="1552">
+  <object id="740" name="p_respawn" x="32" y="1552">
    <point/>
   </object>
  </objectgroup>

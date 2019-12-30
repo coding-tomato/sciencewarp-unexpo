@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="270" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#a3a3a3" nextlayerid="30" nextobjectid="1158">
+<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="270" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#a3a3a3" nextlayerid="30" nextobjectid="1159">
  <editorsettings>
-  <export target="../../assets/tilemaps/tesla_tilemap_0.json" format="json"/>
+  <export target="../../assets/tilemaps/tesla_tilemap_5.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" name="tesla_tileset" tilewidth="16" tileheight="16" tilecount="99" columns="11">
   <image source="../../assets/tilesets/tesla_tileset.png" width="176" height="144"/>
@@ -395,7 +395,7 @@
 0,60,0,60,0,2147483674,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,23,68,0,0,0,0,2147483716,23,26,0,0,0,0,0,0,0,0,0,0,60,0,0,0,0,0,0,0,0,0,2147483716,23,47,23,23,23,23,47,47,23,26,0,0,0,58,59,0,0,0,0,2147483672,23,23,23,23,23,47,25,25,25,25,25,47,47,47,23,23,23,23,23,23,23,23,47,47,23,23,47,23,23,23,23,1073741870,23,23,23,23,23,23,25,23,23,25,25,25,47,47,47,47,47,25,47,25,25,25,25,23,23,23,25,25,25,25,25,25,23,23,23,23,23,23,23,23,60,23,23,23,23,23,23,23,23,23,23,23,23,23,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,58,59,0,0,69,60,0,0,58,59,0,0,58,60,0,0,69,70,0,0,69,60,0,0,58,59,0,0,2147483672,23,47,23,3221225518,47,47,23,26,0,0,0,0,0,0,0,0,0,2147483685,36,36,36,37,2147483650,2147483650,2147483650,2,2,2,2147483685,36,36,36,37,0,0,0,0,0,0,0,0,0,2147483674
 </data>
  </layer>
- <objectgroup id="27" name="Powerups" visible="0" locked="1">
+ <objectgroup id="27" name="Powerups" locked="1">
   <object id="342" name="powerups" type="powerup" x="32" y="80">
    <properties>
     <property name="typeOf" type="int" value="2"/>
@@ -421,16 +421,11 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="10" name="Enemies" visible="0" locked="1">
+ <objectgroup id="10" name="Enemies">
   <properties>
    <property name="dir_x" type="int" value="0"/>
    <property name="dir_y" type="int" value="0"/>
   </properties>
-  <object id="327" name="cannon" type="enemy" gid="100" x="54" y="43.5" width="48" height="48">
-   <properties>
-    <property name="direction" type="int" value="1"/>
-   </properties>
-  </object>
   <object id="328" name="coil" type="enemy" gid="101" x="55.3333" y="92.6667" width="48" height="48">
    <properties>
     <property name="dir_x" type="int" value="0"/>
@@ -823,8 +818,15 @@
     <property name="travel_time" type="int" value="2000"/>
    </properties>
   </object>
+  <object id="1158" name="cannon" type="enemy" gid="100" x="53.5" y="49.25" width="48" height="48">
+   <properties>
+    <property name="direction" type="int" value="1"/>
+    <property name="travel_dist" type="int" value="100"/>
+    <property name="travel_time" type="int" value="1000"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="13" name="Coins" visible="0" locked="1">
+ <objectgroup id="13" name="Coins" locked="1">
   <object id="324" name="coins" type="collect" x="32" y="32">
    <point/>
   </object>
@@ -1342,7 +1344,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="12" name="Player" visible="0" locked="1">
+ <objectgroup id="12" name="Player">
   <object id="325" name="portal" type="portal" x="32" y="144">
    <properties>
     <property name="level" type="int" value="0"/>

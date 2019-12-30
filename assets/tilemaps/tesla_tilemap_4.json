@@ -1,5 +1,13 @@
 { "backgroundcolor":"#a3a3a3",
  "compressionlevel":0,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"json",
+         "target":"tesla_tilemap_4.json"
+        }
+    },
  "height":100,
  "infinite":false,
  "layers":[
@@ -4655,14 +4663,14 @@
                 }, 
                 {
                  "height":0,
-                 "id":722,
+                 "id":740,
                  "name":"p_respawn",
                  "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":64,
+                 "x":32,
                  "y":1552
                 }],
          "opacity":1,
@@ -4672,7 +4680,7 @@
          "y":0
         }],
  "nextlayerid":30,
- "nextobjectid":739,
+ "nextobjectid":741,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.0",

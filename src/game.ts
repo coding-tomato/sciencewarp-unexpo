@@ -2,9 +2,10 @@ import "phaser";
 
 import Bootstrap from "./bootstrap";
 import Menu from "./scenes/menu";
-import DialogBox from "./scenes/hud/dialogbox"
+import DialogBox from "./scenes/hud/dialogbox";
+import Interface from "./scenes/hud/interface";
 
-import TestLevel from './scenes/test_level'
+import TestLevel from './scenes/test_level';
 
 const config: Phaser.Types.Core.GameConfig = {
 	title: "Science Warp",
@@ -28,7 +29,8 @@ const config: Phaser.Types.Core.GameConfig = {
 		Bootstrap,
 		Menu,
 		TestLevel,
-		DialogBox
+		DialogBox,
+		Interface
 	]
 };
 

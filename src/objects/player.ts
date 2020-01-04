@@ -188,7 +188,6 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     private dash() {
-
         // Check Player's Facing
         let facing = this.flipX ? -1 : 1;
 

@@ -49,6 +49,7 @@ export default class TestLevel extends Phaser.Scene {
 	private coinScore: any;
     private lives: any;
 	private numbFont: Phaser.Types.GameObjects.BitmapText.RetroFontConfig;
+	
 
 	constructor() {
 		super({
@@ -218,17 +219,16 @@ export default class TestLevel extends Phaser.Scene {
         this.cameras.main.startFollow(this.player).setLerp(0.15);
 
 		// Create Score
-		
-
 		// Launch scene Dialog Box
 		// this.scene.launch("DialogBox", { text: [Entrance] });
+		this.scene.launch("Interface", { player: this.player });
 
 		this.events.on("attack", () => {
 			this.tweens.add({
 				targets: this.player,
 				alpha: 0.1,
 				duration: 50,
-				repeat: 15,
+				repeat: 10,
 				yoyo: true,
 				onComplete: () => {
 					this.player.setAlpha(1, 1, 1, 1);
@@ -399,11 +399,12 @@ export default class TestLevel extends Phaser.Scene {
 	}
 
 	private cleanCollider() {
+		console.log("Clean collider on!");
 		this.physics.world.removeCollider(this.enemyCollider);
         this.physics.world.removeCollider(this.projCollider);
 
 		this.time.delayedCall(
-			1000,
+			5000,
 			() => {
 				this.enemyCollider = this.physics.add.overlap(
 					this.player,

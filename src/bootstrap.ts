@@ -82,6 +82,8 @@ export default class Bootstrap extends Phaser.Scene {
 		this.load.tilemapTiledJSON('tesla_level2', 'tilemaps/tesla_tilemap_2.json');
 		this.load.tilemapTiledJSON('tesla_level3', 'tilemaps/tesla_tilemap_3.json');
 		this.load.tilemapTiledJSON('tesla_level4', 'tilemaps/tesla_tilemap_4.json');
+		this.load.tilemapTiledJSON('tesla_level5', 'tilemaps/tesla_tilemap_5.json');
+		this.load.tilemapTiledJSON('tesla_level6', 'tilemaps/tesla_tilemap_6.json');
 
 		// Font
 		this.load.json('numbers_json', 'font_numbers.json');

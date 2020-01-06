@@ -1,7 +1,5 @@
 import "phaser";
 
-import { changeState } from "../utils/libplayer";
-
 const enum State {
     WALKING = "WALKING",
     FLYING = "FLYING",
@@ -29,6 +27,7 @@ class Player extends Phaser.GameObjects.Sprite {
     private currentScene: Phaser.Scene;
     //Debug
     public debug: Phaser.GameObjects.Text;
+    public isColliding: boolean;
     //Powerup conditionals
     public powerup: {
         dashActive: boolean;
@@ -97,6 +96,7 @@ class Player extends Phaser.GameObjects.Sprite {
         // State
         this.state = State.WALKING;
         this.dash_cool = false;
+        this.isColliding = false;
 
         //Movement variables
         this.jumpHeight = -300;

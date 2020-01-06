@@ -23,7 +23,8 @@ export default class TestLevel extends Phaser.Scene {
     private checkpointPos: {
         x: number,
         y: number
-    }
+	}
+	private playerFadeTween: any;
     // Map manager
 	private mapManager: MapHelper;
     private currentLevel: number;
@@ -92,14 +93,20 @@ export default class TestLevel extends Phaser.Scene {
 		this.sound.add('hurt_sfx', {
 			loop: false
 		});
+		
+		// Controls
+		this.debugControl = [];
+		this.debugControl[0] = this.input.keyboard.addKey("F2");
+		this.debugControl[1] = this.input.keyboard.addKey("G");
 
-		// Create Player
+		///////////////////////////////////////////
+
+		// Creating game objects
+		// Player
 		this.player = this.mapManager.createPlayer("Player", "p_respawn");
-        this.player.lives = 5;
-
-		// Create Enemies 
-		// Hold all sprites in a variable
-		// For easier collision
+		this.player.lives = 5;
+		
+		// Enemies
 		this.allSprites = this.mapManager.createObjects(
             "Enemies", 
             "enemy", 
@@ -110,18 +117,7 @@ export default class TestLevel extends Phaser.Scene {
                 legs: Legs
             });
 		
-		// Controls
-		this.debugControl = [];
-		this.debugControl[0] = this.input.keyboard.addKey("F2");
-		this.debugControl[1] = this.input.keyboard.addKey("G");
-
-		///////////////////////////////////////////
-
-		this.mapManager.setStaticLayers(["Ground"], this.allSprites);
-        this.mapManager.setSpriteCollision(this.player);
-        
-        // Creating game objects
-
+		// Coins
 		this.allCoins = this.mapManager.createObjects(
 			"Coins",
 			"collect",
@@ -130,6 +126,7 @@ export default class TestLevel extends Phaser.Scene {
 			}
 		);
 
+		// Powerups
 		this.allPowerups = this.mapManager.createObjects(
 			"Powerups",
 			"powerup",
@@ -138,6 +135,7 @@ export default class TestLevel extends Phaser.Scene {
 			}
 		);
 
+		// Checkpoints
         this.allCheckpoints = this.mapManager.createObjects(
 			"Player",
 			"checkpoint",
@@ -146,6 +144,7 @@ export default class TestLevel extends Phaser.Scene {
 			}
 		);
 
+		// Portals
         this.allPortals = this.mapManager.createObjects(
 			"Player",
 			"portal",
@@ -153,8 +152,14 @@ export default class TestLevel extends Phaser.Scene {
 				portal: Portal
 			}
 		);
-        // Setting up collision callbacks
 
+		this.mapManager.setStaticLayers(["Ground"], this.allSprites);
+        this.mapManager.setSpriteCollision(this.player);
+
+		///////////////////////////////////////////
+
+		// Setting up collision callbacks
+		// Collision with enemies
 		this.enemyCollider = this.physics.add.overlap(
 			this.player,
 			this.allSprites,
@@ -162,7 +167,8 @@ export default class TestLevel extends Phaser.Scene {
 			null,
 			this
 		);
-        
+		
+		// Collision with projectiles
         this.projCollider = this.physics.add.overlap(
 			this.player,
 			this.allProj,
@@ -171,6 +177,7 @@ export default class TestLevel extends Phaser.Scene {
 			this
 		);
 
+		// Collision with coins
 		this.physics.add.overlap(
 			this.player,
 			this.allCoins,
@@ -179,6 +186,7 @@ export default class TestLevel extends Phaser.Scene {
 			this
 		);
 
+		// Collision with powerups
 		this.physics.add.overlap(
 			this.player,
 			this.allPowerups,
@@ -187,6 +195,7 @@ export default class TestLevel extends Phaser.Scene {
 			this
 		);
 
+		// Collision with checkpoints
         this.physics.add.overlap(
 			this.player,
 			this.allCheckpoints,
@@ -194,7 +203,8 @@ export default class TestLevel extends Phaser.Scene {
 			null,
 			this
 		);
-        
+		
+		// Collision with portals
         this.physics.add.overlap(
 			this.player,
 			this.allPortals,
@@ -223,17 +233,35 @@ export default class TestLevel extends Phaser.Scene {
 		// this.scene.launch("DialogBox", { text: [Entrance] });
 		this.scene.launch("Interface", { player: this.player });
 
+		// Player has just been attacked
+		// To signal a grace period
+		// This creates a blinking effect
 		this.events.on("attack", () => {
 			this.tweens.add({
 				targets: this.player,
 				alpha: 0.1,
 				duration: 50,
-				repeat: 10,
+				repeat: 50,
 				yoyo: true,
 				onComplete: () => {
 					this.player.setAlpha(1, 1, 1, 1);
 				}
 			});
+		});
+
+		// Tween
+		// paused property true to avoid
+		// tween to fire on create
+		this.playerFadeTween = this.tweens.add({
+			targets: this.player,
+			alpha: 0.1,
+			paused: true,
+			duration: 50,
+			repeat: 50,
+			yoyo: true,
+			onComplete: () => {
+				this.player.setAlpha(1, 1, 1, 1);
+			}
 		});
 
 		this.debugGraphics = this.physics.world.createDebugGraphic();
@@ -332,24 +360,28 @@ export default class TestLevel extends Phaser.Scene {
     }
 
     private hurt(): any {
-        this.player.maxSpeed = 80;
+		// Player has been hit so it should be slowed
+		this.player.maxSpeed = 80;
+		// Sound
         this.sound.play('hurt_sfx', {
 			volume: 0.1
 		});
+		// Take life from player
 		console.log(`You had ${this.player.lives} lives.`);
 		addOrTakeLives(this.player, -1);
 		console.log(`Now you have ${this.player.lives} lives.`);
+		// Restore player speed
         this.time.delayedCall(1000, () => {
-            if(this.player !== null) this.player.maxSpeed = 150
-        }, [], this)
+			if(this.player !== null) this.player.maxSpeed = 150;
+		}, [], this)
+		// Update to HUD element
 		this.lives.setText(this.player.lives.toString());
     }
 
 	private hurtEnemy(element1: any, element2: any) {
-		if (element1.state != "DASHING") {
+		if (element1.state != "DASHING" && !element1.isColliding) {
 			this.cleanCollider();
-            this.hurt();
-			this.events.emit("attack");
+			this.hurt();
 		}
 
 		if (element1.state == "DASHING") {
@@ -393,19 +425,25 @@ export default class TestLevel extends Phaser.Scene {
 	}
 
     private hurtProj(element1: any, element2: any) {
-		this.cleanCollider();
-        this.hurt();
-		this.events.emit("attack");
+		if (!element1.isColliding) {
+			this.cleanCollider();
+        	this.hurt();
+			//this.events.emit("attack");
+		}
 	}
 
 	private cleanCollider() {
 		console.log("Clean collider on!");
+		this.playerFadeTween.play();
+		this.player.isColliding = true;
 		this.physics.world.removeCollider(this.enemyCollider);
         this.physics.world.removeCollider(this.projCollider);
 
 		this.time.delayedCall(
-			5000,
+			2500,
 			() => {
+				//this.playerFadeTween.stop();
+				this.player.isColliding = false;
 				this.enemyCollider = this.physics.add.overlap(
 					this.player,
 					this.allSprites,

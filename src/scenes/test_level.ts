@@ -50,6 +50,24 @@ export default class TestLevel extends Phaser.Scene {
 	private coinScore: any;
     private lives: any;
 	private numbFont: Phaser.Types.GameObjects.BitmapText.RetroFontConfig;
+	private hud: {
+		container?: any,
+		lives?: any,
+		coins?: {
+			img?: any,
+			text?: any
+		},
+		fuelBar?: any,
+		powerup?: {
+			jump?: any,
+			dash?: any,
+			pack?: any,
+		},
+		level?: {
+			img?: any,
+			text?: any
+		},
+	}
 	
 
 	constructor() {
@@ -59,7 +77,18 @@ export default class TestLevel extends Phaser.Scene {
 
 		this.allSprites = [];
 		this.allCoins = [];
-        this.allProj = [];
+		this.allProj = [];
+		this.hud = {
+			coins: {
+
+			},
+			level: {
+
+			},
+			powerup: {
+
+			}
+		};
 	}
 
 	public create(): void {
@@ -214,24 +243,24 @@ export default class TestLevel extends Phaser.Scene {
 		);
 
 		
-		this.coinScore = this.add.bitmapText(
-			20, 
-			10, 'numbers', 
-			this.data.get('coins'));
-		this.coinScore.setScrollFactor(0, 0);
+		// this.coinScore = this.add.bitmapText(
+		// 	20, 
+		// 	10, 'numbers', 
+		// 	this.data.get('coins'));
+		// this.coinScore.setScrollFactor(0, 0);
 		
-        this.lives = this.add.bitmapText(
-			20, 
-			240, 'numbers', 
-			this.player.lives.toString());
-		this.lives.setScrollFactor(0, 0);
+        // this.lives = this.add.bitmapText(
+		// 	20, 
+		// 	240, 'numbers', 
+		// 	this.player.lives.toString());
+		// this.lives.setScrollFactor(0, 0);
 
         this.cameras.main.startFollow(this.player).setLerp(0.15);
 
 		// Create Score
 		// Launch scene Dialog Box
 		// this.scene.launch("DialogBox", { text: [Entrance] });
-		this.scene.launch("Interface", { player: this.player });
+		//this.scene.launch("Interface", { player: this.player });
 
 		// Player has just been attacked
 		// To signal a grace period
@@ -272,7 +301,9 @@ export default class TestLevel extends Phaser.Scene {
 		})
 
         this.warping = false;
-        this.inputDisabled = false;
+		this.inputDisabled = false;
+		
+		this.createUI();
 	}
 
 	public update(time: number, delta: number): void {
@@ -375,7 +406,7 @@ export default class TestLevel extends Phaser.Scene {
 			if(this.player !== null) this.player.maxSpeed = 150;
 		}, [], this)
 		// Update to HUD element
-		this.lives.setText(this.player.lives.toString());
+		//this.hud.coins.text.setText(this.player.lives.toString());
     }
 
 	private hurtEnemy(element1: any, element2: any) {
@@ -428,7 +459,6 @@ export default class TestLevel extends Phaser.Scene {
 		if (!element1.isColliding) {
 			this.cleanCollider();
         	this.hurt();
-			//this.events.emit("attack");
 		}
 	}
 
@@ -470,7 +500,7 @@ export default class TestLevel extends Phaser.Scene {
 		this.coin.play({
 			volume: 0.4
 		});
-		this.coinScore.setText((this.data.get('temp_coins') + this.data.get('coins')));
+		this.hud.coins.text.setText((this.data.get('temp_coins') + this.data.get('coins')));
 	}
 
 	private getPowerup(element1: any, element2: any) {
@@ -494,5 +524,71 @@ export default class TestLevel extends Phaser.Scene {
             }
             , [], this);
         this.cameras.main.fadeOut(200); 
-    }
+	}
+	
+	private createUI() {
+		// Coins - Top left of UI
+		this.hud.coins = {
+			img: this.add.image(
+				20,
+				20,
+				"coil"
+			),
+			text: this.add.bitmapText(
+				35, 
+				10, 
+				"numbers",
+				this.data.get("coins"))
+		};
+
+		// Levels - Bottom right of UI
+		this.hud.level = {
+			img: this.add.image(
+				this.cameras.main.width - 45,
+				this.cameras.main.height - 30,
+				"coil"
+			),
+			text: this.add.bitmapText(
+				this.cameras.main.width - 30,
+				this.cameras.main.height - 30,
+				"numbers",
+				"0"
+			)
+		};
+
+		// Powerups - Bottom left of UI
+		this.hud.powerup = {
+			dash: this.add.image(20, this.cameras.main.height - 20, "coil"),
+			jump: this.add.image(40, this.cameras.main.height - 20, "coil"),
+			pack: this.add.image(60, this.cameras.main.height - 20, "coil")
+		}
+
+		// Config for lives group
+		let config: Phaser.Types.GameObjects.Group.GroupCreateConfig = {
+			key: "coil",
+			repeat: 4,
+			setXY: {
+				x: this.cameras.main.width - 120,
+				y: 20,
+				stepX: 25
+			},
+		};
+		this.hud.lives = this.add.group(config);
+		this.hud.lives.children.iterate((element: any) => {
+			element.setScrollFactor(0, 0).setScale(0.8);
+		});
+
+		// Cointainer
+		this.hud.container = this.add.container(0, 0);
+		this.hud.container.add([
+			this.hud.coins.img, 
+			this.hud.coins.text,
+			this.hud.level.img,
+			this.hud.level.text,
+			this.hud.powerup.dash,
+			this.hud.powerup.jump,
+			this.hud.powerup.pack
+		]);
+		this.hud.container.setScrollFactor(0, 0);
+	}
 }

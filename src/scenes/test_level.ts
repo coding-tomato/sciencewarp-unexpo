@@ -17,6 +17,12 @@ import Portal from "../objects/collectables/portal";
 import { Second, Entrance } from "../utils/text";
 import { addOrTakeLives } from "../utils/libplayer";
 
+enum Power {
+    Jump,
+    Jetpack,
+    Dash
+}
+
 export default class TestLevel extends Phaser.Scene {
     // Player
 	private player: Player;
@@ -242,41 +248,11 @@ export default class TestLevel extends Phaser.Scene {
 			this
 		);
 
-		
-		// this.coinScore = this.add.bitmapText(
-		// 	20, 
-		// 	10, 'numbers', 
-		// 	this.data.get('coins'));
-		// this.coinScore.setScrollFactor(0, 0);
-		
-        // this.lives = this.add.bitmapText(
-		// 	20, 
-		// 	240, 'numbers', 
-		// 	this.player.lives.toString());
-		// this.lives.setScrollFactor(0, 0);
-
         this.cameras.main.startFollow(this.player).setLerp(0.15);
 
-		// Create Score
 		// Launch scene Dialog Box
 		// this.scene.launch("DialogBox", { text: [Entrance] });
-		//this.scene.launch("Interface", { player: this.player });
-
-		// Player has just been attacked
-		// To signal a grace period
-		// This creates a blinking effect
-		this.events.on("attack", () => {
-			this.tweens.add({
-				targets: this.player,
-				alpha: 0.1,
-				duration: 50,
-				repeat: 50,
-				yoyo: true,
-				onComplete: () => {
-					this.player.setAlpha(1, 1, 1, 1);
-				}
-			});
-		});
+		// this.scene.launch("Interface", { player: this.player });
 
 		// Tween
 		// paused property true to avoid
@@ -507,7 +483,20 @@ export default class TestLevel extends Phaser.Scene {
 	}
 
 	private getPowerup(element1: any, element2: any) {
+		// Activate respective HUD element
+		switch (element2.typeOf) {
+			case Power.Jump:
+				this.hud.powerup.jump.setTint(0xffffff);
+				break;
+			case Power.Dash:
+				this.hud.powerup.dash.setTint(0xffffff);
+				break;
+			case Power.Jetpack:
+				this.hud.powerup.pack.setTint(0xffffff);
+				break;
+		}
 		element2.vanish(element1);
+
 	}
 
     private getPortal(element1: any, element2: any) {
@@ -562,10 +551,11 @@ export default class TestLevel extends Phaser.Scene {
 		this.hud.level.img.setTint(0x555555);
 
 		// Powerups - Bottom left of UI
+		// They start deactivated - tinted gray
 		this.hud.powerup = {
-			dash: this.add.image(20, this.cameras.main.height - 20, "coil"),
-			jump: this.add.image(40, this.cameras.main.height - 20, "coil"),
-			pack: this.add.image(60, this.cameras.main.height - 20, "coil")
+			dash: this.add.image(20, this.cameras.main.height - 20, "powerups", 14).setTint(0x555555),
+			jump: this.add.image(50, this.cameras.main.height - 20, "powerups", 0).setTint(0x555555),
+			pack: this.add.image(80, this.cameras.main.height - 20, "powerups", 7).setTint(0x555555)
 		}
 
 		// Config for lives group

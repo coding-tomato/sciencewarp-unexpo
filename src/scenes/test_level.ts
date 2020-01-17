@@ -302,7 +302,8 @@ export default class TestLevel extends Phaser.Scene {
 
         this.warping = false;
 		this.inputDisabled = false;
-		
+
+		// UI
 		this.createUI();
 	}
 
@@ -401,12 +402,14 @@ export default class TestLevel extends Phaser.Scene {
 		console.log(`You had ${this.player.lives} lives.`);
 		addOrTakeLives(this.player, -1);
 		console.log(`Now you have ${this.player.lives} lives.`);
+		// Update HUD
+		if (this.player.lives > 0) {
+			this.hud.lives.children.entries[this.player.lives].setTint(0x555555);
+		}
 		// Restore player speed
         this.time.delayedCall(1000, () => {
 			if(this.player !== null) this.player.maxSpeed = 150;
-		}, [], this)
-		// Update to HUD element
-		//this.hud.coins.text.setText(this.player.lives.toString());
+		}, [], this);
     }
 
 	private hurtEnemy(element1: any, element2: any) {
@@ -431,7 +434,7 @@ export default class TestLevel extends Phaser.Scene {
                     on: false
                 });
                 emitter.emitParticleAt(element2.x, element2.y);
-            }
+			}
 
             this.anims.create({
                 key: `explode`,
@@ -443,7 +446,7 @@ export default class TestLevel extends Phaser.Scene {
                 repeat: 0
             });
 
-            explosion.anims.play(`explode`)
+            explosion.anims.play(`explode`);
             
             explosion.on( `animationcomplete`, 
                     (animation: any, frame: any) => { 
@@ -555,6 +558,8 @@ export default class TestLevel extends Phaser.Scene {
 				"0"
 			)
 		};
+
+		this.hud.level.img.setTint(0x555555);
 
 		// Powerups - Bottom left of UI
 		this.hud.powerup = {

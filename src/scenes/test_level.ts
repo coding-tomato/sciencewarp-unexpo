@@ -99,6 +99,10 @@ export default class TestLevel extends Phaser.Scene {
 
 	public create(): void {
 		this.cameras.main.fadeOut(0);
+
+		if (!this.data.get('levels')) {
+			this.data.set("levels", 0);
+		}
 		
 		if (!this.data.get('coins')) {
 			this.data.set('coins', 0);
@@ -507,7 +511,9 @@ export default class TestLevel extends Phaser.Scene {
 		this.allPortals.forEach((element, index) => element.vanish());
 
         this.warping = true;
-        this.inputDisabled = true;
+		this.inputDisabled = true;
+		let actualLevel = this.data.get("levels");
+		this.data.set("levels", actualLevel + 1);
 		this.time.delayedCall(600, () => {
                 this.scene.restart({ 
                     level: next_level,
@@ -544,7 +550,7 @@ export default class TestLevel extends Phaser.Scene {
 				this.cameras.main.width - 30,
 				this.cameras.main.height - 30,
 				"numbers",
-				"0"
+				this.data.get("levels")
 			)
 		};
 

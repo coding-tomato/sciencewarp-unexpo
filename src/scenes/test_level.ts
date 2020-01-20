@@ -364,6 +364,11 @@ export default class TestLevel extends Phaser.Scene {
 		if (Phaser.Input.Keyboard.JustDown(this.debugControl[1])) {
 			addOrTakeLives(this.player, -5);
 		}
+
+		if (this.hud.fuelBar.visible) {
+			this.hud.fuelBar.setPosition(this.player.x, this.player.y + 30);
+		}
+		
 	}
 
     public init(data: any): void {
@@ -530,7 +535,7 @@ export default class TestLevel extends Phaser.Scene {
 			img: this.add.image(
 				20,
 				20,
-				"coil"
+				"hud-piece"
 			),
 			text: this.add.bitmapText(
 				35, 
@@ -544,7 +549,7 @@ export default class TestLevel extends Phaser.Scene {
 			img: this.add.image(
 				this.cameras.main.width - 45,
 				this.cameras.main.height - 30,
-				"coil"
+				"hud-portal"
 			),
 			text: this.add.bitmapText(
 				this.cameras.main.width - 30,
@@ -553,8 +558,6 @@ export default class TestLevel extends Phaser.Scene {
 				this.data.get("levels")
 			)
 		};
-
-		this.hud.level.img.setTint(0x555555);
 
 		// Powerups - Bottom left of UI
 		// They start deactivated - tinted gray
@@ -566,7 +569,7 @@ export default class TestLevel extends Phaser.Scene {
 
 		// Config for lives group
 		let config: Phaser.Types.GameObjects.Group.GroupCreateConfig = {
-			key: "coil",
+			key: "hud-heart",
 			repeat: 4,
 			setXY: {
 				x: this.cameras.main.width - 120,
@@ -591,5 +594,7 @@ export default class TestLevel extends Phaser.Scene {
 			this.hud.powerup.pack
 		]);
 		this.hud.container.setScrollFactor(0, 0);
+
+		this.hud.fuelBar = this.add.sprite(50, 50, "fuel-bar").setScale(0.1).setVisible(false);
 	}
 }

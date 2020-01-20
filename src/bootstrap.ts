@@ -88,5 +88,11 @@ export default class Bootstrap extends Phaser.Scene {
 		// Font
 		this.load.json('numbers_json', 'font_numbers.json');
 		this.load.image('numbers', 'font_numbers.png');
+
+		// HUD
+		this.load.image("hud-heart", "sprites/hud/hud_heart.png");
+		this.load.image("hud-piece", "sprites/hud/hud_piece.png");
+		this.load.image("hud-portal", "sprites/hud/hud_portal.png");
+		this.load.image("fuel-bar", "sprites/hud/health-bar-texture.png");
     }
 }

@@ -55,6 +55,8 @@ class Player extends Phaser.GameObjects.Sprite {
     private keys: Phaser.Types.Input.Keyboard.CursorKeys;
     // Fuel
     private fuel: Fuel;
+    // Scene
+    private level: any;
     // Animation
     private anim_json: Phaser.Types.Animations.JSONAnimations;
     private dash_cool: boolean;
@@ -73,16 +75,16 @@ class Player extends Phaser.GameObjects.Sprite {
 
         this.debug.setVisible(false);
 
-        //Input
+        // Input
         this.keys = this.currentScene.input.keyboard.createCursorKeys();
         this.name = "player";
 
-        //Powerup initialization
+        // Powerup initialization
         this.powerup = {
             dashActive: false,
             jumpActive: false,
             jetpActive: false
-        }
+        };
 
         // Lives
         this.lives = MAX_LIVES;
@@ -98,7 +100,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.dash_cool = false;
         this.isColliding = false;
 
-        //Movement variables
+        // Movement variables
         this.jumpHeight = -300;
         this.acceleration = 300;
         this.maxSpeed = 150;
@@ -116,7 +118,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.jetMaxSpeed = -150;
         this.gameShutdown();
 
-        //Fuel
+        // Fuel
         this.fuel = {
             vFuel: 2000,
             maxFuel: 2000,
@@ -129,11 +131,14 @@ class Player extends Phaser.GameObjects.Sprite {
         this.createAnimations();
         this.play("idle", true);
 
-        //Settings
+        // Settings
         this.scene.add.existing(this);
         this.currentScene.physics.world.enable(this);
         this.body.setSize(12, 32);
         this.body.setOffset(35, 13);
+
+        // Level
+        this.level = this.currentScene.scene.get("TestLevel");
     }
 
     // Cycle
@@ -152,6 +157,10 @@ class Player extends Phaser.GameObjects.Sprite {
         this.checkIfAlive();
         // Audio
         this.handleAudio();
+        // XD
+        if (this.state.valueOf() != "FLYING" && this.level.hud.fuelBar.visible) {
+            this.level.hud.fuelBar.setVisible(false);
+        }
     }
 
     private handleAudio() {
@@ -265,6 +274,8 @@ class Player extends Phaser.GameObjects.Sprite {
                     this.state = State.WALKING;
                 }
                 if (this.direction.y === -1 && this.fuel.vFuel > 0) {
+                    this.level.hud.fuelBar.setVisible(true);
+
                     this.body.velocity.y +=
                         this.jetAcceleration * Phaser.Math.CeilTo(delta, 0);
                     if (this.body.velocity.y < this.jetMaxSpeed)
@@ -392,10 +403,6 @@ class Player extends Phaser.GameObjects.Sprite {
         this.currentScene.events.once("gameOver", () => {
             this.currentScene.scene.stop("TestLevel");
         });
-    }
-
-    public drawHearts(): void {
-        
     }
 
     public setFuel(amount: number): void {

@@ -60,6 +60,7 @@ class Player extends Phaser.GameObjects.Sprite {
     // Animation
     private anim_json: Phaser.Types.Animations.JSONAnimations;
     private dash_cool: boolean;
+    private fuelBarFade: any;
 
     constructor(params: any) {
         super(params.scene, params.x, params.y, params.key, params.frame);
@@ -128,6 +129,7 @@ class Player extends Phaser.GameObjects.Sprite {
             fuelBox: this.currentScene.add.graphics(),
             fuelBar: this.currentScene.add.graphics()
         };
+
         this.createAnimations();
         this.play("idle", true);
 
@@ -139,6 +141,17 @@ class Player extends Phaser.GameObjects.Sprite {
 
         // Level
         this.level = this.currentScene.scene.get("TestLevel");
+
+        this.fuelBarFade = this.currentScene.tweens.add({
+			targets: this.level.hud.fuelBar,
+			alpha: 0.5,
+			paused: true,
+			duration: 1000,
+			onComplete: () => {
+                this.level.hud.fuelBar.setVisible(false);
+                //this.level.hud.fuelBar.setAlpha(1, 1, 1, 1);
+			}
+		});
     }
 
     // Cycle
@@ -158,8 +171,10 @@ class Player extends Phaser.GameObjects.Sprite {
         // Audio
         this.handleAudio();
         // XD
+        
         if (this.state.valueOf() != "FLYING" && this.level.hud.fuelBar.visible) {
-            this.level.hud.fuelBar.setVisible(false);
+            this.fuelBarFade.play();
+            //this.level.hud.fuelBar.setVisible(false);
         }
     }
 
@@ -274,6 +289,7 @@ class Player extends Phaser.GameObjects.Sprite {
                     this.state = State.WALKING;
                 }
                 if (this.direction.y === -1 && this.fuel.vFuel > 0) {
+                    
                     this.level.hud.fuelBar.setVisible(true);
 
                     this.body.velocity.y +=
@@ -346,6 +362,13 @@ class Player extends Phaser.GameObjects.Sprite {
                     if (this.fuel.vFuel < 0) {
                         this.fuel.vFuel = 0;
                     }
+
+                    this.level.hud.fuelBar.setCrop(
+                        0,
+                        0,
+                        820 * (this.fuel.vFuel / this.fuel.maxFuel),
+                        300
+                    )
                 }
                 break;
             }

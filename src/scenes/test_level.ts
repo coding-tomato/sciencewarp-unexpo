@@ -254,9 +254,9 @@ export default class TestLevel extends Phaser.Scene {
 
         this.cameras.main.startFollow(this.player).setLerp(0.15);
 
+		
 		// Launch scene Dialog Box
-		// this.scene.launch("DialogBox", { text: [Entrance] });
-		// this.scene.launch("Interface", { player: this.player });
+		this.scene.launch("DialogBox", { text: [Entrance, Second, "Trust me."] });
 
 		// Tween
 		// paused property true to avoid

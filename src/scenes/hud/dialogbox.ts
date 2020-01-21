@@ -12,17 +12,19 @@ export default class DialogBox extends Phaser.Scene {
 
     private text: string[];
     private clock: any;
+    private isDone: boolean;
     
-
     constructor() {
         super({
             key: 'DialogBox'
         });
 
         this.dialogText = [];
+        this.isDone = false;
     }
 
     init(data: any) {
+        // Text sent to this scene from another scene
         this.text = data.text || ["Error"];
     }
 
@@ -30,21 +32,31 @@ export default class DialogBox extends Phaser.Scene {
         // Dialog Box configuration
         this.dialogBox = this.makeBox();
 
-        if (!this.data.get('index')) {
-            this.data.set('index', 0);
+        // Index
+        if (!this.data.get("index")) {
+            this.data.set("index", 0);
         }
 
         // Create Dialog Box
         this.dialogBox.box.fillRect(this.dialogBox.x, this.dialogBox.y, this.dialogBox.width, this.dialogBox.height);
 
+        // Create Dialog Box border
+        let borderRect = new Phaser.Geom.Rectangle(
+            this.dialogBox.x, 
+            this.dialogBox.y,
+            this.dialogBox.width,
+            this.dialogBox.height
+            );
+
+        this.dialogBox.border.strokeRectShape(borderRect);
+
         // Create Dialog Text
-        this.text.forEach( (element: string, index: number) => {
+        this.text.forEach((element: string, index: number) => {
             this.dialogText[index] = this.makeText(element);
         });
 
-        this.animateText(this.dialogText, 0);
-
-        
+        // Animate text on Dialog Box
+        this.animateText(this.dialogText, this.data.get("index"));
     }
 
     animateText(dialog: Text[], index: number) {
@@ -56,6 +68,7 @@ export default class DialogBox extends Phaser.Scene {
 
         let actualText = this.add.text(dialog[index].x, dialog[index].y, ' ', { padding: PADDING,
             fontSize: 12,
+            fontFamily: 'Bangers, cursive',
             wordWrap: { width: dialog[index].width - PADDING, advancedWordWrap: true }
         });
 
@@ -80,15 +93,20 @@ export default class DialogBox extends Phaser.Scene {
                      count++;    
                 }
             },
-            loop: true
+            repeat: textArr.length
         };
 
-        this.clock = this.time.addEvent(timeConfig);   
+        this.clock = this.time.addEvent(timeConfig);
+    }
+
+    update() {
+        
     }
 
     makeBox(): Dialog {
         return {
-            box: this.add.graphics().fillStyle(0xffff, 0.5),
+            box: this.add.graphics().fillStyle(0x00ff00, 0.5),
+            border: this.add.graphics().lineStyle(3, 0x000000, 1),
             x: this.cameras.main.centerX - WIDTH / 2,
             y: 10,
             width: WIDTH,

@@ -3,7 +3,6 @@ import "phaser";
 import Bootstrap from "./bootstrap";
 import Menu from "./scenes/menu";
 import DialogBox from "./scenes/hud/dialogbox";
-import Interface from "./scenes/hud/interface";
 
 import TestLevel from './scenes/test_level';
 
@@ -30,7 +29,6 @@ const config: Phaser.Types.Core.GameConfig = {
 		Menu,
 		TestLevel,
 		DialogBox,
-		Interface
 	]
 };
 

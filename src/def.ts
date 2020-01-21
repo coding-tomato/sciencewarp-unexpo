@@ -1,5 +1,6 @@
 export interface Dialog {
     box: Phaser.GameObjects.Graphics;
+    border: Phaser.GameObjects.Graphics;
     x: number;
     y: number;
     width: number;

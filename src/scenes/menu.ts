@@ -33,11 +33,16 @@ export default class Menu extends Phaser.Scene {
 		this.bg[0] = this.add.image(0, 0, 'menu_title').setOrigin(0, 0).setScrollFactor(0);
 
 		const list = [
-			this.add.text(this.cameras.main.centerX, this.cameras.main.centerY - 20, "Level One").setScrollFactor(0),
-			this.add.text(this.cameras.main.centerX, this.cameras.main.centerY - 10, "Level Two").setScrollFactor(0),
-			this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, "Level Three").setScrollFactor(0),
+			this.add.text(this.cameras.main.centerX + 150, this.cameras.main.centerY - 30, "Level One").setScrollFactor(0),
+			this.add.text(this.cameras.main.centerX + 150, this.cameras.main.centerY - 15, "Level Two").setScrollFactor(0),
+			this.add.text(this.cameras.main.centerX + 150, this.cameras.main.centerY, "Level Three").setScrollFactor(0),
 		];
 
+		for (let element of list) {
+			element.setFontFamily('"ZCOOL QingKe HuangYou", serif').setFill("rgb(20, 10, 10");
+		}
+
+		
 		if (!this.data.get('item_selected')) {
 			this.data.set('item_selected', 0)
 		}

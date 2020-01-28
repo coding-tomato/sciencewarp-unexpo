@@ -146,7 +146,7 @@ class Player extends Phaser.GameObjects.Sprite {
 			targets: this.level.hud.fuelBar,
 			alpha: 0.5,
 			paused: true,
-			duration: 1000,
+			duration: 500,
 			onComplete: () => {
                 this.level.hud.fuelBar.setVisible(false);
                 //this.level.hud.fuelBar.setAlpha(1, 1, 1, 1);
@@ -424,6 +424,13 @@ class Player extends Phaser.GameObjects.Sprite {
     private gameShutdown(): void {
         // Player has lost all of its five lives
         this.currentScene.events.once("gameOver", () => {
+            if (this.currentScene.scene.isPaused("Menu")) {
+                this.currentScene.scene.resume("Menu");
+            }
+
+            if (this.currentScene.scene.isActive("DialogBox")) {
+                this.currentScene.scene.stop("DialogBox");
+            }
             this.currentScene.scene.stop("TestLevel");
         });
     }

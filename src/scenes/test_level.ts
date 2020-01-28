@@ -42,6 +42,8 @@ export default class TestLevel extends Phaser.Scene {
     // Debug
 	private debugControl: any[];
 	private debugGraphics: any;
+	// Input
+	private pauseControl: any;
     // Map objects
     private allCheckpoints: Checkpoint[];
 	private allCoins: any[];
@@ -123,6 +125,8 @@ export default class TestLevel extends Phaser.Scene {
 
 		this.cache.bitmapFont.add('numbers', 
 			Phaser.GameObjects.RetroFont.Parse(this, this.numbFont));
+
+		this.pauseControl = this.input.keyboard.addKey("ENTER");
 
 		// Audio
 		this.coin = this.sound.add('coin_sfx', {
@@ -315,7 +319,17 @@ export default class TestLevel extends Phaser.Scene {
             this.player.body.setVelocityY(-40);
             this.player.setFuel(2000);
             this.cleanCollider();
-        }
+		}
+		
+		if (Phaser.Input.Keyboard.JustDown(this.pauseControl)) {
+			//this.scene.get("DialogBox").cameras.main.setRenderToTexture("Grayscale");
+			this.cameras.main.setRenderToTexture("Grayscale");
+			this.scene.launch("Pause");
+			//this.player.setPipeline("Grayscale");
+			this.scene.pause("DialogBox");
+			this.scene.pause("TestLevel");
+
+		}
         
         this.mapManager.parallaxUpdate();
        

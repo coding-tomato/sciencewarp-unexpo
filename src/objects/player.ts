@@ -53,6 +53,7 @@ class Player extends Phaser.GameObjects.Sprite {
     private jumpHeight: number;
     //Input
     private keys: Phaser.Types.Input.Keyboard.CursorKeys;
+    private wkeys: any;
     // Fuel
     private fuel: Fuel;
     // Scene
@@ -78,6 +79,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         // Input
         this.keys = this.currentScene.input.keyboard.createCursorKeys();
+        this.wkeys = this.currentScene.input.keyboard.addKeys('W, A, D');
         this.name = "player";
 
         // Powerup initialization
@@ -186,15 +188,15 @@ class Player extends Phaser.GameObjects.Sprite {
 
     private handleInput() {
         
-            if (this.keys.right.isDown) {
+            if (this.keys.right.isDown || this.wkeys.D.isDown) {
                 this.direction.x = 1;
-            } else if (this.keys.left.isDown) {
+            } else if (this.keys.left.isDown || this.wkeys.A.isDown) {
                 this.direction.x = -1;
             } else {
                 this.direction.x = 0;
             }
 
-            if (this.keys.up.isDown) {
+            if (this.keys.up.isDown || this.wkeys.W.isDown) {
                 this.direction.y = -1;
             } else {
                 this.direction.y = 0;

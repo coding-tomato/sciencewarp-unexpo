@@ -62,6 +62,7 @@ class Player extends Phaser.GameObjects.Sprite {
     private anim_json: Phaser.Types.Animations.JSONAnimations;
     private dash_cool: boolean;
     private fuelBarFade: any;
+    private fuelFrameFade: any;
 
     constructor(params: any) {
         super(params.scene, params.x, params.y, params.key, params.frame);
@@ -96,7 +97,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.currentScene.sound.add('jump_sfx', {
             loop: false,
             volume: 0.2,
-		});
+        });
 
         // State
         this.state = State.WALKING;
@@ -145,15 +146,26 @@ class Player extends Phaser.GameObjects.Sprite {
         this.level = this.currentScene.scene.get("TestLevel");
 
         this.fuelBarFade = this.currentScene.tweens.add({
-			targets: this.level.hud.fuelBar,
-			alpha: 0.5,
-			paused: true,
-			duration: 500,
-			onComplete: () => {
+            targets: this.level.hud.fuelBar,
+            alpha: 0.5,
+            paused: true,
+            duration: 500,
+            onComplete: () => {
                 this.level.hud.fuelBar.setVisible(false);
                 //this.level.hud.fuelBar.setAlpha(1, 1, 1, 1);
-			}
-		});
+            }
+        });
+
+        this.fuelFrameFade = this.currentScene.tweens.add({
+            targets: this.level.hud.fuelFrame,
+            alpha: 0.5,
+            paused: true,
+            duration: 500,
+            onComplete: () => {
+                this.level.hud.fuelFrame.setVisible(false);
+                //this.level.hud.fuelBar.setAlpha(1, 1, 1, 1);
+            }
+        });
     }
 
     // Cycle
@@ -166,7 +178,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.handleFuel(delta);
         // Check for constant animations
         this.handleAnimations();
-        // Debug functions
+        // Debug functions0
         this.debugUpdate(delta);
         // Is player out of lives? If so, quit the game
         this.checkIfAlive();
@@ -174,8 +186,11 @@ class Player extends Phaser.GameObjects.Sprite {
         this.handleAudio();
         // XD
         
-        if (this.state.valueOf() != "FLYING" && this.level.hud.fuelBar.visible) {
+        if (this.state.valueOf() == "WALKING" && 
+            (this.body.velocity.y == 0) && 
+            this.level.hud.fuelBar.visible) {
             this.fuelBarFade.play();
+            this.fuelFrameFade.play();
             //this.level.hud.fuelBar.setVisible(false);
         }
     }
@@ -206,9 +221,10 @@ class Player extends Phaser.GameObjects.Sprite {
             if (Phaser.Input.Keyboard.JustDown(this.keys.space) &&
                 this.powerup.dashActive &&
                 !this.dash_cool &&
-                this.fuel.vFuel > 0) {
-
+                this.fuel.vFuel > 320) {
+                console.log(`Dashed`);
                 this.dash();
+                this.fuel.vFuel = this.fuel.vFuel / 2;
             }
         }    
     }
@@ -293,6 +309,7 @@ class Player extends Phaser.GameObjects.Sprite {
                 if (this.direction.y === -1 && this.fuel.vFuel > 0) {
                     
                     this.level.hud.fuelBar.setVisible(true);
+                    this.level.hud.fuelFrame.setVisible(true);
 
                     this.body.velocity.y +=
                         this.jetAcceleration * Phaser.Math.CeilTo(delta, 0);
@@ -361,6 +378,7 @@ class Player extends Phaser.GameObjects.Sprite {
                         this.fuel.rateLoseFuel *
                         parseInt((delta * 0.1).toFixed());
                     this.fuel.vFuel.toFixed(0);
+                    
                     if (this.fuel.vFuel < 0) {
                         this.fuel.vFuel = 0;
                     }
@@ -368,14 +386,19 @@ class Player extends Phaser.GameObjects.Sprite {
                     this.level.hud.fuelBar.setCrop(
                         0,
                         0,
-                        820 * (this.fuel.vFuel / this.fuel.maxFuel),
-                        300
+                        64 * (this.fuel.vFuel / this.fuel.maxFuel),
+                        18
                     )
                 }
                 break;
             }
             case State.DASHING: 
-                this.fuel.vFuel = 0; 
+                this.level.hud.fuelBar.setCrop(
+                    0,
+                    0,
+                    64 * (this.fuel.vFuel / this.fuel.maxFuel),
+                    18
+                )
                 break;
         }
     }

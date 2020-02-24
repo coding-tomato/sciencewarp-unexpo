@@ -4,7 +4,7 @@ export interface Dialog {
     x: number;
     y: number;
     width: number;
-    height: number
+    height: number;
 }
 
 export interface Text {

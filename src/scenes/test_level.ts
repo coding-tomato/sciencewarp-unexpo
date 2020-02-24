@@ -66,6 +66,7 @@ export default class TestLevel extends Phaser.Scene {
             text?: any;
         };
         fuelBar?: any;
+        fuelFrame?: any;
         powerup?: {
             jump?: any;
             dash?: any;
@@ -374,6 +375,7 @@ export default class TestLevel extends Phaser.Scene {
 
         if (this.hud.fuelBar.visible) {
             this.hud.fuelBar.setPosition(this.player.x, this.player.y + 30);
+            this.hud.fuelFrame.setPosition(this.player.x, this.player.y + 30);
         }
     }
 
@@ -619,8 +621,13 @@ export default class TestLevel extends Phaser.Scene {
         this.hud.container.setScrollFactor(0, 0);
 
         this.hud.fuelBar = this.add
-            .sprite(50, 50, "fuel-bar")
-            .setScale(0.1)
+            .sprite(66, 18, "fuel-bar")
+            .setScale(1)
+            .setVisible(false);
+
+        this.hud.fuelFrame = this.add
+            .sprite(66, 18, "fuel-frame")
+            .setScale(1)
             .setVisible(false);
     }
 }

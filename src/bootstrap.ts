@@ -153,7 +153,8 @@ export default class Bootstrap extends Phaser.Scene {
         this.load.image("hud-heart", "sprites/hud/hud_heart.png");
         this.load.image("hud-piece", "sprites/hud/hud_piece.png");
         this.load.image("hud-portal", "sprites/hud/hud_portal.png");
-        this.load.image("fuel-bar", "sprites/hud/health-bar-texture.png");
+        this.load.image("fuel-bar", "sprites/hud/fuel_bar.png");
+        this.load.image("fuel-frame", "sprites/hud/fuel_frame.png");
 
         // Shaders
         (this.game.renderer as any).addPipeline(

@@ -1,10 +1,10 @@
 import "phaser";
 
 interface Props {
-    scene: Phaser.Scene,
-    x: number,
-    y: number,
-    texture: string
+    scene: Phaser.Scene;
+    x: number;
+    y: number;
+    texture: string;
 }
 
 export default class Platform extends Phaser.GameObjects.Sprite {
@@ -23,7 +23,7 @@ export default class Platform extends Phaser.GameObjects.Sprite {
             duration: 100,
             y: params.y + 20,
             repeat: -1,
-            yoyo: true
-        });   
-    }   
+            yoyo: true,
+        });
+    }
 }

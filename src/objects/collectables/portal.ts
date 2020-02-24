@@ -1,4 +1,4 @@
-import "phaser"
+import "phaser";
 
 class Portal extends Phaser.Physics.Arcade.Sprite {
     private isGone: boolean;
@@ -13,7 +13,7 @@ class Portal extends Phaser.Physics.Arcade.Sprite {
 
         (this.body as Phaser.Physics.Arcade.Body).setImmovable(true);
         (this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
-        
+
         this.animSetup();
     }
 
@@ -21,34 +21,36 @@ class Portal extends Phaser.Physics.Arcade.Sprite {
         this.anims.play(`portal_loop`, true);
     }
 
-    vanish () {
+    vanish() {
         this.disableBody();
         this.anims.play(`portal_vanish`);
     }
 
-    getLevel(): number{
-        return this.levelToWarp
+    getLevel(): number {
+        return this.levelToWarp;
     }
 
     animSetup() {
         this.scene.anims.create({
-            key: 'portal_loop',
-            frames: this.scene.anims.generateFrameNumbers('portal', {
-                start: 0, end: 10  
+            key: "portal_loop",
+            frames: this.scene.anims.generateFrameNumbers("portal", {
+                start: 0,
+                end: 10,
             }),
             frameRate: 16,
-            repeat: 0
+            repeat: 0,
         });
 
         this.scene.anims.create({
-            key: 'portal_vanish',
-            frames: this.scene.anims.generateFrameNumbers('portal', {
-                start: 11, end: 14
+            key: "portal_vanish",
+            frames: this.scene.anims.generateFrameNumbers("portal", {
+                start: 11,
+                end: 14,
             }),
             frameRate: 12,
-            hideOnComplete: true
+            hideOnComplete: true,
         });
     }
 }
 
-export default Portal
+export default Portal;

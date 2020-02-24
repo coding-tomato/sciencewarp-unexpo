@@ -2,13 +2,13 @@ import "phaser";
 
 const enum Direction {
     LEFT = -1,
-    RIGHT = 1
+    RIGHT = 1,
 }
 
 const enum State {
     MOVING = 1,
     ATTACKING = 2,
-    RESTING = 3
+    RESTING = 3,
 }
 
 interface Legs {
@@ -39,7 +39,7 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
         this.scene.physics.world.enable(this);
         this.state = State.MOVING;
         this.setSize(SIZE.x, SIZE.y);
-        this.setOffset(10, 8)
+        this.setOffset(10, 8);
         this.direction = Direction.RIGHT;
     }
 
@@ -66,10 +66,10 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 
             case State.ATTACKING:
                 this.walk();
-                if(this.body.blocked.down) {
+                if (this.body.blocked.down) {
                     this.rest();
-                    this.state = State.RESTING
-                };
+                    this.state = State.RESTING;
+                }
                 break;
 
             case State.RESTING:
@@ -84,7 +84,7 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
         // Animation displays running to the left, if Legs is running left,
         // then do not flip the sprite
         this.setFlipX(this.direction === Direction.LEFT ? false : true);
-        
+
         switch (this.state) {
             case State.MOVING:
                 this.anims.play("legs_move", true);
@@ -124,9 +124,14 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
     private rest(): void {
         this.anims.play(`legs_land`, true);
 
-        this.scene.time.delayedCall(RESET_TIME, () => {
-            this.state = State.MOVING;
-        }, [], this);
+        this.scene.time.delayedCall(
+            RESET_TIME,
+            () => {
+                this.state = State.MOVING;
+            },
+            [],
+            this
+        );
     }
 
     // Create Animations
@@ -136,9 +141,9 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
             key: "legs_move",
             frames: this.scene.anims.generateFrameNumbers("legs", {
                 start: 0,
-                end: 7
+                end: 7,
             }),
-            frameRate: FRAME_RATE
+            frameRate: FRAME_RATE,
         });
 
         // Play when attack starts
@@ -146,10 +151,10 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
             key: "legs_jump",
             frames: this.scene.anims.generateFrameNumbers("legs", {
                 start: 8,
-                end: 10
+                end: 10,
             }),
             frameRate: 10,
-            repeat: 0
+            repeat: 0,
         });
 
         // Play when attack ends
@@ -157,10 +162,10 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
             key: "legs_land",
             frames: this.scene.anims.generateFrameNumbers("legs", {
                 start: 11,
-                end: 14
+                end: 14,
             }),
             frameRate: FRAME_RATE,
-            repeat: 0
+            repeat: 0,
         });
     }
 }

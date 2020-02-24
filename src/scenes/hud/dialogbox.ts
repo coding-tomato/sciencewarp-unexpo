@@ -1,22 +1,21 @@
 import "phaser";
 
-import { Dialog, Text } from '../../def';
+import { Dialog, Text } from "../../def";
 
 const WIDTH = 300;
 const PADDING = 10;
 
 export default class DialogBox extends Phaser.Scene {
-
     public dialogBox: Dialog;
     public dialogText: Text[];
 
     private text: string[];
     private clock: any;
     private isDone: boolean;
-    
+
     constructor() {
         super({
-            key: 'DialogBox'
+            key: "DialogBox",
         });
 
         this.dialogText = [];
@@ -38,15 +37,20 @@ export default class DialogBox extends Phaser.Scene {
         }
 
         // Create Dialog Box
-        this.dialogBox.box.fillRect(this.dialogBox.x, this.dialogBox.y, this.dialogBox.width, this.dialogBox.height);
-
-        // Create Dialog Box border
-        let borderRect = new Phaser.Geom.Rectangle(
-            this.dialogBox.x, 
+        this.dialogBox.box.fillRect(
+            this.dialogBox.x,
             this.dialogBox.y,
             this.dialogBox.width,
             this.dialogBox.height
-            );
+        );
+
+        // Create Dialog Box border
+        let borderRect = new Phaser.Geom.Rectangle(
+            this.dialogBox.x,
+            this.dialogBox.y,
+            this.dialogBox.width,
+            this.dialogBox.height
+        );
 
         this.dialogBox.border.strokeRectShape(borderRect);
 
@@ -60,48 +64,53 @@ export default class DialogBox extends Phaser.Scene {
     }
 
     animateText(dialog: Text[], index: number) {
-
-        let textArr: string[] = dialog[index].text.split('');
+        let textArr: string[] = dialog[index].text.split("");
         let newTextArr: any[] = [];
 
         let count = 0;
 
-        let actualText = this.add.text(dialog[index].x, dialog[index].y, ' ', { padding: PADDING,
+        let actualText = this.add.text(dialog[index].x, dialog[index].y, " ", {
+            padding: PADDING,
             fontSize: 12,
-            fontFamily: 'Bangers, cursive',
-            wordWrap: { width: dialog[index].width - PADDING, advancedWordWrap: true }
+            fontFamily: "Bangers, cursive",
+            wordWrap: {
+                width: dialog[index].width - PADDING,
+                advancedWordWrap: true,
+            },
         });
 
         const timeConfig: Phaser.Types.Time.TimerEventConfig = {
             delay: 75,
-             callback: () => {
+            callback: () => {
                 if (count >= textArr.length) {
-                     this.time.delayedCall(1000, () => {
-                         if (index == dialog.length - 1) {
-                            this.scene.stop();
-                         } else {
-                             textArr = [];
-                             newTextArr = [];
-                             actualText.setText('');
-                             this.animateText(dialog, index + 1);
-                         }
-                         
-                     }, [], this)
-                 } else {
-                     newTextArr.push(textArr[count]);
-                     actualText.setText(newTextArr.join(''));
-                     count++;    
+                    this.time.delayedCall(
+                        1000,
+                        () => {
+                            if (index == dialog.length - 1) {
+                                this.scene.stop();
+                            } else {
+                                textArr = [];
+                                newTextArr = [];
+                                actualText.setText("");
+                                this.animateText(dialog, index + 1);
+                            }
+                        },
+                        [],
+                        this
+                    );
+                } else {
+                    newTextArr.push(textArr[count]);
+                    actualText.setText(newTextArr.join(""));
+                    count++;
                 }
             },
-            repeat: textArr.length
+            repeat: textArr.length,
         };
 
         this.clock = this.time.addEvent(timeConfig);
     }
 
-    update() {
-        
-    }
+    update() {}
 
     makeBox(): Dialog {
         return {
@@ -110,9 +119,8 @@ export default class DialogBox extends Phaser.Scene {
             x: this.cameras.main.centerX - WIDTH / 2,
             y: 10,
             width: WIDTH,
-            height: 50
-        }
-
+            height: 50,
+        };
     }
 
     makeText(message: string): Text {
@@ -120,7 +128,7 @@ export default class DialogBox extends Phaser.Scene {
             text: message,
             x: this.dialogBox.x + 2,
             y: this.dialogBox.y,
-            width: this.dialogBox.width
+            width: this.dialogBox.width,
         };
     }
 }

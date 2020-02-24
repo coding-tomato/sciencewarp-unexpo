@@ -327,6 +327,8 @@ export default class TestLevel extends Phaser.Scene {
 			this.scene.launch("Pause");
 			//this.player.setPipeline("Grayscale");
 			this.scene.pause("DialogBox");
+            (this.scene.get("Menu") as any).music.pause();
+            this.scene.moveBelow("TestLevel", "DialogBox");
 			this.scene.pause("TestLevel");
 
 		}

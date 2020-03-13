@@ -5,7 +5,7 @@ export default class Menu extends Phaser.Scene {
 
     private controlKeys: Phaser.Types.Input.Keyboard.CursorKeys;
     private enterKey: Phaser.Input.Keyboard.Key;
-    private music: any;
+    public music: any;
 
     constructor() {
         super({

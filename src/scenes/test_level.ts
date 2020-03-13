@@ -25,7 +25,7 @@ enum Power {
 
 export default class TestLevel extends Phaser.Scene {
     // Player
-    private player: Player;
+    public player: Player;
     private checkpointPos: {
         x: number;
         y: number;
@@ -52,7 +52,7 @@ export default class TestLevel extends Phaser.Scene {
     private allProj: any[];
     private allPortals: any[];
     // Audio
-    private music: any;
+    public music: any;
     private coin: any;
     // HUD
     private coinScore: any;

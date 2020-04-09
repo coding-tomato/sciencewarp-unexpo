@@ -4,9 +4,7 @@
   "description": "My webpack project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "start": "webpack --watch & live-server --port=8085 --wait=800"
+    "start": "live-server"
   },
   "repository": {
     "type": "git",
@@ -20,17 +18,8 @@
   },
   "homepage": "https://github.com/VeryEvilTomato/sciencewarp-unexpo#readme",
   "devDependencies": {
-    "browserify-fs": "^1.0.0",
-    "glob": "^7.1.6",
     "live-server": "^1.2.1",
-    "phaser": "^3.20.1",
-    "ts-loader": "^6.2.1",
-    "typescript": "^3.7.2",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10"
+    "phaser": "^3.20.1"
   },
-  "dependencies": {
-    "@types/glob": "^7.1.1",
-    "@types/node": "^12.12.7"
-  }
+  "dependencies": {}
 }

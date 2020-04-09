@@ -1,6 +1,7 @@
 import "phaser";
 
 import Player from "../objects/player";
+import PlayerCollision from "../objects/_PlayerCollision";
 
 import Coil from "../objects/enemies/coil";
 import Cannon from "../objects/enemies/cannon";
@@ -190,6 +191,14 @@ export default class TestLevel extends Phaser.Scene {
 
         // Setting up collision callbacks
         // Collision with enemies
+        this.scene.add("enemyCollider", PlayerCollision, true, {
+            player: this.player,
+            collidable: this.allSprites,
+            callback: this.hurtEnemy,
+            context: this
+        });
+
+        /*
         this.enemyCollider = this.physics.add.overlap(
             this.player,
             this.allSprites,
@@ -197,6 +206,7 @@ export default class TestLevel extends Phaser.Scene {
             null,
             this
         );
+        */
 
         // Collision with projectiles
         this.projCollider = this.physics.add.overlap(
@@ -315,19 +325,19 @@ export default class TestLevel extends Phaser.Scene {
             this.player.setFuel(2000);
             this.cleanCollider();
 
-		}
-		
-		if (Phaser.Input.Keyboard.JustDown(this.pauseControl)) {
-			//this.scene.get("DialogBox").cameras.main.setRenderToTexture("Grayscale");
-			this.cameras.main.setRenderToTexture("Grayscale");
-			this.scene.launch("Pause");
-			//this.player.setPipeline("Grayscale");
-			this.scene.pause("DialogBox");
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(this.pauseControl)) {
+            //this.scene.get("DialogBox").cameras.main.setRenderToTexture("Grayscale");
+            this.cameras.main.setRenderToTexture("Grayscale");
+            this.scene.launch("Pause");
+            //this.player.setPipeline("Grayscale");
+            this.scene.pause("DialogBox");
             (this.scene.get("Menu") as any).music.pause();
             this.scene.moveBelow("TestLevel", "DialogBox");
-			this.scene.pause("TestLevel");
+            this.scene.pause("TestLevel");
 
-		}
+        }
         
 
 

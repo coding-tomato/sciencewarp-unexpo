@@ -1,11 +1,13 @@
 import "phaser";
 
-import Bootstrap from "./bootstrap";
-import Menu from "./scenes/menu";
-import DialogBox from "./scenes/hud/dialogbox";
-import Pause from "./scenes/pause";
-import TestLevel from "./scenes/test_level";
+// To add to scenes array in config
+import Bootstrap from  "./bootstrap";
+import Menu      from  "./scenes/menu";
+import DialogBox from  "./scenes/hud/dialogbox";
+import Pause     from  "./scenes/pause";
+import TestLevel from  "./scenes/test_level";
 
+// Initial phaser configuration
 const config: Phaser.Types.Core.GameConfig = {
     title: "Science Warp",
     width: 480,
@@ -21,10 +23,16 @@ const config: Phaser.Types.Core.GameConfig = {
     backgroundColor: "#4da6ff",
     zoom: 2,
     render: {
-        pixelArt: true,
+        pixelArt: true,     
         antialias: false,
     },
-    scene: [Bootstrap, Menu, TestLevel, DialogBox, Pause],
+    scene: [
+      Bootstrap, 
+      Menu, 
+      TestLevel, 
+      DialogBox, 
+      Pause
+    ],
 };
 
 export class ScienceWarpGame extends Phaser.Game {

@@ -1,4 +1,5 @@
 import "phaser";
+import PlayerInput from "./_PlayerInput";
 
 const enum State {
     WALKING = "WALKING",
@@ -30,6 +31,8 @@ class Player extends Phaser.GameObjects.Sprite {
     public isColliding: boolean;
     //Powerup conditionals
     public powerup: {
+        [index: string]: any;
+
         dashActive: boolean;
         jumpActive: boolean;
         jetpActive: boolean;
@@ -166,12 +169,14 @@ class Player extends Phaser.GameObjects.Sprite {
                 //this.level.hud.fuelBar.setAlpha(1, 1, 1, 1);
             }
         });
+
+        this.currentScene.scene.add("PlayerInput", PlayerInput, true, { player: this });
     }
 
     // Cycle
     public update(delta: number): void {
         // All controls go here
-        this.handleInput();
+        //this.handleInput();
         // Movement
         this.handleMovement(delta);
         // Check for fuel
@@ -195,12 +200,28 @@ class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
+    public isDashReady(): boolean {
+      return !this.dash_cool; 
+    }
+
+    public hasPowerup(power: string): boolean {
+      return this.powerup[power];
+    }
+
+    public canDash(): boolean {
+      return this.fuel.vFuel > 320;
+    }
+
+    public halveFuel(): void {
+      this.fuel.vFuel /= 2;
+    }
+
     private handleAudio() {
         if (Phaser.Input.Keyboard.JustDown(this.keys.up)) {
             //this.currentScene.sound.play('jump_sfx');
         }
     }
-
+/*
     private handleInput() {
         
             if (this.keys.right.isDown || this.wkeys.D.isDown) {
@@ -228,7 +249,7 @@ class Player extends Phaser.GameObjects.Sprite {
             }
         }    
     }
-
+*/
     private dash() {
         // Check Player's Facing
         let facing = this.flipX ? -1 : 1;

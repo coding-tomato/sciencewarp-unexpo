@@ -1,6 +1,11 @@
+// Filter for pause menu
 import GrayscalePipeline from "../assets/shaders/grayPipeline";
 
-export default class Bootstrap extends Phaser.Scene {
+interface Bootstrap {
+  [key: string]: any;
+}
+
+class Bootstrap extends Phaser.Scene {
     constructor() {
         super({
             key: "Bootstrap",
@@ -8,21 +13,28 @@ export default class Bootstrap extends Phaser.Scene {
     }
 
     public preload(): void {
-        // Load level on complete
-        this.load.on("complete", () => {
-            this.scene.start("Menu");
+        this.load.path = "../assets/";        // Easier path typing
+
+        const firstScene = "Menu";            // After load is done, boot Menu
+
+        this.load.on("complete", () => {          
+            this.scene.start(firstScene);     // Ensure all assets are loaded
         });
 
-        this.load.path = "../assets/";
+        ////////////////////////////////////////////////
+        //--------------------------------------------//
+        ////////////////////////////////////////////////
 
         // Menu Title
         this.load.image("menu_title", "menu_title.png");
 
-        // Audio
+
+
         this.load.audio("coin_sfx", "audio/coin.ogg");
         this.load.audio("jump_sfx", "audio/jump.ogg");
         this.load.audio("hurt_sfx", "audio/hurt.ogg");
         this.load.audio("song", "audio/edzes.mp3");
+
 
         // Sprites
         this.load.spritesheet("moran", "sprites/player/moran.png", {
@@ -163,3 +175,5 @@ export default class Bootstrap extends Phaser.Scene {
         );
     }
 }
+
+export default Bootstrap;

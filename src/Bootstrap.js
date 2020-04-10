@@ -1,33 +1,30 @@
-// Filter for pause menu
-import GrayscalePipeline from "../assets/shaders/grayPipeline";
-
-interface Bootstrap {
-  [key: string]: any;
-}
+import GrayscalePipeline from "./shaders/grayPipeline";
 
 class Bootstrap extends Phaser.Scene {
-    constructor() {
+    constructor() { 
         super({
             key: "Bootstrap",
         });
     }
 
-    public preload(): void {
+    preload() {
         this.load.path = "../assets/";        // Easier path typing
 
-        const firstScene = "Menu";            // After load is done, boot Menu
-
         this.load.on("complete", () => {          
-            this.scene.start(firstScene);     // Ensure all assets are loaded
+            this.scene.start("Menu");     // Ensure all assets are loaded
         });
 
         ////////////////////////////////////////////////
         //--------------------------------------------//
         ////////////////////////////////////////////////
 
+        this.game.renderer.addPipeline(
+            "Grayscale",
+            new GrayscalePipeline(this.game)
+        );
+
         // Menu Title
         this.load.image("menu_title", "menu_title.png");
-
 
 
         this.load.audio("coin_sfx", "audio/coin.ogg");
@@ -167,12 +164,7 @@ class Bootstrap extends Phaser.Scene {
         this.load.image("hud-portal", "sprites/hud/hud_portal.png");
         this.load.image("fuel-bar", "sprites/hud/fuel_bar.png");
         this.load.image("fuel-frame", "sprites/hud/fuel_frame.png");
-
-        // Shaders
-        (this.game.renderer as any).addPipeline(
-            "Grayscale",
-            new GrayscalePipeline(this.game)
-        );
+        
     }
 }
 

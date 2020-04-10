@@ -1,17 +1,19 @@
-import "phaser";
-
-// To add to scenes array in config
-import Bootstrap from  "./bootstrap";
+import Bootstrap from  "./Bootstrap.js";
 import Menu      from  "./scenes/menu";
 import DialogBox from  "./scenes/hud/dialogbox";
 import Pause     from  "./scenes/pause";
 import TestLevel from  "./scenes/test_level";
 
-// Initial phaser configuration
-const config: Phaser.Types.Core.GameConfig = {
+const scene = [
+    Bootstrap, Menu, DialogBox, Pause, TestLevel
+];
+
+const [width, height] = [480, 270];
+
+const config = {
     title: "Science Warp",
-    width: 480,
-    height: 270,
+    width,
+    height,
     parent: "container",
     physics: {
         default: "arcade",
@@ -26,21 +28,7 @@ const config: Phaser.Types.Core.GameConfig = {
         pixelArt: true,     
         antialias: false,
     },
-    scene: [
-      Bootstrap, 
-      Menu, 
-      TestLevel, 
-      DialogBox, 
-      Pause
-    ],
+    scene,
 };
 
-export class ScienceWarpGame extends Phaser.Game {
-    constructor(config: Phaser.Types.Core.GameConfig) {
-        super(config);
-    }
-}
-
-window.onload = () => {
-    const game = new ScienceWarpGame(config);
-};
+new Phaser.Game(config);

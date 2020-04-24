@@ -1,4 +1,3 @@
-import "phaser";
 
 import { Dialog, Text } from "../../def";
 
@@ -6,12 +5,12 @@ const WIDTH = 300;
 const PADDING = 10;
 
 export default class DialogBox extends Phaser.Scene {
-    public dialogBox: Dialog;
-    public dialogText: Text[];
+     dialogBox;
+     dialogText;
 
-    private text: string[];
-    private clock: any;
-    private isDone: boolean;
+     text;
+     clock;
+     isDone;
 
     constructor() {
         super({
@@ -22,7 +21,7 @@ export default class DialogBox extends Phaser.Scene {
         this.isDone = false;
     }
 
-    init(data: any) {
+    init(data) {
         // Text sent to this scene from another scene
         this.text = data.text || ["Error"];
     }
@@ -55,7 +54,7 @@ export default class DialogBox extends Phaser.Scene {
         this.dialogBox.border.strokeRectShape(borderRect);
 
         // Create Dialog Text
-        this.text.forEach((element: string, index: number) => {
+        this.text.forEach((element, index) => {
             this.dialogText[index] = this.makeText(element);
         });
 
@@ -63,9 +62,9 @@ export default class DialogBox extends Phaser.Scene {
         this.animateText(this.dialogText, this.data.get("index"));
     }
 
-    animateText(dialog: Text[], index: number) {
-        let textArr: string[] = dialog[index].text.split("");
-        let newTextArr: any[] = [];
+    animateText(dialog, index) {
+        let textArr = dialog[index].text.split("");
+        let newTextArr = [];
 
         let count = 0;
 
@@ -79,7 +78,7 @@ export default class DialogBox extends Phaser.Scene {
             },
         });
 
-        const timeConfig: Phaser.Types.Time.TimerEventConfig = {
+        const timeConfig = {
             delay: 75,
             callback: () => {
                 if (count >= textArr.length) {
@@ -112,7 +111,7 @@ export default class DialogBox extends Phaser.Scene {
 
     update() {}
 
-    makeBox(): Dialog {
+    makeBox() {
         return {
             box: this.add.graphics().fillStyle(0x00ff00, 0.5),
             border: this.add.graphics().lineStyle(3, 0x000000, 1),
@@ -123,7 +122,7 @@ export default class DialogBox extends Phaser.Scene {
         };
     }
 
-    makeText(message: string): Text {
+    makeText(message) {
         return {
             text: message,
             x: this.dialogBox.x + 2,

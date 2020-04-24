@@ -1,4 +1,3 @@
-import "phaser";
 
 import Player from "../objects/player";
 
@@ -17,7 +16,7 @@ import Portal from "../objects/collectables/portal";
 import { Second, Entrance } from "../utils/text";
 import { addOrTakeLives } from "../utils/libplayer";
 
-enum Power {
+const Power = {
     Jump,
     Jetpack,
     Dash,
@@ -25,57 +24,57 @@ enum Power {
 
 export default class TestLevel extends Phaser.Scene {
     // Player
-    public player: Player;
-    private checkpointPos: {
-        x: number;
-        y: number;
+     player;
+     checkpointPos = {
+        x,
+        y,
     };
-    private playerFadeTween: any;
+     playerFadeTween;
     // Map manager
-    private mapManager: MapHelper;
-    private currentLevel: number;
-    private inputDisabled: boolean;
-    private warping: boolean;
+     mapManager;
+     currentLevel;
+     inputDisabled;
+     warping;
     // Colliders
-    private enemyCollider: Phaser.Physics.Arcade.Collider;
-    private projCollider: Phaser.Physics.Arcade.Collider;
+     enemyCollider;
+     projCollider;
     // Debug
-    private debugControl: any[];
-    private debugGraphics: any;
+     debugControl;
+     debugGraphics;
     // Input
-    private pauseControl: any;
+     pauseControl;
     // Map objects
-    private allCheckpoints: Checkpoint[];
-    private allCoins: any[];
-    private allPowerups: any[];
-    private allSprites: any[];
-    private allProj: any[];
-    private allPortals: any[];
+     allCheckpoints;
+     allCoins;
+     allPowerups;
+     allSprites;
+     allProj;
+     allPortals;
     // Audio
-    public music: any;
-    private coin: any;
+     music;
+     coin;
     // HUD
-    private coinScore: any;
-    private lives: any;
-    private numbFont: Phaser.Types.GameObjects.BitmapText.RetroFontConfig;
-    private hud: {
-        container?: any;
-        lives?: any;
-        coins?: {
-            img?: any;
-            text?: any;
-        };
-        fuelBar?: any;
-        fuelFrame?: any;
-        powerup?: {
-            jump?: any;
-            dash?: any;
-            pack?: any;
-        };
-        level?: {
-            img?: any;
-            text?: any;
-        };
+     coinScore;
+     lives;
+     numbFont;
+     hud = {
+        container,
+        lives,
+        coins: {
+            img,
+            text,
+        },
+        fuelBar,
+        fuelFrame,
+        powerup: {
+            jump,
+            dash,
+            pack,
+        },
+        level: {
+            img,
+            text,
+        },
     };
 
     constructor() {
@@ -93,7 +92,7 @@ export default class TestLevel extends Phaser.Scene {
         };
     }
 
-    public create(): void {
+     create() {
         this.cameras.main.fadeOut(0);
 
         if (!this.data.get("levels")) {
@@ -268,7 +267,7 @@ export default class TestLevel extends Phaser.Scene {
         this.debugGraphics = this.physics.world.createDebugGraphic();
         this.debugGraphics.destroy();
 
-        this.cameras.main.once("camerafadeoutcomplete", (camera: any) => {
+        this.cameras.main.once("camerafadeoutcomplete", (camera) => {
             camera.fadeIn(500);
         });
 
@@ -279,7 +278,7 @@ export default class TestLevel extends Phaser.Scene {
         this.createUI();
     }
 
-    public update(time: number, delta: number): void {
+     update(time, delta) {
         if (this.player.body.y > this.mapManager.map.heightInPixels + 10) {
             let checkpoint = this.checkpointPos;
             let teleport = this.add.sprite(
@@ -305,7 +304,7 @@ export default class TestLevel extends Phaser.Scene {
                 this
             );
 
-            teleport.on(`animationcomplete`, (animation: any, frame: any) => {
+            teleport.on(`animationcomplete`, (animation, frame) => {
                 teleport.destroy();
             });
 
@@ -323,7 +322,7 @@ export default class TestLevel extends Phaser.Scene {
 			this.scene.launch("Pause");
 			//this.player.setPipeline("Grayscale");
 			this.scene.pause("DialogBox");
-            (this.scene.get("Menu") as any).music.pause();
+            this.scene.get("Menu").music.pause();
             this.scene.moveBelow("TestLevel", "DialogBox");
 			this.scene.pause("TestLevel");
 
@@ -385,12 +384,12 @@ export default class TestLevel extends Phaser.Scene {
         }
     }
 
-    public init(data: any): void {
+     init(data) {
         this.currentLevel = data.level;
         this.data.set(`coins`, data.coins);
     }
 
-    private hurt(): any {
+     hurt() {
         // Player has been hit so it should be slowed
         this.player.maxSpeed = 80;
         // Sound
@@ -418,7 +417,7 @@ export default class TestLevel extends Phaser.Scene {
         );
     }
 
-    private hurtEnemy(element1: any, element2: any) {
+     hurtEnemy(element1, element2) {
         if (element1.state != "DASHING" && !element1.isColliding) {
             this.cleanCollider();
             this.hurt();
@@ -458,7 +457,7 @@ export default class TestLevel extends Phaser.Scene {
 
             explosion.anims.play(`explode`);
 
-            explosion.on(`animationcomplete`, (animation: any, frame: any) => {
+            explosion.on(`animationcomplete`, (animation, frame) => {
                 explosion.destroy();
             });
 
@@ -466,14 +465,14 @@ export default class TestLevel extends Phaser.Scene {
         }
     }
 
-    private hurtProj(element1: any, element2: any) {
+     hurtProj(element1, element2) {
         if (!element1.isColliding) {
             this.cleanCollider();
             this.hurt();
         }
     }
 
-    private cleanCollider() {
+     cleanCollider() {
         console.log("Clean collider on!");
         this.playerFadeTween.play();
         this.player.isColliding = true;
@@ -505,7 +504,7 @@ export default class TestLevel extends Phaser.Scene {
         );
     }
 
-    private getCoin(element1: any, element2: any) {
+     getCoin(element1, element2) {
         element2.vanish();
         this.data.set("temp_coins", this.data.get("temp_coins") + 1);
         this.coin.play({
@@ -516,7 +515,7 @@ export default class TestLevel extends Phaser.Scene {
         );
     }
 
-    private getPowerup(element1: any, element2: any) {
+     getPowerup(element1, element2) {
         // Activate respective HUD element
         switch (element2.typeOf) {
             case Power.Jump:
@@ -532,7 +531,7 @@ export default class TestLevel extends Phaser.Scene {
         element2.vanish(element1);
     }
 
-    private getPortal(element1: any, element2: any) {
+     getPortal(element1, element2) {
         let next_level = element2.getLevel();
 
         if (this.warping) return;
@@ -557,7 +556,7 @@ export default class TestLevel extends Phaser.Scene {
         this.cameras.main.fadeOut(200);
     }
 
-    private createUI() {
+     createUI() {
         // Coins - Top left of UI
         this.hud.coins = {
             img: this.add.image(20, 20, "hud-piece"),
@@ -599,7 +598,7 @@ export default class TestLevel extends Phaser.Scene {
         };
 
         // Config for lives group
-        let config: Phaser.Types.GameObjects.Group.GroupCreateConfig = {
+        let config = {
             key: "hud-heart",
             repeat: 4,
             setXY: {
@@ -609,7 +608,7 @@ export default class TestLevel extends Phaser.Scene {
             },
         };
         this.hud.lives = this.add.group(config);
-        this.hud.lives.children.iterate((element: any) => {
+        this.hud.lives.children.iterate((element) => {
             element.setScrollFactor(0, 0).setScale(0.8);
         });
 

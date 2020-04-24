@@ -10,12 +10,12 @@ const PROJ_VELOCITY = 100;
 // - Custom parameter "behavious" function to alter the projectile's behavious
 
 export class Projectile extends Phaser.GameObjects.Sprite {
-    public body: Phaser.Physics.Arcade.Body;
-    private lifetime: number;
-    private velocity: number;
-    private timer: number;
+     body: Phaser.Physics.Arcade.Body;
+     lifetime;
+     velocity;
+     timer;
 
-    constructor(params: any) {
+    constructor(params) {
         super(params.scene, params.x, params.y, params.texture, params.frame);
         // Visual settings
         this.createAnimations();
@@ -34,7 +34,7 @@ export class Projectile extends Phaser.GameObjects.Sprite {
 
         this.scene.add.existing(this);
     }
-    update(delta: number) {
+    update(delta) {
         // Increase timer
         this.timer += delta;
 
@@ -47,7 +47,7 @@ export class Projectile extends Phaser.GameObjects.Sprite {
             this.vanishAndDestroy();
         }
     }
-    vanishAndDestroy(): void {
+    vanishAndDestroy() {
         // If projectile remains active, play animation
         if (this.active) this.anims.play(`${this.texture.key}_vanish`, true);
         // After animation ends, make inactive and destroy
@@ -61,7 +61,7 @@ export class Projectile extends Phaser.GameObjects.Sprite {
             this
         );
     }
-    createAnimations(): void {
+    createAnimations() {
         const texture_key: string = this.texture.key;
         this.scene.anims.create({
             key: `${texture_key}_loop`,
@@ -81,7 +81,7 @@ export class Projectile extends Phaser.GameObjects.Sprite {
             frameRate: 12,
         });
     }
-    defaultSetup(): void {
+    defaultSetup() {
         this.body.setVelocity(this.velocity, 0);
     }
 }

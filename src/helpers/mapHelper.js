@@ -9,16 +9,16 @@ import Player from "../objects/player";
 import { prependOnceListener } from "cluster";
 
 interface objectProp {
-    [key: string]: any;
+    [key: string];
 }
 
 export default class MapHelper extends Phaser.Tilemaps.Tilemap {
-    public map: any;
-    private lastPlayerXPos: number;
-    private tileset: any;
-    private level: any[];
-    private currentScene: Phaser.Scene;
-    private background: Phaser.GameObjects.TileSprite[];
+     map;
+     lastPlayerXPos;
+     tileset;
+     level[];
+     currentScene: Phaser.Scene;
+     background: Phaser.GameObjects.TileSprite[];
 
     constructor(
         scene: Phaser.Scene,
@@ -46,10 +46,10 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
     /*** Set the Tileset for the Tilemap ***/
     ////////////////////////////////////////
 
-    private setTilesetImage(
+     setTilesetImage(
         tilesetInTiled: string,
         tilesetInBoot: string
-    ): void {
+    ) {
         this.tileset = this.map.addTilesetImage(
             tilesetInTiled,
             tilesetInBoot,
@@ -60,15 +60,15 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         );
     }
 
-    public setSpriteCollision(sprite: Phaser.GameObjects.Sprite): void {
+     setSpriteCollision(sprite: Phaser.GameObjects.Sprite) {
         this.currentScene.physics.add.collider(this.level[0], sprite);
     }
 
     /* Set Static Layers */
-    public setStaticLayers(
+     setStaticLayers(
         layers: Array<string>,
         sprites: Array<Phaser.GameObjects.Sprite>
-    ): void {
+    ) {
         layers.forEach((layer, index) => {
             this.level[index] = this.map.createStaticLayer(layer, this.tileset);
             this.level[index].setCollisionByProperty({ collides: true });
@@ -82,18 +82,18 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         });
     }
 
-    public createPlayer(layer_n: string, obj_n: string): any {
-        let player: any = null;
+     createPlayer(layer_n: string, obj_n: string) {
+        let player = null;
 
         let obj_layer: Phaser.Tilemaps.ObjectLayer = null;
 
-        this.map.objects.forEach((element: any) => {
+        this.map.objects.forEach((element) => {
             if (element.name == layer_n) {
                 obj_layer = element;
             }
         });
 
-        obj_layer.objects.forEach((element: any, index: number) => {
+        obj_layer.objects.forEach((element, index) => {
             if (element.name == obj_n) {
                 player = new Player({
                     scene: this.scene,
@@ -111,27 +111,27 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         return player;
     }
 
-    public createObjects<T extends Phaser.GameObjects.Sprite>(
+     createObjects<T extends Phaser.GameObjects.Sprite>(
         layer_n: string,
         obj_n: string,
-        classes: any
-    ): any[] {
-        let obj_arr: any[] = [];
+        classes
+    )[] {
+        let obj_arr[] = [];
 
         let obj_layer: Phaser.Tilemaps.ObjectLayer = null;
 
-        this.map.objects.forEach((layer: any) => {
+        this.map.objects.forEach((layer) => {
             if (layer.name == layer_n) {
                 obj_layer = layer;
             }
         });
 
-        obj_layer.objects.forEach((element: any, index: number) => {
+        obj_layer.objects.forEach((element, index) => {
             if (element.type == obj_n) {
                 const class_n = classes[element.name];
                 let newProps: objectProp = {};
                 if (element.hasOwnProperty("properties")) {
-                    element.properties.forEach((element: any) => {
+                    element.properties.forEach((element) => {
                         newProps[element.name] = element.value;
                     });
                 }
@@ -148,7 +148,7 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         return obj_arr;
     }
 
-    private setBounds(): void {
+     setBounds() {
         this.currentScene.cameras.main.setBounds(
             0,
             0,
@@ -158,7 +158,7 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         );
     }
 
-    private createBackground(): void {
+     createBackground() {
         // Manually adjusted values to make parallax height scroll look good
         const scrollValues = [0.5, 0.3, 0.05, 0];
         const tileSpriteYValues = [500, 200, 25, 0];
@@ -173,7 +173,7 @@ export default class MapHelper extends Phaser.Tilemaps.Tilemap {
         }
     }
 
-    public parallaxUpdate(): void {
+     parallaxUpdate() {
         this.background.forEach((i, index) => {
             i.tilePositionX =
                 this.currentScene.cameras.main.scrollX / (index + 1.5);

@@ -1,5 +1,3 @@
-import Player from "../objects/player.js";
-
 import Coil from "../objects/enemies/coil.js";
 import Cannon from "../objects/enemies/cannon.js";
 import Legs from "../objects/enemies/legs.js";
@@ -16,9 +14,9 @@ import { Second, Entrance } from "../utils/text.js";
 import { addOrTakeLives } from "../utils/libplayer.js";
 
 const Power = {
-    Jump: Symbol(),
+    Jump:    Symbol(),
     Jetpack: Symbol(),
-    Dash: Symbol(),
+    Dash:    Symbol(),
 }
 
 export default class TestLevel extends Phaser.Scene {
@@ -79,7 +77,7 @@ export default class TestLevel extends Phaser.Scene {
 
     constructor() {
         super({
-            key: "TestLevel",
+            key: "TestLevel"
         });
 
         this.allSprites = [];
@@ -92,19 +90,26 @@ export default class TestLevel extends Phaser.Scene {
         };
     }
 
+    initData(...data) {
+        for (let string of data) {
+            if (!this.data.get(string)) {
+                this.data.set(string, 0);
+            }
+        }
+    }
+
+    setTemporalData(...data) {
+        for (let string of data) {
+            this.data.set(string, 0);
+        }
+    }
+
      create() {
         this.cameras.main.fadeOut(0);
 
-        if (!this.data.get("levels")) {
-            this.data.set("levels", 0);
-        }
-
-        if (!this.data.get("coins")) {
-            this.data.set("coins", 0);
-        }
-
-        this.data.set("temp_coins", 0);
-
+        this.initData("levels", "coins");
+        this.setTemporalData("temp_coins");
+ 
         // Create Map Manager
         const teslaMapData = new Phaser.Tilemaps.MapData({
             name: `tesla_level${this.currentLevel}`,

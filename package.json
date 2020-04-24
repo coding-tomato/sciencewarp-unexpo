@@ -4,7 +4,8 @@
   "description": "My webpack project",
   "main": "index.js",
   "scripts": {
-    "start": "live-server"
+    "start": "live-server",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   },
   "homepage": "https://github.com/VeryEvilTomato/sciencewarp-unexpo#readme",
   "devDependencies": {
+    "jest": "^25.4.0",
     "live-server": "^1.2.1",
     "phaser": "^3.20.1"
   },

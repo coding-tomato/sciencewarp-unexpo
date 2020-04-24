@@ -1,10 +1,11 @@
 import "phaser";
 
 export default class Menu extends Phaser.Scene {
-    bg;
-    controlKeys;
-    enterKey;
-    music;
+    bg: Array<any>;
+
+    private controlKeys: Phaser.Types.Input.Keyboard.CursorKeys;
+    private enterKey: Phaser.Input.Keyboard.Key;
+    public music: any;
 
     constructor() {
         super({
@@ -14,7 +15,7 @@ export default class Menu extends Phaser.Scene {
         this.bg = [];
     }
 
-     create() {
+    public create(): void {
         const width = this.cameras.main.width;
         const height = this.cameras.main.height;
 
@@ -72,7 +73,7 @@ export default class Menu extends Phaser.Scene {
             repeat: -1,
         });
 
-        this.events.addListener("change", (previous) => {
+        this.events.addListener("change", (previous: number) => {
             high.remove();
             list[previous].setAlpha(1);
             console.log(this.data.get("item_selected"));
@@ -87,10 +88,10 @@ export default class Menu extends Phaser.Scene {
         this.enterKey = this.input.keyboard.addKey("ENTER");
     }
 
-     update() {
+    public update(): void {
         if (Phaser.Input.Keyboard.JustDown(this.controlKeys.up)) {
             if (this.data.get("item_selected") != 0) {
-                let previous = this.data.get("item_selected");
+                let previous: number = this.data.get("item_selected");
                 this.data.set("item_selected", previous - 1);
                 this.events.emit("change", previous);
             }
@@ -101,7 +102,7 @@ export default class Menu extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.controlKeys.down)) {
             if (this.data.get("item_selected") != 2) {
-                let previous = this.data.get("item_selected");
+                let previous: number = this.data.get("item_selected");
                 this.data.set("item_selected", previous + 1);
                 this.events.emit("change", previous);
             }
@@ -109,7 +110,7 @@ export default class Menu extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
             let item_selected = this.data.get(`item_selected`);
-            this.cameras.main.once("camerafadeoutcomplete", (camera) => {
+            this.cameras.main.once("camerafadeoutcomplete", (camera: any) => {
                 this.scene.launch("TestLevel", {
                     level: item_selected,
                     coins: 0,

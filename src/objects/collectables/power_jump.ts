@@ -1,16 +1,18 @@
 import "phaser";
 
-const Power = {
+enum Power {
     Jump,
     Jetpack,
     Dash,
 }
 
-class Powerup extends Phaser.Physics.Arcade.Sprite {
-    isGone;
-    typeOf;
+interface Powerup {
+    isGone: boolean;
+    typeOf: Power;
+}
 
-    constructor(params) {
+class Powerup extends Phaser.Physics.Arcade.Sprite {
+    constructor(params: any) {
         super(params.scene, params.x, params.y, params.key);
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
@@ -19,8 +21,8 @@ class Powerup extends Phaser.Physics.Arcade.Sprite {
 
         this.isGone = false;
 
-        this.body.setImmovable(true);
-        this.body.setAllowGravity(false);
+        (this.body as Phaser.Physics.Arcade.Body).setImmovable(true);
+        (this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
         this.animSetup();
     }
@@ -59,7 +61,7 @@ class Powerup extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    vanish(player) {
+    vanish(player: any) {
         this.disableBody();
         this.isGone = true;
 

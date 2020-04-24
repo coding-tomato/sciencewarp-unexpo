@@ -1,4 +1,4 @@
-import GrayscalePipeline from "../../assets/shaders/grayPipeline";
+import GrayscalePipeline from "../assets/shaders/grayPipeline";
 
 export default class Bootstrap extends Phaser.Scene {
     constructor() {
@@ -7,7 +7,7 @@ export default class Bootstrap extends Phaser.Scene {
         });
     }
 
-     preload() {
+    public preload(): void {
         // Load level on complete
         this.load.on("complete", () => {
             this.scene.start("Menu");
@@ -157,7 +157,7 @@ export default class Bootstrap extends Phaser.Scene {
         this.load.image("fuel-frame", "sprites/hud/fuel_frame.png");
 
         // Shaders
-        this.game.renderer.addPipeline(
+        (this.game.renderer as any).addPipeline(
             "Grayscale",
             new GrayscalePipeline(this.game)
         );

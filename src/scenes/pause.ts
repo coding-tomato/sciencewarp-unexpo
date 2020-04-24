@@ -1,11 +1,25 @@
 // TODO: Implement handleVolume
 // TODO: Implement handleExittoMainMenu
 
+interface Pause {
+    // Little hack to avoid errors
+    // By calling functions programatically
+    // With a string index
+    [index: string]: any;
+}
+
+type optCfg = { value: string, x: number, y: number };
+type Option = { text: Phaser.GameObjects.Text, call: any };
+type fnCfg = (value: string, x: number, y: number) => optCfg;
+type fnOpt = (config: optCfg) => Option;
+
+type Menu = Array<Option>
+
 class Pause extends Phaser.Scene {
 
-     controlKeys;
-     enterKey;
-     list;
+    private controlKeys: Phaser.Types.Input.Keyboard.CursorKeys;
+    private enterKey: Phaser.Input.Keyboard.Key;
+    private list: Menu;
 
     constructor() {
         super({
@@ -20,12 +34,12 @@ class Pause extends Phaser.Scene {
         // Exit to Main Menu     -- return to start screen
 
         // To send to fnOpt, which accepts optCfg
-        const configOpt = (value, x, y) => {
+        const configOpt: fnCfg = (value, x, y) => {
             return { value, x, y };
         }
 
         // For uniform vertical paddings
-        const fnPadding = (init, step) => {
+        const fnPadding = (init: number, step: number) => {
             let padding = init;
             return function () {
                 padding += step;
@@ -34,10 +48,10 @@ class Pause extends Phaser.Scene {
         }
 
         // To get valid function names for multi-word options
-        const stripWhiteSpace = (str) => str.split("").filter((ch) => ch != " ").join("");
+        const stripWhiteSpace = (str: string) => str.split("").filter((ch) => ch != " ").join("");
 
         // Returns a new Option, which consists in a text object and a function name
-        const makeOpt = (config) => {
+        const makeOpt: fnOpt = (config) => {
             return {
                 text: this.add
                     .text(config.x, config.y, config.value)
@@ -63,7 +77,7 @@ class Pause extends Phaser.Scene {
 
         // Fade in and out tween
         // Apply tween to currently selected list entry
-        const getFadeTween = (targets) => this.tweens.add({
+        const getFadeTween = (targets: any) => this.tweens.add({
             targets,
             alpha: { from: 0.5, to: 1 },
             repeat: -1,
@@ -74,7 +88,7 @@ class Pause extends Phaser.Scene {
         // When there's a change
         // Remove tween from previous entry
         // And apply to new selected entry
-        this.events.addListener("change", (previous) => {
+        this.events.addListener("change", (previous: number) => {
             optTween.remove();
             this.list[previous].text.setAlpha(1);
             /*DEBUG*/ // console.log(this.data.get("item_selected"));
@@ -108,7 +122,7 @@ class Pause extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.controlKeys.up)) {
             if (this.data.get("item_selected") != 0) {
-                let previous = this.data.get("item_selected");
+                let previous: number = this.data.get("item_selected");
                 this.data.set("item_selected", previous - 1);
                 this.events.emit("change", previous);
             }
@@ -116,27 +130,27 @@ class Pause extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.controlKeys.down)) {
             if (this.data.get("item_selected") != this.list.length - 1) {
-                let previous = this.data.get("item_selected");
+                let previous: number = this.data.get("item_selected");
                 this.data.set("item_selected", previous + 1);
                 this.events.emit("change", previous);
             }
         }
     }
 
-     handleContinue(input) {
+    private handleContinue(input: string): void {
         if (input === "enter") {
             this.scene.moveAbove("TestLevel", "DialogBox");
             this.scene.resume("DialogBox");
             this.scene.resume("TestLevel");
             // Restart music
-            this.scene.get("Menu").music.resume();
+            (this.scene.get("Menu") as any).music.resume();
             // Delete gray shader
             this.scene.get("TestLevel").cameras.main.clearRenderToTexture();
             this.scene.stop("Pause");
         }
     }
 
-     handleVolume(dir) {
+    private handleVolume(dir: string): void {
         if (dir === "left") {
             this.sound.volume -= 0.1
             console.log(this.sound.volume);
@@ -146,7 +160,7 @@ class Pause extends Phaser.Scene {
         }
     }
 
-     handleExittoMainMenu() {
+    private handleExittoMainMenu(): void {
         console.log("Hi, I'm Exit!")
     }
 }

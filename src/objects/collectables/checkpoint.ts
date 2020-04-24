@@ -1,15 +1,17 @@
-export default class Checkpoint extends Phaser.Physics.Arcade.Sprite {
-     isGone;
+import "phaser";
 
-    constructor(params) {
+export default class Checkpoint extends Phaser.Physics.Arcade.Sprite {
+    private isGone: boolean;
+
+    constructor(params: any) {
         super(params.scene, params.x, params.y, params.key);
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
 
         this.isGone = false;
 
-        this.body.setImmovable(true);
-        this.body.setAllowGravity(false);
+        (this.body as Phaser.Physics.Arcade.Body).setImmovable(true);
+        (this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
         this.animSetup();
     }
@@ -21,7 +23,7 @@ export default class Checkpoint extends Phaser.Physics.Arcade.Sprite {
     vanish() {
         this.disableBody();
         this.isGone = true;
-        this.scene.checkpointPos = {
+        (this.scene as any).checkpointPos = {
             x: this.x,
             y: this.y,
         };

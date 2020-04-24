@@ -1,23 +1,23 @@
 import "phaser";
 
 class Portal extends Phaser.Physics.Arcade.Sprite {
-     isGone;
-     levelToWarp;
+    private isGone: boolean;
+    private levelToWarp: number;
 
-    constructor(params) {
+    constructor(params: any) {
         super(params.scene, params.x, params.y, params.key);
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
 
         this.levelToWarp = params.props.level;
 
-        this.body.setImmovable(true);
-        this.body.setAllowGravity(false);
+        (this.body as Phaser.Physics.Arcade.Body).setImmovable(true);
+        (this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
 
         this.animSetup();
     }
 
-    update(delta) {
+    update(delta: number) {
         this.anims.play(`portal_loop`, true);
     }
 
@@ -26,7 +26,7 @@ class Portal extends Phaser.Physics.Arcade.Sprite {
         this.anims.play(`portal_vanish`);
     }
 
-    getLevel() {
+    getLevel(): number {
         return this.levelToWarp;
     }
 

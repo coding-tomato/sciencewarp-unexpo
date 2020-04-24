@@ -1,7 +1,7 @@
 import "phaser";
 import { Projectile } from "../../helpers/proj";
 
-const const State {
+const enum State {
     WALKING = 1,
     WINDUP = 2,
     SHOOTING = 3,
@@ -14,15 +14,15 @@ const DIRECTION = 1;
 const PROJ_VEL = -100;
 
 export default class Vroomba extends Phaser.GameObjects.Sprite {
-     mapManager;
-     direction;
-     velocity;
-     range;
-     rest_time;
-     proj_vel;
-     body: Phaser.Physics.Arcade.Body;
+    private mapManager: any;
+    private direction: number;
+    private velocity: number;
+    private range: number;
+    private rest_time: number;
+    private proj_vel: number;
+    public body: Phaser.Physics.Arcade.Body;
 
-    constructor(params) {
+    constructor(params: any) {
         super(params.scene, params.x, params.y, params.key, params.frame);
         this.mapManager = params.scene.mapManager;
 
@@ -49,13 +49,13 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
         this.scene.add.existing(this);
     }
 
-    update(delta) {
+    update(delta: number): void {
         //Update handlers
         this.animationHandler();
         this.moveHandler();
     }
 
-    moveHandler() {
+    moveHandler(): void {
         let center = this.body.center;
         switch (this.state) {
             case State.WALKING:
@@ -96,7 +96,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
         return sight;
     }
 
-    createAnimations() {
+    createAnimations(): void {
         this.scene.anims.create({
             key: "walk",
             frames: this.scene.anims.generateFrameNumbers("vroomba", {
@@ -126,7 +126,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
         this.on("animationcomplete", this.animCompleteHandler, this);
     }
 
-    animationHandler() {
+    animationHandler(): void {
         this.setFlipX(this.direction === -1);
         switch (this.state) {
             case State.WALKING:
@@ -146,7 +146,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
     animCompleteHandler(
         animation: Phaser.Animations.Animation,
         frame: Phaser.Animations.AnimationFrame
-    ) {
+    ): void {
         switch (animation.key) {
             case "walking":
                 break;
@@ -173,7 +173,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
         }
     }
 
-    shootProjectile() {
+    shootProjectile(): void {
         let center = this.body.center;
         let proj_vel = this.proj_vel;
         const proj = new Projectile({

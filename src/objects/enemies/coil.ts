@@ -1,16 +1,16 @@
 import "phaser";
 
 export default class Coil extends Phaser.GameObjects.Sprite {
-     currentScene: Phaser.Scene;
-     direction: {
-        x;
-        y;
+    private currentScene: Phaser.Scene;
+    private direction: {
+        x: number;
+        y: number;
     };
-     velocity;
-     body: Phaser.Physics.Arcade.Body;
+    private velocity: number;
+    public body: Phaser.Physics.Arcade.Body;
     //Variables
 
-    constructor(params) {
+    constructor(params: any) {
         super(params.scene, params.x, params.y, params.key, params.frame);
         this.currentScene = params.scene;
 
@@ -33,12 +33,12 @@ export default class Coil extends Phaser.GameObjects.Sprite {
     }
 
     //Cycle
-    update(delta) {
+    update(delta: number): void {
         this.handleMovement(delta);
         this.handleAnimations();
     }
 
-     handleMovement(delta) {
+    private handleMovement(delta: number) {
         if (this.direction.x !== 0) {
             if (this.body.blocked.right || this.body.blocked.left) {
                 this.direction.x *= -1;
@@ -53,7 +53,7 @@ export default class Coil extends Phaser.GameObjects.Sprite {
         this.body.setVelocityY(this.velocity * this.direction.y);
     }
 
-     handleAnimations() {
+    private handleAnimations() {
         this.currentScene.anims.create({
             key: "coil_move",
             frames: this.currentScene.anims.generateFrameNumbers("coil", {

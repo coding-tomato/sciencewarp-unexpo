@@ -2,13 +2,13 @@ import "phaser";
 
 interface Props {
     scene: Phaser.Scene;
-    x;
-    y;
+    x: number;
+    y: number;
     texture: string;
 }
 
 export default class Platform extends Phaser.GameObjects.Sprite {
-     body: Phaser.Physics.Arcade.Body;
+    public body: Phaser.Physics.Arcade.Body;
 
     constructor(params: Props) {
         super(params.scene, params.x, params.y, params.texture);

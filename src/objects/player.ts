@@ -1,57 +1,70 @@
 import "phaser";
 
-const State = {
-    WALKING: Symbol(),
-    FLYING:  Symbol(),
-    DASHING: Symbol()
+const enum State {
+    WALKING = "WALKING",
+    FLYING = "FLYING",
+    DASHING = "DASHING"
+}
+
+interface Fuel {
+    vFuel: number;
+    maxFuel: number;
+    rateGetFuel: number;
+    rateLoseFuel: number;
+    bonusFuel: number;
+    fuelBox: Phaser.GameObjects.Graphics;
+    fuelBar: Phaser.GameObjects.Graphics;
+}
+
+interface Player {
+    lives: number;
 }
 
 const MAX_LIVES = 5;
 
 class Player extends Phaser.GameObjects.Sprite {
-    lives;
-    body;
-    currentScene;
+    public body: Phaser.Physics.Arcade.Body;
+    private currentScene: Phaser.Scene;
     //Debug
-     debug;
-     isColliding;
+    public debug: Phaser.GameObjects.Text;
+    public isColliding: boolean;
     //Powerup conditionals
-     powerup = {
-        dashActive: Symbol(),
-        jumpActive: Symbol(),
-        jetpActive: Symbol(),
-    };
+    public powerup: {
+        dashActive: boolean;
+        jumpActive: boolean;
+        jetpActive: boolean;
+    }
     //Variables
-     acceleration;
-     name;
-     maxSpeed;
-     friction;
-     direction = {
-        x,
-        y,
+    private acceleration: number;
+    public name: string;
+    public maxSpeed: number;
+    private friction: number;
+    private direction: {
+        x: number;
+        y: number;
     };
-     lastDirection = {
-        x,
-        y,
+    private lastDirection: {
+        x: number;
+        y: number;
     };
-     isJumping;
-     jetAcceleration;
-     jetMaxSpeed;
-     jumpHeight;
+    private isJumping: boolean;
+    private jetAcceleration: number;
+    private jetMaxSpeed: number;
+    private jumpHeight: number;
     //Input
-     keys;
-     wkeys;
+    private keys: Phaser.Types.Input.Keyboard.CursorKeys;
+    private wkeys: any;
     // Fuel
-     fuel;
+    private fuel: Fuel;
     // Scene
-     level;
+    private level: any;
     // Animation
-     anim_json;
-     dash_cool;
-     fuelBarFade;
-     fuelFrameFade;
+    private anim_json: Phaser.Types.Animations.JSONAnimations;
+    private dash_cool: boolean;
+    private fuelBarFade: any;
+    private fuelFrameFade: any;
 
-    constructor(params) {
+    constructor(params: any) {
         super(params.scene, params.x, params.y, params.key, params.frame);
         this.currentScene = params.scene;
 
@@ -156,7 +169,7 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     // Cycle
-     update(delta) {
+    public update(delta: number): void {
         // All controls go here
         this.handleInput();
         // Movement
@@ -182,13 +195,13 @@ class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
-     handleAudio() {
+    private handleAudio() {
         if (Phaser.Input.Keyboard.JustDown(this.keys.up)) {
             //this.currentScene.sound.play('jump_sfx');
         }
     }
 
-     handleInput() {
+    private handleInput() {
         
             if (this.keys.right.isDown || this.wkeys.D.isDown) {
                 this.direction.x = 1;
@@ -216,7 +229,7 @@ class Player extends Phaser.GameObjects.Sprite {
         }    
     }
 
-     dash() {
+    private dash() {
         // Check Player's Facing
         let facing = this.flipX ? -1 : 1;
 
@@ -249,7 +262,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
     }
 
-     handleMovement(delta) {
+    private handleMovement(delta: number) {
 
         //Air control
         switch (this.state) {
@@ -311,7 +324,7 @@ class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
-     handleAnimations() {
+    private handleAnimations() {
         if (this.direction.x !== 0) this.setFlipX(this.direction.x === -1);
         switch (this.state) {
 
@@ -342,7 +355,7 @@ class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
-     handleFuel(delta) {
+    private handleFuel(delta: number): void {
         switch (this.state) {
             case State.WALKING: {
                 if (
@@ -391,7 +404,7 @@ class Player extends Phaser.GameObjects.Sprite {
     }
     
 
-     walkUpdate() {
+    private walkUpdate(): void {
         if (this.body.blocked.down) {
             this.isJumping = false;
         }
@@ -413,9 +426,9 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     //Debug
-     debugUpdate(delta) {
+    public debugUpdate(delta: number): void {
         const r = Phaser.Math.RoundTo;
-        const debugUpdate = [
+        const debugUpdate: string[] = [
             `State:     ${this.state}`,
             `Position:  x: ${r(this.body.x, 0)} y: ${r(this.body.y, 0)}`,
             `Fuel:      ${this.fuel.vFuel}`,
@@ -427,13 +440,13 @@ class Player extends Phaser.GameObjects.Sprite {
         this.debug.setText(debugUpdate);
     }
 
-     checkIfAlive() {
+    private checkIfAlive(): void {
         if (this.lives <= 0) {
             this.currentScene.events.emit("gameOver");
         }
     }
 
-     gameShutdown() {
+    private gameShutdown(): void {
         // Player has lost all of its five lives
         this.currentScene.events.once("gameOver", () => {
             if (this.currentScene.scene.isPaused("Menu")) {
@@ -447,12 +460,12 @@ class Player extends Phaser.GameObjects.Sprite {
         });
     }
 
-     setFuel(amount) {
+    public setFuel(amount: number): void {
         this.fuel.vFuel = amount;
     }
 
     //Create animations
-     createAnimations() {
+    public createAnimations() {
         this.currentScene.anims.create({
             key: "idle",
             frames: this.currentScene.anims.generateFrameNumbers("moran", {

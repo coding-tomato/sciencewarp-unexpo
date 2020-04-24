@@ -2,17 +2,17 @@ import "phaser";
 
 interface Props {
     scene: Phaser.Scene;
-    x;
-    y;
+    x: number;
+    y: number;
     texture: string;
 }
 
 export default class Disappear extends Phaser.Physics.Arcade.Sprite {
-     body: Phaser.Physics.Arcade.Body;
-     scene: Phaser.Scene;
-     respawn: {
-        x;
-        y;
+    public body: Phaser.Physics.Arcade.Body;
+    public scene: Phaser.Scene;
+    public respawn: {
+        x: number;
+        y: number;
     };
 
     constructor(params: Props) {
@@ -31,7 +31,7 @@ export default class Disappear extends Phaser.Physics.Arcade.Sprite {
         this.body.setAllowGravity(false);
     }
 
-     disable() {
+    public disable() {
         this.scene.time.delayedCall(
             1000,
             () => {
@@ -57,5 +57,5 @@ export default class Disappear extends Phaser.Physics.Arcade.Sprite {
         );
     }
 
-     enable() {}
+    public enable() {}
 }

@@ -7,7 +7,7 @@ import "../objects/enemies/coil.js";
 import Player from "../objects/player.js";
 
 export default class MapHelper extends Phaser.Tilemaps.Tilemap {
-    //  map;
+    // map;
     //  lastPlayerXPos;
     //  tileset;
     //  level;

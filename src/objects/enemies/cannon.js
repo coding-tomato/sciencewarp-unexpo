@@ -1,15 +1,14 @@
-import "phaser";
-import { reset, isObjectNear, shoot } from "../../utils/libmon";
-import { Projectile } from "../../helpers/proj";
 
-enum State {
-    MOVING = 1,
-    ATTACKING = 2,
+import { Projectile } from "../../helpers/proj.js";
+
+const State = {
+    MOVING: 1,
+    ATTACKING: 2,
 }
 
-enum Direction {
-    RIGHT = -1,
-    LEFT = 1,
+const Direction = {
+    RIGHT: -1,
+    LEFT: 1,
 }
 
 const DIRECTION = Direction.LEFT;
@@ -21,17 +20,17 @@ const AGGRO_RAN = 300; // Range before it detects player
 const AGGRO_WIDTH = 3; // Width of Y to detect player
 
 export default class Cannon extends Phaser.GameObjects.Sprite {
-    public body: Phaser.Physics.Arcade.Body;
-    private moveTween: Phaser.Tweens.Tween;
-    private isAttacking: boolean;
-    //Properties
-    private travel_time: number;
-    private travel_dist: number;
-    private direction: Direction;
-    private restingTime: number;
-    public state: State;
+    //  body: Phaser.Physics.Arcade.Body;
+    //  moveTween: Phaser.Tweens.Tween;
+    //  isAttacking;
+    // //Properties
+    //  travel_time;
+    //  travel_dist;
+    //  direction: Direction;
+    //  restingTime;
+    //  state: State;
 
-    constructor(params: any) {
+    constructor(params) {
         super(params.scene, params.x, params.y, params.texture);
 
         this.direction = params.props.direction || DIRECTION;
@@ -52,7 +51,7 @@ export default class Cannon extends Phaser.GameObjects.Sprite {
         this.create();
     }
 
-    create(): void {
+    create() {
         // Y is calculated from original position
         const moveConfig = {
             targets: this,
@@ -67,10 +66,10 @@ export default class Cannon extends Phaser.GameObjects.Sprite {
         this.moveTween = this.scene.add.tween(moveConfig);
     }
 
-    update(): void {
+    update() {
         switch (this.state) {
             case State.MOVING:
-                this.moving((this.scene as any).player);
+                this.moving(this.scene.player);
                 break;
 
             case State.ATTACKING:
@@ -81,7 +80,7 @@ export default class Cannon extends Phaser.GameObjects.Sprite {
         }
     }
 
-    moving(player: any): void {
+    moving(player) {
         this.anims.play("cannon_move", true);
 
         if (this.isAttacking) return;
@@ -101,7 +100,7 @@ export default class Cannon extends Phaser.GameObjects.Sprite {
         if (isPlayerNear) this.state = State.ATTACKING;
     }
 
-    attack(): void {
+    attack() {
         this.isAttacking = true;
 
         if (!this.moveTween.isPaused()) {
@@ -164,11 +163,11 @@ export default class Cannon extends Phaser.GameObjects.Sprite {
             },
         });
 
-        (this.scene as any).allProj.push(proj);
-        (this.scene as any).mapManager.setSpriteCollision(proj);
+        this.scene.allProj.push(proj);
+        this.scene.mapManager.setSpriteCollision(proj);
     }
 
-    createAnimations(): void {
+    createAnimations() {
         this.scene.anims.create({
             key: "cannon_move",
             frames: this.scene.anims.generateFrameNumbers("cannon", {

@@ -1,25 +1,22 @@
-import "phaser";
 
-const enum State {
-    WALKING = "WALKING",
-    FLYING = "FLYING",
-    DASHING = "DASHING"
+
+const State = {
+    WALKING: "WALKING",
+    FLYING: "FLYING",
+    DASHING: "DASHING"
 }
 
 export default class PlayerInput extends Phaser.Scene {
 
-  private controls: Phaser.Types.Input.Keyboard.CursorKeys;
-  private player: any;
-
-  init(data: any) { 
+  init(data) { 
     this.player = data.player;
   }
 
-  create(): void {
+  create() {
     this.controls = this.input.keyboard.createCursorKeys();
   }
 
-  update(delta: number) {
+  update(delta) {
     let direction = this.player.direction;
 
     if (this.controls.right.isDown) {
@@ -45,7 +42,7 @@ export default class PlayerInput extends Phaser.Scene {
   }
 }
 /*
-  public handleMovement() {
+   handleMovement() {
     switch(this.player.state) {
       case State.WALKING:
         this.move();
@@ -58,7 +55,7 @@ export default class PlayerInput extends Phaser.Scene {
     }
   }
 
-  public move() {
+   move() {
     let body    = this.player.body;
     let dir     = this.player.direction;
     let lastDir = this.player.lastDirection;
@@ -86,7 +83,7 @@ export default class PlayerInput extends Phaser.Scene {
     }
   }
 
-  public jump() {
+   jump() {
     let body    = this.player.body;
     let dir     = this.player.direction;
     let lastDir = this.player.lastDirection;
@@ -116,7 +113,7 @@ export default class PlayerInput extends Phaser.Scene {
     lastDir.y = dir.y;
   }
 
-  fly(delta: number): void {
+  fly(delta) {
     let body = this.player.body;
     let hud = this.player.level.hud;
     let maxSpeed = this.player.jetMaxSpeed;
@@ -136,7 +133,7 @@ export default class PlayerInput extends Phaser.Scene {
     }
   }
 
-  dash(): void {
+  dash() {
     let body  = this.player.body;
     let state = this.player.state;
     let scene = this.player.currentScene;

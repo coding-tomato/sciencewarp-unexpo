@@ -1,10 +1,10 @@
-import "phaser";
-import { Projectile } from "../../helpers/proj";
 
-const enum State {
-    WALKING = 1,
-    WINDUP = 2,
-    SHOOTING = 3,
+import { Projectile } from "../../helpers/proj.js";
+
+const State = {
+    WALKING: 1,
+    WINDUP: 2,
+    SHOOTING: 3,
 }
 
 const SIGHT_RANGE = 400;
@@ -14,15 +14,15 @@ const DIRECTION = 1;
 const PROJ_VEL = -100;
 
 export default class Vroomba extends Phaser.GameObjects.Sprite {
-    private mapManager: any;
-    private direction: number;
-    private velocity: number;
-    private range: number;
-    private rest_time: number;
-    private proj_vel: number;
-    public body: Phaser.Physics.Arcade.Body;
+    //  mapManager;
+    //  direction;
+    //  velocity;
+    //  range;
+    //  rest_time;
+    //  proj_vel;
+    //  body;
 
-    constructor(params: any) {
+    constructor(params) {
         super(params.scene, params.x, params.y, params.key, params.frame);
         this.mapManager = params.scene.mapManager;
 
@@ -49,13 +49,13 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
         this.scene.add.existing(this);
     }
 
-    update(delta: number): void {
+    update(delta) {
         //Update handlers
         this.animationHandler();
         this.moveHandler();
     }
 
-    moveHandler(): void {
+    moveHandler() {
         let center = this.body.center;
         switch (this.state) {
             case State.WALKING:
@@ -65,7 +65,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
                     this.state = State.WINDUP;
                 }
                 //	Checks for cliffs to turn (bounce property takes cares of walls)
-                let turn: boolean =
+                let turn =
                     this.mapManager.map.getTileAtWorldXY(
                         Phaser.Math.RoundTo(
                             center.x +
@@ -87,7 +87,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
 
     isPlayerAbove() {
         //	Checks if a player is above the Vroomba's body up to a maximum Y range of the range property
-        let player = (this.scene as any).player;
+        let player = this.scene.player;
         let sight =
             player.body.x > this.body.x &&
             player.body.x < this.body.x + this.body.width &&
@@ -96,7 +96,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
         return sight;
     }
 
-    createAnimations(): void {
+    createAnimations() {
         this.scene.anims.create({
             key: "walk",
             frames: this.scene.anims.generateFrameNumbers("vroomba", {
@@ -126,7 +126,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
         this.on("animationcomplete", this.animCompleteHandler, this);
     }
 
-    animationHandler(): void {
+    animationHandler() {
         this.setFlipX(this.direction === -1);
         switch (this.state) {
             case State.WALKING:
@@ -144,9 +144,9 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
     }
 
     animCompleteHandler(
-        animation: Phaser.Animations.Animation,
-        frame: Phaser.Animations.AnimationFrame
-    ): void {
+        animation,
+        frame
+    ) {
         switch (animation.key) {
             case "walking":
                 break;
@@ -173,7 +173,7 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
         }
     }
 
-    shootProjectile(): void {
+    shootProjectile() {
         let center = this.body.center;
         let proj_vel = this.proj_vel;
         const proj = new Projectile({
@@ -187,6 +187,6 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
                 this.body.setVelocity(0, this.velocity);
             },
         });
-        (this.scene as any).allProj.push(proj);
+        this.scene.allProj.push(proj);
     }
 }

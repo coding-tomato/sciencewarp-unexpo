@@ -1,8 +1,8 @@
 import Bootstrap from  "./Bootstrap.js";
-import Menu      from  "./scenes/menu";
-import DialogBox from  "./scenes/hud/dialogbox";
-import Pause     from  "./scenes/pause";
-import TestLevel from  "./scenes/test_level";
+import Menu      from  "./scenes/menu.js";
+import DialogBox from  "./scenes/hud/dialogbox.js";
+import Pause     from  "./scenes/pause.js";
+import TestLevel from  "./scenes/test_level.js";
 
 const scene = [
     Bootstrap, Menu, DialogBox, Pause, TestLevel

@@ -1,10 +1,10 @@
-import "phaser";
+
 
 export function isObjectNear(
-    range: number,
-    firstObj: any,
-    secondObj: any
-): number {
+    range,
+    firstObj,
+    secondObj
+) {
     try {
         if (
             (firstObj.x <= secondObj.x + 100 && firstObj.x >= secondObj.x) ||
@@ -35,7 +35,7 @@ export function isObjectNear(
     }
 }
 
-export function reset(object: any, state: any, time: number = 100): void {
+export function reset(object, state, time = 100) {
     try {
         if (!("state" in object)) {
             throw "Object has no 'state' property.";
@@ -49,6 +49,6 @@ export function reset(object: any, state: any, time: number = 100): void {
     }
 }
 
-export function shoot(projNum: any, className: any, timeBetween: any) {
+export function shoot(projNum, className, timeBetween) {
     console.log("Hello");
 }

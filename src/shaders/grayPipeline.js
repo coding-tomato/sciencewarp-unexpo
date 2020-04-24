@@ -1,7 +1,5 @@
-import "phaser";
-
 class GrayscalePipeline extends Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline {
-    constructor(game: any) {
+    constructor(game) {
         const config = {
             game: game,
             renderer: game.renderer,

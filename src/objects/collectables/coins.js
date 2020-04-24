@@ -1,26 +1,21 @@
-import "phaser";
-
-interface Coins {
-    isGone: boolean;
-}
 
 class Coins extends Phaser.Physics.Arcade.Sprite {
-    constructor(params: any) {
+    constructor(params) {
         super(params.scene, params.x, params.y, params.key);
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
 
         this.isGone = false;
 
-        (this.body as Phaser.Physics.Arcade.Body).setImmovable(true);
-        (this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+        this.body.setImmovable(true);
+        this.body.setAllowGravity(false);
 
         this.animSetup();
     }
 
-    public create(): void {}
+     create() {}
 
-    public update(): void {
+     update() {
         if (!this.isGone) {
             this.anims.play("coins_float", true);
         } else {
@@ -28,7 +23,7 @@ class Coins extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    private animSetup(): void {
+     animSetup() {
         this.scene.anims.create({
             key: "coins_float",
             frames: this.scene.anims.generateFrameNumbers("coins", {
@@ -49,7 +44,7 @@ class Coins extends Phaser.Physics.Arcade.Sprite {
         });
     }
 
-    public vanish() {
+     vanish() {
         this.disableBody();
         this.isGone = true;
 

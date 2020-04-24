@@ -1,18 +1,14 @@
-import "phaser";
 
-const enum Direction {
-    LEFT = -1,
-    RIGHT = 1,
+
+const Direction = {
+    LEFT: -1,
+    RIGHT: 1,
 }
 
-const enum State {
-    MOVING = 1,
-    ATTACKING = 2,
-    RESTING = 3,
-}
-
-interface Legs {
-    direction: Direction;
+const State = {
+    MOVING: 1,
+    ATTACKING: 2,
+    RESTING: 3,
 }
 
 const VELOCITY = 150;
@@ -24,7 +20,7 @@ const ACCELERATION = 200;
 const RESET_TIME = 500;
 
 class Legs extends Phaser.Physics.Arcade.Sprite {
-    constructor(params: any) {
+    constructor(params) {
         super(params.scene, params.x, params.y, params.texture);
 
         this.createAnimations();
@@ -34,7 +30,7 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 
     // All initialization setup goes here
 
-    private arcadeSetup(): void {
+     arcadeSetup() {
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
         this.state = State.MOVING;
@@ -45,13 +41,13 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
 
     // Create events if needed
 
-    public create() {
+     create() {
         this.scene.events.addListener("jump", () => {
             this.jump();
         });
     }
 
-    public update() {
+     update() {
         switch (this.state) {
             case State.MOVING:
                 this.walk();
@@ -80,7 +76,7 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
         this.handleAnimations();
     }
 
-    private handleAnimations() {
+     handleAnimations() {
         // Animation displays running to the left, if Legs is running left,
         // then do not flip the sprite
         this.setFlipX(this.direction === Direction.LEFT ? false : true);
@@ -94,21 +90,21 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    private walk() {
+     walk() {
         if (this.body.blocked.right || this.body.blocked.left) {
             this.direction *= Direction.LEFT;
         }
         this.setVelocityX(VELOCITY * this.direction);
     }
 
-    private checkDistanceFromPlayer(): number {
-        const player = (this.scene as any).children.scene.player;
+     checkDistanceFromPlayer() {
+        const player = this.scene.children.scene.player;
 
         return Phaser.Math.Distance.Between(player.x, player.y, this.x, this.y);
     }
 
-    private checkIfPlayerOnSight(): boolean {
-        const player = (this.scene as any).children.scene.player;
+     checkIfPlayerOnSight() {
+        const player = this.scene.children.scene.player;
 
         return (
             (this.direction == Direction.LEFT && this.x > player.x) ||
@@ -116,12 +112,12 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
         );
     }
 
-    private jump(): void {
+     jump() {
         this.anims.play("legs_jump", true);
         this.setVelocityY(JUMP_AMOUNT);
     }
 
-    private rest(): void {
+     rest() {
         this.anims.play(`legs_land`, true);
 
         this.scene.time.delayedCall(
@@ -135,7 +131,7 @@ class Legs extends Phaser.Physics.Arcade.Sprite {
     }
 
     // Create Animations
-    private createAnimations(): void {
+     createAnimations() {
         // Default animation
         this.scene.anims.create({
             key: "legs_move",

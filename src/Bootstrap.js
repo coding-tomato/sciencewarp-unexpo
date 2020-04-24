@@ -1,4 +1,4 @@
-import GrayscalePipeline from "./shaders/grayPipeline";
+import GrayscalePipeline from "./shaders/grayPipeline.js";
 
 class Bootstrap extends Phaser.Scene {
     constructor() { 
@@ -23,14 +23,15 @@ class Bootstrap extends Phaser.Scene {
             new GrayscalePipeline(this.game)
         );
 
+
         // Menu Title
-        this.load.image("menu_title", "menu_title.png");
+        this.load.image("menu_title", "images/menu/im_menu_title.png");
 
 
-        this.load.audio("coin_sfx", "audio/coin.ogg");
-        this.load.audio("jump_sfx", "audio/jump.ogg");
-        this.load.audio("hurt_sfx", "audio/hurt.ogg");
-        this.load.audio("song", "audio/edzes.mp3");
+        this.load.audio("coin_sfx", "audio/au_coin.ogg");
+        this.load.audio("jump_sfx", "audio/au_jump.ogg");
+        this.load.audio("hurt_sfx", "audio/au_hurt.ogg");
+        this.load.audio("song", "audio/au_theme.mp3");
 
 
         // Sprites
@@ -39,7 +40,7 @@ class Bootstrap extends Phaser.Scene {
             frameHeight: 72,
         });
 
-        this.load.spritesheet("coins", "sprites/collectables/pieces.png", {
+        this.load.spritesheet("coins", "sprites/collectables/coins.png", {
             frameWidth: 18,
             frameHeight: 17,
         });
@@ -49,20 +50,20 @@ class Bootstrap extends Phaser.Scene {
             frameHeight: 24,
         });
 
-        this.load.spritesheet("coil", "sprites/enemies/tesla/coil.png", {
+        this.load.spritesheet("coil", "sprites/enemies/coil/coil.png", {
             frameWidth: 30,
             frameHeight: 30,
         });
 
         this.load.spritesheet(
             "cannon",
-            "sprites/enemies/tesla/cannoncopter_48x48.png",
+            "sprites/enemies/cannoncopter/cannoncopter_48x48.png",
             { frameWidth: 48, frameHeight: 48 }
         );
 
         this.load.spritesheet(
             "cannon_part",
-            "sprites/enemies/tesla/cannoncopter_particle_14x14.png",
+            "sprites/enemies/cannoncopter/cannoncopter_particle_14x14.png",
             {
                 frameWidth: 14,
                 frameHeight: 14,
@@ -71,25 +72,25 @@ class Bootstrap extends Phaser.Scene {
 
         this.load.spritesheet(
             "legs",
-            "sprites/enemies/tesla/legs-luthor_49x45.png",
+            "sprites/enemies/legs/legs-luthor_49x45.png",
             { frameWidth: 49, frameHeight: 45 }
         );
 
         this.load.spritesheet(
             "vroomba",
-            "sprites/enemies/tesla/vroomba_48x32.png",
+            "sprites/enemies/vroomba/vroomba_48x32.png",
             { frameWidth: 48, frameHeight: 32 }
         );
 
         this.load.spritesheet(
             "vroomba_part",
-            "sprites/enemies/tesla/vroomba_particle_32x32.png",
+            "sprites/enemies/vroomba/vroomba_particle_32x32.png",
             { frameWidth: 32, frameHeight: 32 }
         );
 
         this.load.spritesheet(
             "explosion",
-            "sprites/enemies/explosions_50x52.png",
+            "sprites/enemies/explosions/explosion_50x52.png",
             { frameWidth: 50, frameHeight: 52 }
         );
 
@@ -107,63 +108,63 @@ class Bootstrap extends Phaser.Scene {
         // Particles
         this.load.image(
             "explosion-particle0",
-            "sprites/enemies/explosion-particles0_16x16.png"
+            "sprites/enemies/explosions/explosion-particles0_16x16.png"
         );
         this.load.image(
             "explosion-particle1",
-            "sprites/enemies/explosion-particles1_16x16.png"
+            "sprites/enemies/explosions/explosion-particles1_16x16.png"
         );
         this.load.image(
             "explosion-particle2",
-            "sprites/enemies/explosion-particles2_16x16.png"
+            "sprites/enemies/explosions/explosion-particles2_16x16.png"
         );
 
         // Backgrounds
         for (let i = 0; i < 4; i++) {
-            this.load.image(`bg${i}`, `bg${i}.png`);
+            this.load.image(`bg${i}`, `images/im_background_${i}.png`);
         }
 
         // Tilemaps
-        this.load.image("tileset", "tilesets/tesla_tileset_extruded.png");
+        this.load.image("tileset", "images/tilesets/im_tesla_tileset_extruded.png");
         this.load.tilemapTiledJSON(
             "tesla_level0",
-            "tilemaps/tesla_tilemap_0.json"
+            "tilemaps/tm_tesla_0.json"
         );
         this.load.tilemapTiledJSON(
             "tesla_level1",
-            "tilemaps/tesla_tilemap_1.json"
+            "tilemaps/tm_tesla_1.json"
         );
         this.load.tilemapTiledJSON(
             "tesla_level2",
-            "tilemaps/tesla_tilemap_2.json"
+            "tilemaps/tm_tesla_2.json"
         );
         this.load.tilemapTiledJSON(
             "tesla_level3",
-            "tilemaps/tesla_tilemap_3.json"
+            "tilemaps/tm_tesla_3.json"
         );
         this.load.tilemapTiledJSON(
             "tesla_level4",
-            "tilemaps/tesla_tilemap_4.json"
+            "tilemaps/tm_tesla_4.json"
         );
         this.load.tilemapTiledJSON(
             "tesla_level5",
-            "tilemaps/tesla_tilemap_5.json"
+            "tilemaps/tm_tesla_5.json"
         );
         this.load.tilemapTiledJSON(
             "tesla_level6",
-            "tilemaps/tesla_tilemap_6.json"
+            "tilemaps/tm_tesla_6.json"
         );
 
         // Font
-        this.load.json("numbers_json", "font_numbers.json");
-        this.load.image("numbers", "font_numbers.png");
+        this.load.json("numbers_json", "sprites/fonts/font_numbers.json");
+        this.load.image("numbers", "sprites/fonts/font_numbers.png");
 
         // HUD
-        this.load.image("hud-heart", "sprites/hud/hud_heart.png");
-        this.load.image("hud-piece", "sprites/hud/hud_piece.png");
-        this.load.image("hud-portal", "sprites/hud/hud_portal.png");
-        this.load.image("fuel-bar", "sprites/hud/fuel_bar.png");
-        this.load.image("fuel-frame", "sprites/hud/fuel_frame.png");
+        this.load.image("hud-heart", "images/hud/im_hud_heart.png");
+        this.load.image("hud-piece", "images/hud/im_hud_piece.png");
+        this.load.image("hud-portal", "images/hud/im_hud_portal.png");
+        this.load.image("fuel-bar", "images/hud/im_hud_fuel_bar.png");
+        this.load.image("fuel-frame", "images/hud/im_hud_fuel_frame.png");
         
     }
 }

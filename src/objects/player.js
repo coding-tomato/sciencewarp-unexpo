@@ -152,7 +152,15 @@ class Player extends Phaser.GameObjects.Sprite {
             }
         });
 
-        this.currentScene.scene.add("PlayerInput", PlayerInput, true, { player: this });
+        if (this.scene.scene.isPaused("PlayerInput")) {
+            this.scene.scene.resume("PlayerInput");
+        }
+
+        if (!this.scene.scene.get("PlayerInput")) {
+            this.currentScene.scene.add("PlayerInput", PlayerInput, true, { player: this });
+
+        }
+        
     }
 
     // Cycle
@@ -455,6 +463,8 @@ class Player extends Phaser.GameObjects.Sprite {
             if (this.currentScene.scene.isPaused("Menu")) {
                 this.currentScene.scene.resume("Menu");
             }
+
+            this.scene.scene.pause("PlayerInput");
 
             if (this.currentScene.scene.isActive("DialogBox")) {
                 this.currentScene.scene.stop("DialogBox");

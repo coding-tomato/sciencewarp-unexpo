@@ -1,10 +1,10 @@
-
 import { Projectile } from "../../helpers/proj.js";
+import Init from "../../libs/common.js";
 
 const State = {
-    WALKING: 1,
-    WINDUP: 2,
-    SHOOTING: 3,
+    WALKING:  Symbol(),
+    WINDUP:   Symbol(),
+    SHOOTING: Symbol(),
 }
 
 const SIGHT_RANGE = 400;
@@ -22,12 +22,23 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
     //  proj_vel;
     //  body;
 
+    size = {
+        x: 48,
+        y: 8,
+    };
+
+    offset = {
+        x: 0,
+        y: 24,
+    };
+
+    state = State.WALKING;
+
     constructor(params) {
         super(params.scene, params.x, params.y, params.key, params.frame);
         this.mapManager = params.scene.mapManager;
 
         // Param handling - To do
-        this.state = State.WALKING;
         this.direction = params.direction || DIRECTION;
         this.velocity = params.velocity || VELOCITY;
         this.range = params.range || SIGHT_RANGE;
@@ -37,16 +48,14 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
         // Animations
         this.createAnimations();
         this.anims.play("walk");
-        this.setDepth(1);
+        this.setDepth(1); 
 
         // Physics settings
-        this.scene.physics.world.enable(this);
+        Init.sprite(this.scene, this).add();
+        Init.sprite(this.scene, this).resize(this.size, this.offset);
+
         this.body.setVelocityX(this.velocity);
         this.body.setBounceX(1);
-        this.body.setSize(48, 8, false);
-        this.body.setOffset(0, 24);
-
-        this.scene.add.existing(this);
     }
 
     update(delta) {

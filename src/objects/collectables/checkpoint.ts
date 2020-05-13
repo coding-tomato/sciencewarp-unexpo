@@ -1,44 +1,20 @@
 import "phaser";
 
-export default class Checkpoint extends Phaser.Physics.Arcade.Sprite {
-    private isGone: boolean;
+const DESPAWN_TIMER = 500;
 
-    constructor(params: any) {
+export default class Checkpoint extends Phaser.Physics.Arcade.Sprite {
+
+    isGone = false;
+    body: Phaser.Physics.Arcade.Body;
+
+    constructor(params) {
         super(params.scene, params.x, params.y, params.key);
+
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
+        this.body.setImmovable(true);
+        this.body.setAllowGravity(false);
 
-        this.isGone = false;
-
-        (this.body as Phaser.Physics.Arcade.Body).setImmovable(true);
-        (this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
-
-        this.animSetup();
-    }
-
-    update() {
-        if (!this.isGone) this.anims.play(`checkpoint_loop`, true);
-    }
-
-    vanish() {
-        this.disableBody();
-        this.isGone = true;
-        (this.scene as any).checkpointPos = {
-            x: this.x,
-            y: this.y,
-        };
-        this.anims.play(`checkpoint_vanish`);
-        this.scene.time.delayedCall(
-            500,
-            () => {
-                this.destroy();
-            },
-            [],
-            this
-        );
-    }
-
-    animSetup() {
         this.scene.anims.create({
             key: "checkpoint_loop",
             frames: this.scene.anims.generateFrameNumbers("checkpoint", {
@@ -58,5 +34,25 @@ export default class Checkpoint extends Phaser.Physics.Arcade.Sprite {
             frameRate: 12,
             hideOnComplete: true,
         });
+    }
+
+    update() {
+        if (!this.isGone) this.anims.play("checkpoint_loop", true);
+    }
+
+    vanish() {
+        this.disableBody();
+        this.isGone = true;
+
+        (this.scene as any).checkpointPos = {
+            x: this.x,
+            y: this.y,
+        };
+
+        this.anims.play("checkpoint_vanish");
+
+        this.scene.time.delayedCall(DESPAWN_TIMER, () => {
+            this.destroy();
+        }, [], this);
     }
 }

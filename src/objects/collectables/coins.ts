@@ -1,34 +1,20 @@
 import "phaser";
 
-interface Coins {
-    isGone: boolean;
-}
+const DESPAWN_TIMER = 500;
 
 class Coins extends Phaser.Physics.Arcade.Sprite {
+
+    isGone = false;
+    body: Phaser.Physics.Arcade.Body;
+
     constructor(params: any) {
         super(params.scene, params.x, params.y, params.key);
+
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
+        this.body.setImmovable(true);
+        this.body.setAllowGravity(false);
 
-        this.isGone = false;
-
-        (this.body as Phaser.Physics.Arcade.Body).setImmovable(true);
-        (this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
-
-        this.animSetup();
-    }
-
-    public create(): void {}
-
-    public update(): void {
-        if (!this.isGone) {
-            this.anims.play("coins_float", true);
-        } else {
-            this.anims.play("coins_vanish", true);
-        }
-    }
-
-    private animSetup(): void {
         this.scene.anims.create({
             key: "coins_float",
             frames: this.scene.anims.generateFrameNumbers("coins", {
@@ -49,18 +35,21 @@ class Coins extends Phaser.Physics.Arcade.Sprite {
         });
     }
 
-    public vanish() {
+    update() {
+        if (!this.isGone) {
+            this.anims.play("coins_float", true);
+        } else {
+            this.anims.play("coins_vanish", true);
+        }
+    }
+
+    vanish() {
         this.disableBody();
         this.isGone = true;
 
-        this.scene.time.delayedCall(
-            500,
-            () => {
-                this.destroy();
-            },
-            [],
-            this
-        );
+        this.scene.time.delayedCall(DESPAWN_TIMER, () => {
+            this.destroy();
+        }, [], this);
     }
 }
 

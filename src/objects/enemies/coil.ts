@@ -1,14 +1,13 @@
 import "phaser";
 
 export default class Coil extends Phaser.GameObjects.Sprite {
-    private currentScene: Phaser.Scene;
-    private direction: {
-        x: number;
-        y: number;
+    currentScene: Phaser.Scene;
+    direction: {
+        x;
+        y;
     };
-    private velocity: number;
-    public body: Phaser.Physics.Arcade.Body;
-    //Variables
+    velocity = 100;
+    body: Phaser.Physics.Arcade.Body;
 
     constructor(params: any) {
         super(params.scene, params.x, params.y, params.key, params.frame);
@@ -22,38 +21,17 @@ export default class Coil extends Phaser.GameObjects.Sprite {
             dir_y = params.props.dir_y;
         }
 
-        this.direction = { x: dir_x, y: dir_y };
-        this.velocity = 100;
+        this.direction = {
+            x: dir_x,
+            y: dir_y
+        };
 
         //Settings
         this.scene.add.existing(this);
         this.currentScene.physics.world.enable(this);
         this.body.setAllowGravity(false);
         this.body.setSize(16, 16);
-    }
 
-    //Cycle
-    update(delta: number): void {
-        this.handleMovement(delta);
-        this.handleAnimations();
-    }
-
-    private handleMovement(delta: number) {
-        if (this.direction.x !== 0) {
-            if (this.body.blocked.right || this.body.blocked.left) {
-                this.direction.x *= -1;
-            }
-        }
-        if (this.direction.y !== 0) {
-            if (this.body.blocked.up || this.body.blocked.down) {
-                this.direction.y *= -1;
-            }
-        }
-        this.body.setVelocityX(this.velocity * this.direction.x);
-        this.body.setVelocityY(this.velocity * this.direction.y);
-    }
-
-    private handleAnimations() {
         this.currentScene.anims.create({
             key: "coil_move",
             frames: this.currentScene.anims.generateFrameNumbers("coil", {
@@ -64,6 +42,24 @@ export default class Coil extends Phaser.GameObjects.Sprite {
             repeat: -1,
         });
 
-        this.anims.play("coil_move", true);
+        this.anims.play("coil_move");
+        this.body.setVelocityX(this.velocity * this.direction.x);
+        this.body.setVelocityY(this.velocity * this.direction.y);
+    }
+
+    update(delta) {
+        if (this.direction.x !== 0) {
+            if (this.body.blocked.right || this.body.blocked.left) {
+                this.direction.x *= -1;
+                this.body.setVelocityX(this.velocity * this.direction.x);
+            }
+        }
+
+        if (this.direction.y !== 0) {
+            if (this.body.blocked.up || this.body.blocked.down) {
+                this.direction.y *= -1;
+                this.body.setVelocityY(this.velocity * this.direction.y);
+            }
+        }
     }
 }

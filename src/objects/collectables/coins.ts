@@ -4,7 +4,6 @@ const DESPAWN_TIMER = 500;
 
 class Coins extends Phaser.Physics.Arcade.Sprite {
 
-    isGone = false;
     body: Phaser.Physics.Arcade.Body;
 
     constructor(params: any) {
@@ -22,6 +21,7 @@ class Coins extends Phaser.Physics.Arcade.Sprite {
                 end: 5,
             }),
             frameRate: 12,
+            repeat: -1,
         });
 
         this.scene.anims.create({
@@ -33,19 +33,13 @@ class Coins extends Phaser.Physics.Arcade.Sprite {
             frameRate: 12,
             hideOnComplete: true,
         });
-    }
 
-    update() {
-        if (!this.isGone) {
-            this.anims.play("coins_float", true);
-        } else {
-            this.anims.play("coins_vanish", true);
-        }
+        this.anims.play("coins_float");
     }
 
     vanish() {
+        this.anims.play("coins_vanish");
         this.disableBody();
-        this.isGone = true;
 
         this.scene.time.delayedCall(DESPAWN_TIMER, () => {
             this.destroy();

@@ -4,7 +4,6 @@ const DESPAWN_TIMER = 500;
 
 export default class Checkpoint extends Phaser.Physics.Arcade.Sprite {
 
-    isGone = false;
     body: Phaser.Physics.Arcade.Body;
 
     constructor(params) {
@@ -22,7 +21,7 @@ export default class Checkpoint extends Phaser.Physics.Arcade.Sprite {
                 end: 10,
             }),
             frameRate: 16,
-            repeat: 0,
+            repeat: -1,
         });
 
         this.scene.anims.create({
@@ -34,15 +33,12 @@ export default class Checkpoint extends Phaser.Physics.Arcade.Sprite {
             frameRate: 12,
             hideOnComplete: true,
         });
-    }
 
-    update() {
-        if (!this.isGone) this.anims.play("checkpoint_loop", true);
+        this.anims.play("checkpoint_loop");
     }
 
     vanish() {
         this.disableBody();
-        this.isGone = true;
 
         (this.scene as any).checkpointPos = {
             x: this.x,

@@ -6,25 +6,36 @@ enum Power {
     Dash,
 }
 
-interface Powerup {
-    isGone: boolean;
-    typeOf: Power;
-}
-
 class Powerup extends Phaser.Physics.Arcade.Sprite {
-    constructor(params: any) {
+
+    isGone = false;
+
+    typeOf: Power;
+    body: Phaser.Physics.Arcade.Body;
+
+    constructor(params) {
         super(params.scene, params.x, params.y, params.key);
-        this.scene.add.existing(this);
-        this.scene.physics.world.enable(this);
 
         this.typeOf = params.props.typeOf;
 
-        this.isGone = false;
-
-        (this.body as Phaser.Physics.Arcade.Body).setImmovable(true);
-        (this.body as Phaser.Physics.Arcade.Body).setAllowGravity(false);
+        this.scene.add.existing(this);
+        this.scene.physics.world.enable(this);
+        this.body.setImmovable(true);
+        this.body.setAllowGravity(false);
 
         this.animSetup();
+
+        switch(this.typeOf) {
+          case Power.Jump:
+              this.anims.play("jump_float");
+              break;
+          case Power.Jetpack:
+              this.anims.play("jet_float");
+              break;
+          case Power.Dash:
+              this.anims.play("dash_float");
+              break;
+        }
     }
 
     animSetup() {
@@ -33,58 +44,28 @@ class Powerup extends Phaser.Physics.Arcade.Sprite {
         this.dashAnim();
     }
 
-    update() {
-        if (!this.isGone) {
-            switch (this.typeOf) {
-                case Power.Jump:
-                    this.anims.play("jump_float", true);
-                    break;
-                case Power.Jetpack:
-                    this.anims.play("jet_float", true);
-                    break;
-                case Power.Dash:
-                    this.anims.play("dash_float", true);
-                    break;
-            }
-        } else {
-            switch (this.typeOf) {
-                case Power.Jump:
-                    this.anims.play("jump_vanish", true);
-                    break;
-                case Power.Jetpack:
-                    this.anims.play("jet_vanish", true);
-                    break;
-                case Power.Dash:
-                    this.anims.play("dash_vanish", true);
-                    break;
-            }
-        }
-    }
-
-    vanish(player: any) {
+    vanish(player) {
         this.disableBody();
         this.isGone = true;
 
         switch (this.typeOf) {
             case Power.Jump:
+                this.anims.play("jump_vanish", true);
                 player.powerup.jumpActive = true;
                 break;
             case Power.Jetpack:
+                this.anims.play("jet_vanish", true);
                 player.powerup.jetpActive = true;
                 break;
             case Power.Dash:
+                this.anims.play("dash_vanish", true);
                 player.powerup.dashActive = true;
                 break;
         }
 
-        this.scene.time.delayedCall(
-            500,
-            () => {
-                this.destroy();
-            },
-            [],
-            this
-        );
+        this.scene.time.delayedCall(500, () => {
+            this.destroy();
+        }, [], this);
     }
 
     jumpAnim() {
@@ -95,6 +76,7 @@ class Powerup extends Phaser.Physics.Arcade.Sprite {
                 end: 3,
             }),
             frameRate: 12,
+            repeat: -1,
         });
 
         this.scene.anims.create({
@@ -116,6 +98,7 @@ class Powerup extends Phaser.Physics.Arcade.Sprite {
                 end: 10,
             }),
             frameRate: 12,
+            repeat: -1,
         });
 
         this.scene.anims.create({
@@ -137,6 +120,7 @@ class Powerup extends Phaser.Physics.Arcade.Sprite {
                 end: 17,
             }),
             frameRate: 12,
+            repeat: -1,
         });
 
         this.scene.anims.create({

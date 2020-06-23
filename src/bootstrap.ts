@@ -25,10 +25,8 @@ class Bootstrap extends Phaser.Scene {
         this.load.audio("song", "audio/edzes.mp3");
 
         // Sprites
-        this.load.spritesheet("moran", "sprites/player/moran.png", {
-            frameWidth: 80,
-            frameHeight: 72,
-        });
+        this.load.json('moran_anim', 'sprites/player/moran_anim.json');
+        this.load.atlas('moran', 'sprites/player/moran.png', 'sprites/player/moran_atlas.json');
 
         this.load.json('coins_anim', 'sprites/collectables/coins_anim.json');
         this.load.atlas('coins', 'sprites/collectables/coins.png', 'sprites/collectables/coins_atlas.json');
@@ -71,12 +69,6 @@ class Bootstrap extends Phaser.Scene {
 
         this.load.json('explosion_anim', 'sprites/enemies/explosion_anim.json');
         this.load.atlas('explosion', 'sprites/enemies/explosion.png', 'sprites/enemies/explosion_atlas.json');
-
-        // this.load.spritesheet(
-        //     "explosion",
-        //     "sprites/enemies/explosions_50x52.png",
-        //     { frameWidth: 50, frameHeight: 52 }
-        // );
 
         this.load.json('checkpoint_anim', 'sprites/collectables/checkpoint_anim.json');
         this.load.atlas('checkpoint', 'sprites/collectables/checkpoint.png', 'sprites/collectables/checkpoint_atlas.json');

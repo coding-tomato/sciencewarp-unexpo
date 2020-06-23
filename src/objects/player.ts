@@ -144,7 +144,7 @@ class Player extends Phaser.GameObjects.Sprite {
             fuelBar: this.scene.add.graphics()
         };
 
-        this.createAnimations();
+        this.scene.anims.fromJSON(this.scene.cache.json.get('moran_anim'));
         this.play("idle", true);
 
         // Settings

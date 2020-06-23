@@ -1,26 +1,154 @@
 {
     "anims": [
         {
-            "key": "idle",
+            "key": "jet_jump",
+            "type": "frames",
+            "repeat": 0,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "moran",
+                    "frame": "moran_30"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_31"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_32"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_33"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_34"
+                }
+            ]
+        },
+        {
+            "key": "dash",
+            "type": "frames",
+            "repeat": 0,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "moran",
+                    "frame": "moran_24"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_25"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_26"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_27"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_28"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_29"
+                }
+            ]
+        },
+        {
+            "key": "fall",
             "type": "frames",
             "repeat": -1,
             "frameRate": 12,
             "frames": [
                 {
-                    "key": "atlas_name",
-                    "frame": "moran_0"
+                    "key": "moran",
+                    "frame": "moran_22"
                 },
                 {
-                    "key": "atlas_name",
-                    "frame": "moran_1"
+                    "key": "moran",
+                    "frame": "moran_23"
+                }
+            ]
+        },
+        {
+            "key": "jumping",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "moran",
+                    "frame": "moran_18"
                 },
                 {
-                    "key": "atlas_name",
-                    "frame": "moran_2"
+                    "key": "moran",
+                    "frame": "moran_19"
                 },
                 {
-                    "key": "atlas_name",
-                    "frame": "moran_3"
+                    "key": "moran",
+                    "frame": "moran_20"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_21"
+                }
+            ]
+        },
+        {
+            "key": "jetpack_fall",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "moran",
+                    "frame": "moran_16"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_17"
+                }
+            ]
+        },
+        {
+            "key": "jetpack_still",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "moran",
+                    "frame": "moran_16"
+                }
+            ]
+        },
+        {
+            "key": "jetpack",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "moran",
+                    "frame": "moran_12"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_13"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_14"
+                },
+                {
+                    "key": "moran",
+                    "frame": "moran_15"
                 }
             ]
         },
@@ -31,116 +159,60 @@
             "frameRate": 12,
             "frames": [
                 {
-                    "key": "atlas_name",
+                    "key": "moran",
                     "frame": "moran_4"
                 },
                 {
-                    "key": "atlas_name",
+                    "key": "moran",
                     "frame": "moran_5"
                 },
                 {
-                    "key": "atlas_name",
+                    "key": "moran",
                     "frame": "moran_6"
                 },
                 {
-                    "key": "atlas_name",
+                    "key": "moran",
                     "frame": "moran_7"
                 },
                 {
-                    "key": "atlas_name",
+                    "key": "moran",
                     "frame": "moran_8"
                 },
                 {
-                    "key": "atlas_name",
+                    "key": "moran",
                     "frame": "moran_9"
                 },
                 {
-                    "key": "atlas_name",
+                    "key": "moran",
                     "frame": "moran_10"
                 },
                 {
-                    "key": "atlas_name",
+                    "key": "moran",
                     "frame": "moran_11"
                 }
             ]
         },
         {
-            "key": "jet_fly",
+            "key": "idle",
             "type": "frames",
             "repeat": -1,
             "frameRate": 12,
             "frames": [
                 {
-                    "key": "atlas_name",
-                    "frame": "moran_12"
+                    "key": "moran",
+                    "frame": "moran_0"
                 },
                 {
-                    "key": "atlas_name",
-                    "frame": "moran_13"
+                    "key": "moran",
+                    "frame": "moran_1"
                 },
                 {
-                    "key": "atlas_name",
-                    "frame": "moran_14"
+                    "key": "moran",
+                    "frame": "moran_2"
                 },
                 {
-                    "key": "atlas_name",
-                    "frame": "moran_15"
-                }
-            ]
-        },
-        {
-            "key": "jet_fall",
-            "type": "frames",
-            "repeat": -1,
-            "frameRate": 12,
-            "frames": [
-                {
-                    "key": "atlas_name",
-                    "frame": "moran_16"
-                },
-                {
-                    "key": "atlas_name",
-                    "frame": "moran_17"
-                }
-            ]
-        },
-        {
-            "key": "jump",
-            "type": "frames",
-            "repeat": -1,
-            "frameRate": 12,
-            "frames": [
-                {
-                    "key": "atlas_name",
-                    "frame": "moran_18"
-                },
-                {
-                    "key": "atlas_name",
-                    "frame": "moran_19"
-                },
-                {
-                    "key": "atlas_name",
-                    "frame": "moran_20"
-                },
-                {
-                    "key": "atlas_name",
-                    "frame": "moran_21"
-                }
-            ]
-        },
-        {
-            "key": "jump_fall",
-            "type": "frames",
-            "repeat": -1,
-            "frameRate": 12,
-            "frames": [
-                {
-                    "key": "atlas_name",
-                    "frame": "moran_22"
-                },
-                {
-                    "key": "atlas_name",
-                    "frame": "moran_23"
+                    "key": "moran",
+                    "frame": "moran_3"
                 }
             ]
         }

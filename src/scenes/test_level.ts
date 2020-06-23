@@ -305,7 +305,7 @@ class TestLevel extends Phaser.Scene {
 
             this.anims.create({
                 key: 'teleport',
-                frames: this.anims.generateFrameNames('checkpoint ', {
+                frames: this.anims.generateFrameNames('checkpoint', {
                     prefix: 'checkpoint_',
                     start: 11,
                     end: 14,
@@ -315,7 +315,7 @@ class TestLevel extends Phaser.Scene {
             });
 
             this.time.delayedCall(100, () => 
-                teleport.anims.play(`teleport`),
+                teleport.anims.play('teleport'),
                 [], this
             );
 
@@ -342,8 +342,6 @@ class TestLevel extends Phaser.Scene {
 			this.scene.pause("TestLevel");
 
 		}
-        
-
 
         this.mapManager.parallaxUpdate();
 

@@ -1,0 +1,80 @@
+{
+    "anims": [
+        {
+            "key": "checkpoint_vanish",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_11"
+                },
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_12"
+                },
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_13"
+                },
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_14"
+                }
+            ]
+        },
+        {
+            "key": "checkpoint_loop",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_0"
+                },
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_1"
+                },
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_2"
+                },
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_3"
+                },
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_4"
+                },
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_5"
+                },
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_6"
+                },
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_7"
+                },
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_8"
+                },
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_9"
+                },
+                {
+                    "key": "checkpoint",
+                    "frame": "checkpoint_10"
+                }
+            ]
+        }
+    ]
+}

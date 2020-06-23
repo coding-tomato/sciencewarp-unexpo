@@ -14,25 +14,7 @@ class Coins extends Phaser.Physics.Arcade.Sprite {
         this.body.setImmovable(true);
         this.body.setAllowGravity(false);
 
-        this.scene.anims.create({
-            key: "coins_float",
-            frames: this.scene.anims.generateFrameNumbers("coins", {
-                start: 0,
-                end: 5,
-            }),
-            frameRate: 12,
-            repeat: -1,
-        });
-
-        this.scene.anims.create({
-            key: "coins_vanish",
-            frames: this.scene.anims.generateFrameNumbers("coins", {
-                start: 6,
-                end: 8,
-            }),
-            frameRate: 12,
-            hideOnComplete: true,
-        });
+        this.scene.anims.fromJSON(this.scene.cache.json.get('coins_anim'));
 
         this.anims.play("coins_float");
     }

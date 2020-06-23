@@ -1,0 +1,203 @@
+{
+    "frames": [
+        {
+            "filename": "legs-luthor_49x45_0",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 0,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_1",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 0,
+                "y": 45
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_2",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 49,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_3",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 49,
+                "y": 45
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_4",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 0,
+                "y": 90
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_5",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 49,
+                "y": 90
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_6",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 98,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_7",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 98,
+                "y": 45
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_8",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 98,
+                "y": 90
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_9",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 0,
+                "y": 135
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_10",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 49,
+                "y": 135
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_11",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 98,
+                "y": 135
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_12",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 147,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_13",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 147,
+                "y": 45
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "legs-luthor_49x45_14",
+            "frame": {
+                "w": 49,
+                "h": 45,
+                "x": 147,
+                "y": 90
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}

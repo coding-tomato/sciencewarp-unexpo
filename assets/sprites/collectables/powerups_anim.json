@@ -1,0 +1,136 @@
+{
+    "anims": [
+        {
+            "key": "dash_vanish",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "powerups",
+                    "frame": "powerups_18"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_19"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_20"
+                }
+            ]
+        },
+        {
+            "key": "dash_float",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "powerups",
+                    "frame": "powerups_14"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_15"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_16"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_17"
+                }
+            ]
+        },
+        {
+            "key": "jet_vanish",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "powerups",
+                    "frame": "powerups_11"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_12"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_13"
+                }
+            ]
+        },
+        {
+            "key": "jet_float",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "powerups",
+                    "frame": "powerups_7"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_8"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_9"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_10"
+                }
+            ]
+        },
+        {
+            "key": "jump_vanish",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "powerups",
+                    "frame": "powerups_4"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_5"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_6"
+                }
+            ]
+        },
+        {
+            "key": "jump_float",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "powerups",
+                    "frame": "powerups_0"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_1"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_2"
+                },
+                {
+                    "key": "powerups",
+                    "frame": "powerups_3"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+{
+    "anims": [
+        {
+            "key": "explosion",
+            "type": "frames",
+            "repeat": 0,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "explosion",
+                    "frame": "explosions_50x52_0"
+                },
+                {
+                    "key": "explosion",
+                    "frame": "explosions_50x52_1"
+                },
+                {
+                    "key": "explosion",
+                    "frame": "explosions_50x52_2"
+                },
+                {
+                    "key": "explosion",
+                    "frame": "explosions_50x52_3"
+                },
+                {
+                    "key": "explosion",
+                    "frame": "explosions_50x52_4"
+                },
+                {
+                    "key": "explosion",
+                    "frame": "explosions_50x52_5"
+                },
+                {
+                    "key": "explosion",
+                    "frame": "explosions_50x52_6"
+                },
+                {
+                    "key": "explosion",
+                    "frame": "explosions_50x52_7"
+                }
+            ]
+        }
+    ]
+}

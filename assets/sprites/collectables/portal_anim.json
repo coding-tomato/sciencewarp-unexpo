@@ -1,0 +1,80 @@
+{
+    "anims": [
+        {
+            "key": "portal_vanish",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "portal",
+                    "frame": "portal_11"
+                },
+                {
+                    "key": "portal",
+                    "frame": "portal_12"
+                },
+                {
+                    "key": "portal",
+                    "frame": "portal_13"
+                },
+                {
+                    "key": "portal",
+                    "frame": "portal_14"
+                }
+            ]
+        },
+        {
+            "key": "portal_loop",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "portal",
+                    "frame": "portal_0"
+                },
+                {
+                    "key": "portal",
+                    "frame": "portal_1"
+                },
+                {
+                    "key": "portal",
+                    "frame": "portal_2"
+                },
+                {
+                    "key": "portal",
+                    "frame": "portal_3"
+                },
+                {
+                    "key": "portal",
+                    "frame": "portal_4"
+                },
+                {
+                    "key": "portal",
+                    "frame": "portal_5"
+                },
+                {
+                    "key": "portal",
+                    "frame": "portal_6"
+                },
+                {
+                    "key": "portal",
+                    "frame": "portal_7"
+                },
+                {
+                    "key": "portal",
+                    "frame": "portal_8"
+                },
+                {
+                    "key": "portal",
+                    "frame": "portal_9"
+                },
+                {
+                    "key": "portal",
+                    "frame": "portal_10"
+                }
+            ]
+        }
+    ]
+}

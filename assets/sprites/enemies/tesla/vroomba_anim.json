@@ -1,0 +1,80 @@
+{
+    "anims": [
+        {
+            "key": "vroomba_shooting",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "vroomba",
+                    "frame": "vroomba_48x32_6"
+                },
+                {
+                    "key": "vroomba",
+                    "frame": "vroomba_48x32_7"
+                },
+                {
+                    "key": "vroomba",
+                    "frame": "vroomba_48x32_8"
+                },
+                {
+                    "key": "vroomba",
+                    "frame": "vroomba_48x32_9"
+                },
+                {
+                    "key": "vroomba",
+                    "frame": "vroomba_48x32_10"
+                },
+                {
+                    "key": "vroomba",
+                    "frame": "vroomba_48x32_11"
+                },
+                {
+                    "key": "vroomba",
+                    "frame": "vroomba_48x32_12"
+                }
+            ]
+        },
+        {
+            "key": "vroomba_windup",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "vroomba",
+                    "frame": "vroomba_48x32_4"
+                },
+                {
+                    "key": "vroomba",
+                    "frame": "vroomba_48x32_5"
+                }
+            ]
+        },
+        {
+            "key": "vroomba_walk",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "vroomba",
+                    "frame": "vroomba_48x32_0"
+                },
+                {
+                    "key": "vroomba",
+                    "frame": "vroomba_48x32_1"
+                },
+                {
+                    "key": "vroomba",
+                    "frame": "vroomba_48x32_2"
+                },
+                {
+                    "key": "vroomba",
+                    "frame": "vroomba_48x32_3"
+                }
+            ]
+        }
+    ]
+}

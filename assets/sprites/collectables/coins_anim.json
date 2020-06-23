@@ -1,0 +1,56 @@
+{
+    "anims": [
+        {
+            "key": "coins_vanish",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "coins",
+                    "frame": "pieces_6"
+                },
+                {
+                    "key": "coins",
+                    "frame": "pieces_7"
+                },
+                {
+                    "key": "coins",
+                    "frame": "pieces_8"
+                }
+            ]
+        },
+        {
+            "key": "coins_float",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "coins",
+                    "frame": "pieces_0"
+                },
+                {
+                    "key": "coins",
+                    "frame": "pieces_1"
+                },
+                {
+                    "key": "coins",
+                    "frame": "pieces_2"
+                },
+                {
+                    "key": "coins",
+                    "frame": "pieces_3"
+                },
+                {
+                    "key": "coins",
+                    "frame": "pieces_4"
+                },
+                {
+                    "key": "coins",
+                    "frame": "pieces_5"
+                }
+            ]
+        }
+    ]
+}

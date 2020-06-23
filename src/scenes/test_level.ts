@@ -23,42 +23,53 @@ enum Power {
     Dash,
 }
 
-export default class TestLevel extends Phaser.Scene {
+class TestLevel extends Phaser.Scene {
     // Player
-    public player: Player;
-    private checkpointPos: {
+    player: Player;
+    checkpointPos: {
         x: number;
         y: number;
     };
-    private playerFadeTween: any;
+    playerFadeTween: any;
     // Map manager
-    private mapManager: MapHelper;
-    private currentLevel: number;
-    private inputDisabled: boolean;
-    private warping: boolean;
+    mapManager: MapHelper;
+    currentLevel: number;
+    inputDisabled: boolean;
+    warping: boolean;
     // Colliders
-    private enemyCollider: Phaser.Physics.Arcade.Collider;
-    private projCollider: Phaser.Physics.Arcade.Collider;
+    enemyCollider: Phaser.Physics.Arcade.Collider;
+    projCollider: Phaser.Physics.Arcade.Collider;
     // Debug
-    private debugControl: any[];
-    private debugGraphics: any;
+    debugControl: any[];
+    debugGraphics: any;
     // Input
-    private pauseControl: any;
+    pauseControl: any;
     // Map objects
-    private allCheckpoints: Checkpoint[];
-    private allCoins: any[];
-    private allPowerups: any[];
-    private allSprites: any[];
-    private allProj: any[];
-    private allPortals: any[];
+
+    cluster = {
+        checkpoints: [],
+        powerups: [],
+        coins: [],
+        sprites: [],
+        projectiles: [],
+        portals: [],
+    }
+
+    allCheckpoints: Checkpoint[];
+    allCoins: any[];
+    allPowerups: any[];
+    allSprites: any[];
+    allProj: any[];
+    allPortals: any[];
+
     // Audio
-    public music: any;
-    private coin: any;
+    music: any;
+    coin: any;
     // HUD
-    private coinScore: any;
-    private lives: any;
-    private numbFont: Phaser.Types.GameObjects.BitmapText.RetroFontConfig;
-    private hud: {
+    coinScore: any;
+    lives: any;
+    numbFont: Phaser.Types.GameObjects.BitmapText.RetroFontConfig;
+    hud: {
         container?: any;
         lives?: any;
         coins?: {
@@ -93,7 +104,7 @@ export default class TestLevel extends Phaser.Scene {
         };
     }
 
-    public create(): void {
+    create() {
         this.cameras.main.fadeOut(0);
 
         if (!this.data.get("levels")) {
@@ -110,12 +121,15 @@ export default class TestLevel extends Phaser.Scene {
         const teslaMapData = new Phaser.Tilemaps.MapData({
             name: `tesla_level${this.currentLevel}`,
         });
+        
         this.mapManager = new MapHelper(
             this,
             teslaMapData,
             "tesla_tileset",
             "tileset"
         );
+
+        
 
         this.numbFont = this.cache.json.get("numbers_json");
 
@@ -276,10 +290,11 @@ export default class TestLevel extends Phaser.Scene {
         this.inputDisabled = false;
 
         // UI
+        this.anims.fromJSON(this.cache.json.get('explosion_anim'));
         this.createUI();
     }
 
-    public update(time: number, delta: number): void {
+    update(time: number, delta: number) {
         if (this.player.body.y > this.mapManager.map.heightInPixels + 10) {
             let checkpoint = this.checkpointPos;
             let teleport = this.add.sprite(
@@ -289,8 +304,9 @@ export default class TestLevel extends Phaser.Scene {
             );
 
             this.anims.create({
-                key: `teleport`,
-                frames: this.anims.generateFrameNumbers(`checkpoint`, {
+                key: 'teleport',
+                frames: this.anims.generateFrameNames('checkpoint ', {
+                    prefix: 'checkpoint_',
                     start: 11,
                     end: 14,
                 }),
@@ -298,11 +314,9 @@ export default class TestLevel extends Phaser.Scene {
                 repeat: 0,
             });
 
-            this.time.delayedCall(
-                100,
-                () => teleport.anims.play(`teleport`),
-                [],
-                this
+            this.time.delayedCall(100, () => 
+                teleport.anims.play(`teleport`),
+                [], this
             );
 
             teleport.on(`animationcomplete`, (animation: any, frame: any) => {
@@ -385,12 +399,12 @@ export default class TestLevel extends Phaser.Scene {
         }
     }
 
-    public init(data: any): void {
+    init(data: any) {
         this.currentLevel = data.level;
         this.data.set(`coins`, data.coins);
     }
 
-    private hurt(): any {
+    hurt(): any {
         // Player has been hit so it should be slowed
         this.player.maxSpeed = 80;
         // Sound
@@ -418,17 +432,15 @@ export default class TestLevel extends Phaser.Scene {
         );
     }
 
-    private hurtEnemy(element1: any, element2: any) {
-        if (element1.state != "DASHING" && !element1.isColliding) {
+    hurtEnemy(player: any, enemy: any) {
+        const DASHING = 2;
+        if (player.state != DASHING && !player.isColliding) {
             this.cleanCollider();
             this.hurt();
         }
 
-        if (element1.state == "DASHING") {
-            let explosion = this.add.sprite(
-                element2.x,
-                element2.y,
-                `explosion`
+        if (player.state == DASHING) {
+            let explosion = this.add.sprite(enemy.x, enemy.y, 'explosion'
             );
 
             for (let i = 0; i < 3; i++) {
@@ -443,37 +455,27 @@ export default class TestLevel extends Phaser.Scene {
                     gravityY: 800,
                     on: false,
                 });
-                emitter.emitParticleAt(element2.x, element2.y);
+                emitter.emitParticleAt(enemy.x, enemy.y);
             }
 
-            this.anims.create({
-                key: `explode`,
-                frames: this.anims.generateFrameNumbers(`explosion`, {
-                    start: 0,
-                    end: 7,
-                }),
-                frameRate: 12,
-                repeat: 0,
-            });
-
-            explosion.anims.play(`explode`);
+            explosion.anims.play('explosion');
 
             explosion.on(`animationcomplete`, (animation: any, frame: any) => {
                 explosion.destroy();
             });
 
-            element2.destroy();
+            enemy.destroy();
         }
     }
 
-    private hurtProj(element1: any, element2: any) {
+    hurtProj(element1: any, element2: any) {
         if (!element1.isColliding) {
             this.cleanCollider();
             this.hurt();
         }
     }
 
-    private cleanCollider() {
+    cleanCollider() {
         console.log("Clean collider on!");
         this.playerFadeTween.play();
         this.player.isColliding = true;
@@ -505,7 +507,7 @@ export default class TestLevel extends Phaser.Scene {
         );
     }
 
-    private getCoin(element1: any, element2: any) {
+    getCoin(element1: any, element2: any) {
         element2.vanish();
         this.data.set("temp_coins", this.data.get("temp_coins") + 1);
         this.coin.play({
@@ -516,7 +518,7 @@ export default class TestLevel extends Phaser.Scene {
         );
     }
 
-    private getPowerup(element1: any, element2: any) {
+    getPowerup(element1: any, element2: any) {
         // Activate respective HUD element
         switch (element2.typeOf) {
             case Power.Jump:
@@ -532,7 +534,7 @@ export default class TestLevel extends Phaser.Scene {
         element2.vanish(element1);
     }
 
-    private getPortal(element1: any, element2: any) {
+    getPortal(element1: any, element2: any) {
         let next_level = element2.getLevel();
 
         if (this.warping) return;
@@ -557,7 +559,7 @@ export default class TestLevel extends Phaser.Scene {
         this.cameras.main.fadeOut(200);
     }
 
-    private createUI() {
+    createUI() {
         // Coins - Top left of UI
         this.hud.coins = {
             img: this.add.image(20, 20, "hud-piece"),
@@ -588,13 +590,13 @@ export default class TestLevel extends Phaser.Scene {
         // They start deactivated - tinted gray
         this.hud.powerup = {
             dash: this.add
-                .image(20, this.cameras.main.height - 20, "powerups", 14)
+                .sprite(20, this.cameras.main.height - 20, "powerups", "powerups_14")
                 .setTint(0x555555),
             jump: this.add
-                .image(50, this.cameras.main.height - 20, "powerups", 0)
+                .sprite(50, this.cameras.main.height - 20, "powerups", "powerups_0")
                 .setTint(0x555555),
             pack: this.add
-                .image(80, this.cameras.main.height - 20, "powerups", 7)
+                .sprite(80, this.cameras.main.height - 20, "powerups", "powerups_7")
                 .setTint(0x555555),
         };
 
@@ -637,3 +639,5 @@ export default class TestLevel extends Phaser.Scene {
             .setVisible(false);
     }
 }
+
+export default TestLevel;

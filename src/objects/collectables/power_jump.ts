@@ -23,7 +23,7 @@ class Powerup extends Phaser.Physics.Arcade.Sprite {
         this.body.setImmovable(true);
         this.body.setAllowGravity(false);
 
-        this.animSetup();
+        this.scene.anims.fromJSON(this.scene.cache.json.get('powerups_anim'));
 
         switch(this.typeOf) {
           case Power.Jump:
@@ -38,12 +38,6 @@ class Powerup extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    animSetup() {
-        this.jumpAnim();
-        this.jetpackAnim();
-        this.dashAnim();
-    }
-
     vanish(player) {
         this.disableBody();
         this.isGone = true;
@@ -51,87 +45,21 @@ class Powerup extends Phaser.Physics.Arcade.Sprite {
         switch (this.typeOf) {
             case Power.Jump:
                 this.anims.play("jump_vanish", true);
-                player.powerup.jumpActive = true;
+                player.powerup.jump = true;
                 break;
             case Power.Jetpack:
                 this.anims.play("jet_vanish", true);
-                player.powerup.jetpActive = true;
+                player.powerup.jetpack = true;
                 break;
             case Power.Dash:
                 this.anims.play("dash_vanish", true);
-                player.powerup.dashActive = true;
+                player.powerup.dash = true;
                 break;
         }
 
         this.scene.time.delayedCall(500, () => {
             this.destroy();
         }, [], this);
-    }
-
-    jumpAnim() {
-        this.scene.anims.create({
-            key: "jump_float",
-            frames: this.scene.anims.generateFrameNumbers("powerups", {
-                start: 0,
-                end: 3,
-            }),
-            frameRate: 12,
-            repeat: -1,
-        });
-
-        this.scene.anims.create({
-            key: "jump_vanish",
-            frames: this.scene.anims.generateFrameNumbers("powerups", {
-                start: 4,
-                end: 6,
-            }),
-            frameRate: 12,
-            hideOnComplete: true,
-        });
-    }
-
-    jetpackAnim() {
-        this.scene.anims.create({
-            key: "jet_float",
-            frames: this.scene.anims.generateFrameNumbers("powerups", {
-                start: 7,
-                end: 10,
-            }),
-            frameRate: 12,
-            repeat: -1,
-        });
-
-        this.scene.anims.create({
-            key: "jet_vanish",
-            frames: this.scene.anims.generateFrameNumbers("powerups", {
-                start: 11,
-                end: 13,
-            }),
-            frameRate: 12,
-            hideOnComplete: true,
-        });
-    }
-
-    dashAnim() {
-        this.scene.anims.create({
-            key: "dash_float",
-            frames: this.scene.anims.generateFrameNumbers("powerups", {
-                start: 14,
-                end: 17,
-            }),
-            frameRate: 12,
-            repeat: -1,
-        });
-
-        this.scene.anims.create({
-            key: "dash_vanish",
-            frames: this.scene.anims.generateFrameNumbers("powerups", {
-                start: 18,
-                end: 20,
-            }),
-            frameRate: 12,
-            hideOnComplete: true,
-        });
     }
 }
 

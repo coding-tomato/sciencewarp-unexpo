@@ -1,0 +1,177 @@
+{
+    "frames": [
+        {
+            "filename": "vroomba_48x32_0",
+            "frame": {
+                "w": 48,
+                "h": 32,
+                "x": 0,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "vroomba_48x32_1",
+            "frame": {
+                "w": 48,
+                "h": 32,
+                "x": 0,
+                "y": 32
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "vroomba_48x32_2",
+            "frame": {
+                "w": 48,
+                "h": 32,
+                "x": 48,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "vroomba_48x32_3",
+            "frame": {
+                "w": 48,
+                "h": 32,
+                "x": 48,
+                "y": 32
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "vroomba_48x32_4",
+            "frame": {
+                "w": 48,
+                "h": 32,
+                "x": 0,
+                "y": 64
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "vroomba_48x32_5",
+            "frame": {
+                "w": 48,
+                "h": 32,
+                "x": 48,
+                "y": 64
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "vroomba_48x32_6",
+            "frame": {
+                "w": 48,
+                "h": 32,
+                "x": 96,
+                "y": 0
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "vroomba_48x32_7",
+            "frame": {
+                "w": 48,
+                "h": 32,
+                "x": 96,
+                "y": 32
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "vroomba_48x32_8",
+            "frame": {
+                "w": 48,
+                "h": 32,
+                "x": 96,
+                "y": 64
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "vroomba_48x32_9",
+            "frame": {
+                "w": 48,
+                "h": 32,
+                "x": 0,
+                "y": 96
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "vroomba_48x32_10",
+            "frame": {
+                "w": 48,
+                "h": 32,
+                "x": 48,
+                "y": 96
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "vroomba_48x32_11",
+            "frame": {
+                "w": 48,
+                "h": 32,
+                "x": 96,
+                "y": 96
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        },
+        {
+            "filename": "vroomba_48x32_12",
+            "frame": {
+                "w": 48,
+                "h": 32,
+                "x": 0,
+                "y": 128
+            },
+            "anchor": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    ],
+    "meta": {
+        "description": "Atlas generado con Atlas Packer Gamma V2",
+        "web": "https://gammafp.github.io/atlas-packer-phaser/"
+    }
+}

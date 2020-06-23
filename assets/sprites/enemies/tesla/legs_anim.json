@@ -1,0 +1,88 @@
+{
+    "anims": [
+        {
+            "key": "legs_land",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_11"
+                },
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_12"
+                },
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_13"
+                },
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_14"
+                }
+            ]
+        },
+        {
+            "key": "legs_jump",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_8"
+                },
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_9"
+                },
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_10"
+                }
+            ]
+        },
+        {
+            "key": "legs_move",
+            "type": "frames",
+            "repeat": -1,
+            "frameRate": 12,
+            "frames": [
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_0"
+                },
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_1"
+                },
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_2"
+                },
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_3"
+                },
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_4"
+                },
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_5"
+                },
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_6"
+                },
+                {
+                    "key": "legs",
+                    "frame": "legs-luthor_49x45_7"
+                }
+            ]
+        }
+    ]
+}

@@ -1,10 +1,10 @@
 {
     "frames": [
         {
-            "filename": "coil_0",
+            "filename": "explosions_50x52_0",
             "frame": {
-                "w": 30,
-                "h": 30,
+                "w": 50,
+                "h": 52,
                 "x": 0,
                 "y": 0
             },
@@ -14,11 +14,11 @@
             }
         },
         {
-            "filename": "coil_1",
+            "filename": "explosions_50x52_1",
             "frame": {
-                "w": 30,
-                "h": 30,
-                "x": 30,
+                "w": 50,
+                "h": 52,
+                "x": 50,
                 "y": 0
             },
             "anchor": {
@@ -27,12 +27,12 @@
             }
         },
         {
-            "filename": "coil_2",
+            "filename": "explosions_50x52_2",
             "frame": {
-                "w": 30,
-                "h": 30,
+                "w": 50,
+                "h": 52,
                 "x": 0,
-                "y": 30
+                "y": 52
             },
             "anchor": {
                 "x": 0.5,
@@ -40,12 +40,12 @@
             }
         },
         {
-            "filename": "coil_3",
+            "filename": "explosions_50x52_3",
             "frame": {
-                "w": 30,
-                "h": 30,
-                "x": 30,
-                "y": 30
+                "w": 50,
+                "h": 52,
+                "x": 50,
+                "y": 52
             },
             "anchor": {
                 "x": 0.5,
@@ -53,11 +53,11 @@
             }
         },
         {
-            "filename": "coil_4",
+            "filename": "explosions_50x52_4",
             "frame": {
-                "w": 30,
-                "h": 30,
-                "x": 60,
+                "w": 50,
+                "h": 52,
+                "x": 100,
                 "y": 0
             },
             "anchor": {
@@ -66,12 +66,12 @@
             }
         },
         {
-            "filename": "coil_5",
+            "filename": "explosions_50x52_5",
             "frame": {
-                "w": 30,
-                "h": 30,
-                "x": 60,
-                "y": 30
+                "w": 50,
+                "h": 52,
+                "x": 100,
+                "y": 52
             },
             "anchor": {
                 "x": 0.5,
@@ -79,12 +79,12 @@
             }
         },
         {
-            "filename": "coil_6",
+            "filename": "explosions_50x52_6",
             "frame": {
-                "w": 30,
-                "h": 30,
+                "w": 50,
+                "h": 52,
                 "x": 0,
-                "y": 60
+                "y": 104
             },
             "anchor": {
                 "x": 0.5,
@@ -92,12 +92,12 @@
             }
         },
         {
-            "filename": "coil_7",
+            "filename": "explosions_50x52_7",
             "frame": {
-                "w": 30,
-                "h": 30,
-                "x": 30,
-                "y": 60
+                "w": 50,
+                "h": 52,
+                "x": 50,
+                "y": 104
             },
             "anchor": {
                 "x": 0.5,

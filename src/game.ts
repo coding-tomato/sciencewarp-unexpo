@@ -7,10 +7,10 @@ import Pause from "./scenes/pause";
 import TestLevel from "./scenes/test_level";
 
 const scene = [
-  Bootstrap, Menu, TestLevel, DialogBox, Pause
+    Bootstrap, Menu, TestLevel, DialogBox, Pause
 ];
 
-const [width, height] = [480, 270];
+const [ width, height ] = [ 480, 270 ];
 
 const config = {
     title: "Science Warp",
@@ -33,6 +33,4 @@ const config = {
     scene,
 };
 
-window.onload = () => {
-    const game = new Phaser.Game(config);
-};
+new Phaser.Game(config);

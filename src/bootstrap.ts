@@ -1,13 +1,13 @@
 import GrayscalePipeline from "../assets/shaders/grayPipeline";
 
-export default class Bootstrap extends Phaser.Scene {
+class Bootstrap extends Phaser.Scene {
     constructor() {
         super({
             key: "Bootstrap",
         });
     }
 
-    public preload(): void {
+    preload() {
         // Load level on complete
         this.load.on("complete", () => {
             this.scene.start("Menu");
@@ -30,20 +30,14 @@ export default class Bootstrap extends Phaser.Scene {
             frameHeight: 72,
         });
 
-        this.load.spritesheet("coins", "sprites/collectables/pieces.png", {
-            frameWidth: 18,
-            frameHeight: 17,
-        });
+        this.load.json('coins_anim', 'sprites/collectables/coins_anim.json');
+        this.load.atlas('coins', 'sprites/collectables/coins.png', 'sprites/collectables/coins_atlas.json');
 
-        this.load.spritesheet("powerups", "sprites/collectables/powerups.png", {
-            frameWidth: 24,
-            frameHeight: 24,
-        });
+        this.load.json('powerups_anim', 'sprites/collectables/powerups_anim.json');
+        this.load.atlas('powerups', 'sprites/collectables/powerups.png', 'sprites/collectables/powerups_atlas.json');
 
-        this.load.spritesheet("coil", "sprites/enemies/tesla/coil.png", {
-            frameWidth: 30,
-            frameHeight: 30,
-        });
+        this.load.json("coil_anim", "sprites/enemies/tesla/coil_anim.json");
+        this.load.atlas("coil", "sprites/enemies/tesla/coil.png", "sprites/enemies/tesla/coil_atlas.json");
 
         this.load.spritesheet(
             "cannon",
@@ -60,11 +54,8 @@ export default class Bootstrap extends Phaser.Scene {
             }
         );
 
-        this.load.spritesheet(
-            "legs",
-            "sprites/enemies/tesla/legs-luthor_49x45.png",
-            { frameWidth: 49, frameHeight: 45 }
-        );
+        this.load.json('legs_anim', 'sprites/enemies/tesla/legs_anim.json');
+        this.load.atlas('legs', 'sprites/enemies/tesla/legs.png', 'sprites/enemies/tesla/legs_atlas.json');
 
         this.load.spritesheet(
             "vroomba",
@@ -78,22 +69,20 @@ export default class Bootstrap extends Phaser.Scene {
             { frameWidth: 32, frameHeight: 32 }
         );
 
-        this.load.spritesheet(
-            "explosion",
-            "sprites/enemies/explosions_50x52.png",
-            { frameWidth: 50, frameHeight: 52 }
-        );
+        this.load.json('explosion_anim', 'sprites/enemies/explosion_anim.json');
+        this.load.atlas('explosion', 'sprites/enemies/explosion.png', 'sprites/enemies/explosion_atlas.json');
 
-        this.load.spritesheet(
-            "checkpoint",
-            "sprites/collectables/checkpoint.png",
-            { frameWidth: 32, frameHeight: 32 }
-        );
+        // this.load.spritesheet(
+        //     "explosion",
+        //     "sprites/enemies/explosions_50x52.png",
+        //     { frameWidth: 50, frameHeight: 52 }
+        // );
 
-        this.load.spritesheet("portal", "sprites/collectables/portal.png", {
-            frameWidth: 32,
-            frameHeight: 32,
-        });
+        this.load.json('checkpoint_anim', 'sprites/collectables/checkpoint_anim.json');
+        this.load.atlas('checkpoint', 'sprites/collectables/checkpoint.png', 'sprites/collectables/checkpoint_atlas.json');
+
+        this.load.json('portal_anim', 'sprites/collectables/portal_anim.json');
+        this.load.atlas('portal', 'sprites/collectables/portal.png', 'sprites/collectables/portal_atlas.json');
 
         // Particles
         this.load.image(
@@ -163,3 +152,5 @@ export default class Bootstrap extends Phaser.Scene {
         );
     }
 }
+
+export default Bootstrap;

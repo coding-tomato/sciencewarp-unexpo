@@ -32,15 +32,7 @@ export default class Coil extends Phaser.GameObjects.Sprite {
         this.body.setAllowGravity(false);
         this.body.setSize(16, 16);
 
-        this.currentScene.anims.create({
-            key: "coil_move",
-            frames: this.currentScene.anims.generateFrameNumbers("coil", {
-                start: 0,
-                end: 7,
-            }),
-            frameRate: 10,
-            repeat: -1,
-        });
+        this.scene.anims.fromJSON(this.scene.cache.json.get('coil_anim'));
 
         this.anims.play("coil_move");
         this.body.setVelocityX(this.velocity * this.direction.x);

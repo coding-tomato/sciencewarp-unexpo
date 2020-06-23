@@ -14,25 +14,7 @@ export default class Checkpoint extends Phaser.Physics.Arcade.Sprite {
         this.body.setImmovable(true);
         this.body.setAllowGravity(false);
 
-        this.scene.anims.create({
-            key: "checkpoint_loop",
-            frames: this.scene.anims.generateFrameNumbers("checkpoint", {
-                start: 0,
-                end: 10,
-            }),
-            frameRate: 16,
-            repeat: -1,
-        });
-
-        this.scene.anims.create({
-            key: "checkpoint_vanish",
-            frames: this.scene.anims.generateFrameNumbers("checkpoint", {
-                start: 11,
-                end: 14,
-            }),
-            frameRate: 12,
-            hideOnComplete: true,
-        });
+        this.scene.anims.fromJSON(this.scene.cache.json.get('checkpoint_anim'));
 
         this.anims.play("checkpoint_loop");
     }

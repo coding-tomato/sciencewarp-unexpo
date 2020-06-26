@@ -43,8 +43,10 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
         this.scene.physics.world.enable(this);
         this.body.setVelocityX(this.velocity);
         this.body.setBounceX(1);
-        this.body.setSize(48, 8, false);
-        this.body.setOffset(0, 24);
+        // To modify X size, add equal amount to X offset
+        // To modify Y size, add half the amount to Y offset
+        this.body.setSize(38, 4, false);
+        this.body.setOffset(4, 26);
 
         this.scene.add.existing(this);
     }
@@ -183,6 +185,8 @@ export default class Vroomba extends Phaser.GameObjects.Sprite {
             texture: "vroomba_part",
             lifetime: 7000,
             velocity: -100,
+            width: 26,
+            height: 26,
             setup: function() {
                 this.body.setVelocity(0, this.velocity);
             },

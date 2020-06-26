@@ -326,7 +326,7 @@ class TestLevel extends Phaser.Scene {
             this.player.x = checkpoint.x;
             this.player.y = checkpoint.y;
             this.player.body.setVelocityY(-40);
-            this.player.setFuel(2000);
+            this.player.fuel.refill();
             this.cleanCollider();
 
 		}

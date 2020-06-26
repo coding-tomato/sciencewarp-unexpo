@@ -16,10 +16,10 @@ type fnOpt = (config: optCfg) => Option;
 type Menu = Array<Option>
 
 class Pause extends Phaser.Scene {
-
-    private controlKeys: Phaser.Types.Input.Keyboard.CursorKeys;
-    private enterKey: Phaser.Input.Keyboard.Key;
-    private list: Menu;
+    controlKeys: Phaser.Types.Input.Keyboard.CursorKeys;
+    enterKey: Phaser.Input.Keyboard.Key;
+    list: Menu;
+    volumeMeter: any;
 
     constructor() {
         super({
@@ -66,13 +66,17 @@ class Pause extends Phaser.Scene {
         const centerY = this.cameras.main.centerY;
 
         // Menu object, add new words to create new options
-        this.list = ["Continue", "Volume", "Exit to Main Menu", "Hello", "This is Great!"]
+        this.list = ["Continue", "Volume", "Exit to Main Menu"]
             .map((option) => configOpt(option, posX, centerY + getPaddingY()))
             .map(makeOpt);
 
         // First item is selected by default
         if (!this.data.get("item_selected")) {
             this.data.set("item_selected", 0);
+        }
+
+        if (this.data.get('volume_meter') === undefined) {
+            this.data.set('volume_meter', 100);
         }
 
         // Fade in and out tween
@@ -97,6 +101,9 @@ class Pause extends Phaser.Scene {
 
         this.enterKey = this.input.keyboard.addKey("ENTER");
         this.controlKeys = this.input.keyboard.createCursorKeys();
+        this.volumeMeter = this.add.text(this.cameras.main.centerX + (this.cameras.main.centerX / 2),
+            this.cameras.main.centerY + (this.cameras.main.centerY / 2),
+            this.data.get('volume_meter'));
     }
 
     update() {
@@ -112,11 +119,11 @@ class Pause extends Phaser.Scene {
             }
         }
 
-        if (Phaser.Input.Keyboard.JustDown(this.controlKeys.left)) {
+        if (this.controlKeys.left.isDown) {
             this[this.list[this.data.get("item_selected")].call]("left");
         }
 
-        if (Phaser.Input.Keyboard.JustDown(this.controlKeys.right)) {
+        if (this.controlKeys.right.isDown) {
             this[this.list[this.data.get("item_selected")].call]("right");
         }
 
@@ -151,13 +158,16 @@ class Pause extends Phaser.Scene {
     }
 
     private handleVolume(dir: string): void {
-        if (dir === "left") {
+        if (dir === "left" && Phaser.Math.CeilTo(this.sound.volume * 100) > 0) {
             this.sound.volume -= 0.1
             console.log(this.sound.volume);
-        } else {
+        } else if (dir === "right" && Phaser.Math.CeilTo(this.sound.volume * 100) < 100) {
             this.sound.volume += 0.1
             console.log(this.sound.volume);
         }
+
+        this.data.set('volume_meter', Phaser.Math.CeilTo(this.sound.volume * 100))
+        this.volumeMeter.setText(this.data.get('volume_meter'));
     }
 
     private handleExittoMainMenu(): void {

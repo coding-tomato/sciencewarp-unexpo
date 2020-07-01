@@ -20,6 +20,7 @@ class Pause extends Phaser.Scene {
     enterKey: Phaser.Input.Keyboard.Key;
     list: Menu;
     volumeMeter: any;
+    level: any;
 
     constructor() {
         super({
@@ -28,6 +29,8 @@ class Pause extends Phaser.Scene {
     }
 
     create() {
+
+        this.level = this.scene.get("TestLevel");
         // List of menu entries
         // Continue              -- obvious reasons
         // Volume                -- reduce volume of both music and sfx
@@ -104,6 +107,8 @@ class Pause extends Phaser.Scene {
         this.volumeMeter = this.add.text(this.cameras.main.centerX + (this.cameras.main.centerX / 2),
             this.cameras.main.centerY + (this.cameras.main.centerY / 2),
             this.data.get('volume_meter'));
+
+        this.level.hideUI();
     }
 
     update() {
@@ -153,6 +158,7 @@ class Pause extends Phaser.Scene {
             (this.scene.get("Menu") as any).music.resume();
             // Delete gray shader
             this.scene.get("TestLevel").cameras.main.clearRenderToTexture();
+            this.level.restoreUI();
             this.scene.stop("Pause");
         }
     }

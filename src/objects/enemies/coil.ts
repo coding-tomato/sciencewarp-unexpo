@@ -1,5 +1,7 @@
 import "phaser";
 
+import Sabana from "../../helpers/sabana";
+
 export default class Coil extends Phaser.GameObjects.Sprite {
     currentScene: Phaser.Scene;
     direction: {
@@ -26,20 +28,23 @@ export default class Coil extends Phaser.GameObjects.Sprite {
             y: dir_y
         };
 
+        const size = {
+            x: 16,
+            y: 16,
+        };
+
         //Settings
-        this.scene.add.existing(this);
-        this.currentScene.physics.world.enable(this);
+        Sabana.Init(this, this.scene).Sprite(size);
+  
         this.body.setAllowGravity(false);
-        this.body.setSize(16, 16);
-
         this.scene.anims.fromJSON(this.scene.cache.json.get('coil_anim'));
-
         this.anims.play("coil_move");
+
         this.body.setVelocityX(this.velocity * this.direction.x);
         this.body.setVelocityY(this.velocity * this.direction.y);
     }
 
-    update(delta) {
+    update(): void {
         if (this.direction.x !== 0) {
             if (this.body.blocked.right || this.body.blocked.left) {
                 this.direction.x *= -1;

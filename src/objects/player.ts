@@ -1,5 +1,5 @@
 import "phaser";
-
+import Sabana from "../helpers/sabana";
 // Enum for player's state
 const State = {
     // Default state
@@ -10,22 +10,18 @@ const State = {
     DASHING: 2,
 };
 
-interface Fuel {
-    vFuel: number;
-    maxFuel: number;
-    rateGetFuel: number;
-    rateLoseFuel: number;
-    bonusFuel: number;
-    fuelBox: Phaser.GameObjects.Graphics;
-    fuelBar: Phaser.GameObjects.Graphics;
-}
-
 class Player extends Phaser.GameObjects.Sprite {
     // We declare the 'body' to avoid a Typescript bug
     body: Phaser.Physics.Arcade.Body;
     // Helper object that shows helpful debug information. Press F2 to toggle on/off
     debug: Phaser.GameObjects.Text;
-
+    // Player controls
+    keys: Phaser.Types.Input.Keyboard.CursorKeys;
+    wkeys: any;
+    // Level player is in. Used to get methods from the latter
+    level = (this.scene as any).scene.get("TestLevel");
+    // Tweens to dissappear fuel HUD
+   
     lives = 5;              // Start with max amount of lives
     state = State.WALKING;  // Start on the floor
     powerup = {             // Start without powerups
@@ -38,32 +34,34 @@ class Player extends Phaser.GameObjects.Sprite {
         cooldown: false,    // Start with dash out of cooldown
         velocity: 500,      
         reset: {
-            state: 300,
+            state: 300,     
             dash: 350,
         },
-        restore(player, timer, func) {
-            player.scene.time.delayedCall(timer, func, [], this);
-        },
-        getFacing(player) {
-            return player.flipX ? -1 : 1;
-        },
-        freeze(player) {
+        freeze(player): void {
             player.body.setVelocityY(0);
-            player.body.allowGravity = false;
+            player.body.setAllowGravity(false);
         },
-        activate(player) {
-            player.body.setVelocityX(this.velocity * this.getFacing(player));
-            player.state = State.DASHING;
+        unfreeze(player): void {
+            player.body.setVelocityX(player.body.velocity.x / 2);
+            player.body.setAllowGravity(true);
+        },
+        putOnCooldown(player, time): void {
             this.cooldown = true;
+            player.scene.time.delayedCall(time, () => this.cooldown = false, [], this);
+        },
+        onCooldown(): boolean {
+            return this.cooldown;
+        },
+        activate(player): void {
+            this.putOnCooldown(player, this.reset.dash);
             this.freeze(player);
-            this.restore(player, this.reset.state, () => player.state = State.WALKING);
-            this.restore(player, this.reset.dash, () => this.cooldown = false);
-            this.restore(player, this.reset.state, () => { 
-                player.body.velocity.x /= 2;
-                player.body.allowGravity = true;
-            });
+            player.body.setVelocityX(this.velocity * player.getFacing());
+            player.scene.time.delayedCall(this.reset.state, () => this.unfreeze(player), [], this);
         },
     };
+
+    fuelBarFade: any;
+    fuelFrameFade: any;
 
     isColliding = false;
 
@@ -87,27 +85,62 @@ class Player extends Phaser.GameObjects.Sprite {
         height: -300,
     };
 
+    // Returns current horizontal unit vector
+    getFacing(): number {
+        return this.flipX ? -1 : 1;
+    }
+
+    canDash(): boolean {
+        return this.powerup.dash && !this.dash.onCooldown() && !this.isColliding && this.fuel.getAmount() > 320;
+    }
+
     //Variables
     acceleration = 300;
     maxSpeed = 150;
     friction = 400;
 
+    // For use with Tiled
     name = "player";
-  
-    //Input
-    keys: Phaser.Types.Input.Keyboard.CursorKeys;
-    wkeys: any;
-    // Fuel
-    fuel: Fuel;
-    // Scene
-    level: any;
-    // Animation
-    anim_json: Phaser.Types.Animations.JSONAnimations;
-    fuelBarFade: any;
-    fuelFrameFade: any;
+
+    fuel = {
+        amount: 2000,
+        max: 2000,
+        lossRate: 5,
+        loss(delta: number): number {
+            return this.lossRate * Phaser.Math.FloorTo(delta * 0.1);
+        },
+        refill() {
+            this.amount = this.max;
+        },
+        halve() {
+            this.amount /= 2;
+        },
+        update(delta: number) { 
+            this.amount -= this.loss(delta);
+        },
+        getAmount(): number {
+            return this.amount;
+        },
+        getPercent(): number {
+            return Phaser.Math.Percent(this.amount, 0, this.max);
+        }
+    };
 
     constructor(params) {
         super(params.scene, params.x, params.y, params.key, params.frame);
+
+        Sabana.Init(this, this.scene).Sprite({ x: 12, y: 32 }, { x: 35, y: 13 });
+
+        this.keys = this.scene.input.keyboard.createCursorKeys();
+        this.wkeys = this.scene.input.keyboard.addKeys('W, A, D');
+
+        this.scene.anims.fromJSON(this.scene.cache.json.get('moran_anim'));
+        this.play("idle", true);
+
+        this.scene.sound.add('jump_sfx', {
+            loop: false,
+            volume: 0.2,
+        });
 
         //Debug
         this.debug = this.scene.add
@@ -119,43 +152,6 @@ class Player extends Phaser.GameObjects.Sprite {
 
         this.debug.setVisible(false);
 
-        // Input
-        this.keys = this.scene.input.keyboard.createCursorKeys();
-        this.wkeys = this.scene.input.keyboard.addKeys('W, A, D');
-
-        // Powerup initialization
-
-        // Audio
-        this.scene.sound.add('jump_sfx', {
-            loop: false,
-            volume: 0.2,
-        });
-
-        this.gameShutdown();
-
-        // Fuel
-        this.fuel = {
-            vFuel: 2000,
-            maxFuel: 2000,
-            rateGetFuel: 1000,
-            rateLoseFuel: 5,
-            bonusFuel: 10,
-            fuelBox: this.scene.add.graphics(),
-            fuelBar: this.scene.add.graphics()
-        };
-
-        this.scene.anims.fromJSON(this.scene.cache.json.get('moran_anim'));
-        this.play("idle", true);
-
-        // Settings
-        this.scene.add.existing(this);
-        this.scene.physics.world.enable(this);
-        this.body.setSize(12, 32);
-        this.body.setOffset(35, 13);
-
-        // Level
-        this.level = this.scene.scene.get("TestLevel");
-
         this.fuelBarFade = this.scene.tweens.add({
             targets: this.level.hud.fuelBar,
             alpha: 0.5,
@@ -166,7 +162,7 @@ class Player extends Phaser.GameObjects.Sprite {
                 //this.level.hud.fuelBar.setAlpha(1, 1, 1, 1);
             }
         });
-
+    
         this.fuelFrameFade = this.scene.tweens.add({
             targets: this.level.hud.fuelFrame,
             alpha: 0.5,
@@ -180,7 +176,7 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     // Cycle
-    update(delta: number) {
+    update(delta) {
         // All controls go here
         this.handleInput();
         // Movement
@@ -189,13 +185,8 @@ class Player extends Phaser.GameObjects.Sprite {
         this.handleFuel(delta);
         // Check for constant animations
         this.handleAnimations();
-        // Debug functions0
+        // Debug functions
         this.debugUpdate(delta);
-        // Is player out of lives? If so, quit the game
-        this.checkIfAlive();
-        // Audio
-        this.handleAudio();
-        // XD
 
         if (this.state.valueOf() == State.WALKING &&
             (this.body.velocity.y == 0) &&
@@ -206,40 +197,36 @@ class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
-    handleAudio() {
-        if (Phaser.Input.Keyboard.JustDown(this.keys.up)) {
-            //this.scene.sound.play('jump_sfx');
-        }
-    }
-
     handleInput() {
-
-        if (this.keys.right.isDown || this.wkeys.D.isDown) {
+        if (this.keys.right.isDown || this.wkeys.D.isDown)     
             this.direction.x = 1;
-        } else if (this.keys.left.isDown || this.wkeys.A.isDown) {
+        else if (this.keys.left.isDown || this.wkeys.A.isDown) 
             this.direction.x = -1;
-        } else {
+        else 
             this.direction.x = 0;
-        }
-
-        if (this.keys.up.isDown || this.wkeys.W.isDown) {
+        
+        if (this.keys.up.isDown || this.wkeys.W.isDown) 
             this.direction.y = -1;
-        } else {
+        else 
             this.direction.y = 0;
-        }
-
-        if (Phaser.Input.Keyboard.JustDown(this.keys.space) &&
-            this.powerup.dash &&
-            !this.dash.cooldown &&
-            this.fuel.vFuel > 320) {
-            console.log(`Dashed`);
+        
+        if (Phaser.Input.Keyboard.JustDown(this.keys.space) && this.canDash()) {
+            // DEBUG: console.log(`Dashed`);
+            this.switchState(this.state, State.DASHING, 300);
             this.dash.activate(this);
-            this.fuel.vFuel = this.fuel.vFuel / 2;
+            this.fuel.halve();
+
         }
     }
 
-    handleMovement(delta: number) {
+    switchState(old, next, time): void {
+        this.state = next;
+        this.scene.time.delayedCall(time, () => {
+            this.state = old;
+        }, [], this);
+    }
 
+    handleMovement(delta) {
         //Air control
         switch (this.state) {
 
@@ -282,7 +269,7 @@ class Player extends Phaser.GameObjects.Sprite {
                 if (this.body.blocked.down) {
                     this.state = State.WALKING;
                 }
-                if (this.direction.y === -1 && this.fuel.vFuel > 0) {
+                if (this.direction.y === -1 && this.fuel.getAmount() > 0) {
 
                     this.level.hud.fuelBar.setVisible(true);
                     this.level.hud.fuelFrame.setVisible(true);
@@ -317,7 +304,7 @@ class Player extends Phaser.GameObjects.Sprite {
                 break;
 
             case State.FLYING:
-                if (this.direction.y === -1 && this.fuel.vFuel > 0) {
+                if (this.direction.y === -1 && this.fuel.getAmount() > 0) {
                     this.play("jetpack", true);
                 }
                 else if (this.body.velocity.y > 0)
@@ -331,55 +318,26 @@ class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
-    handleFuel(delta: number) {
+    handleFuel(delta) {
         switch (this.state) {
             case State.WALKING: {
-                if (
-                    this.fuel.vFuel < this.fuel.maxFuel &&
-                    this.body.blocked.down
-                ) {
-                    this.fuel.vFuel +=
-                        this.fuel.rateGetFuel *
-                        parseInt((delta * 0.1).toFixed());
-                    this.fuel.vFuel.toFixed(0);
-                    if (this.fuel.vFuel > 2000) {
-                        this.fuel.vFuel = 2000;
-                    }
-                }
+                this.fuel.refill();
                 break;
             }
             case State.FLYING: {
-                if (this.fuel.vFuel > 0 && this.direction.y === -1) {
-                    this.fuel.vFuel -=
-                        this.fuel.rateLoseFuel *
-                        parseInt((delta * 0.1).toFixed());
-                    this.fuel.vFuel.toFixed(0);
+                if (this.fuel.getAmount() > 0 && this.direction.y === -1) {
+                    this.fuel.update(delta);
 
-                    if (this.fuel.vFuel < 0) {
-                        this.fuel.vFuel = 0;
-                    }
-
-                    this.level.hud.fuelBar.setCrop(
-                        0,
-                        0,
-                        64 * (this.fuel.vFuel / this.fuel.maxFuel),
-                        18
-                    )
+                    this.level.hud.fuelBar.setCrop(0, 0, 64 * (this.fuel.getPercent()), 18);
                 }
                 break;
             }
             case State.DASHING:
-                this.level.hud.fuelBar.setCrop(
-                    0,
-                    0,
-                    64 * (this.fuel.vFuel / this.fuel.maxFuel),
-                    18
-                )
+                this.level.hud.fuelBar.setCrop(0, 0, 64 * (this.fuel.getPercent()), 18);
                 break;
         }
     }
-
-
+    
     walkUpdate() {
         if (this.body.blocked.down) {
             this.jump.state = false;
@@ -402,124 +360,18 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     //Debug
-    debugUpdate(delta: number) {
+    debugUpdate(delta) {
         const r = Phaser.Math.RoundTo;
         const debugUpdate: string[] = [
             `State:     ${this.state}`,
             `Position:  x: ${r(this.body.x, 0)} y: ${r(this.body.y, 0)}`,
-            `Fuel:      ${this.fuel.vFuel}`,
+            `Fuel:      ${this.fuel.getAmount()}`,
             `Lives:     ${this.lives}              `,
             `FPS:       ${Phaser.Math.FloorTo(1000/delta, 0)}`,
             `Coins:     ${this.scene.data.get(`coins`)}`,
             `Temp_coins:${this.scene.data.get(`temp_coins`)}`
         ];
         this.debug.setText(debugUpdate);
-    }
-
-    checkIfAlive() {
-        if (this.lives <= 0) {
-            this.scene.events.emit("gameOver");
-        }
-    }
-
-    gameShutdown() {
-        // Player has lost all of its five lives
-        this.scene.events.once("gameOver", () => {
-            if (this.scene.scene.isPaused("Menu")) {
-                this.scene.scene.resume("Menu");
-            }
-
-            if (this.scene.scene.isActive("DialogBox")) {
-                this.scene.scene.stop("DialogBox");
-            }
-            this.scene.scene.stop("TestLevel");
-        });
-    }
-
-    setFuel(amount: number) {
-        this.fuel.vFuel = amount;
-    }
-
-    //Create animations
-    createAnimations() {
-        this.scene.anims.create({
-            key: "idle",
-            frames: this.scene.anims.generateFrameNumbers("moran", {
-                start: 0,
-                end: 3
-            }),
-            frameRate: 12,
-            repeat: -1
-        });
-        this.scene.anims.create({
-            key: "run",
-            frames: this.scene.anims.generateFrameNumbers("moran", {
-                start: 4,
-                end: 11
-            }),
-            frameRate: 12,
-            repeat: -1
-        });
-        this.scene.anims.create({
-            key: "jetpack",
-            frames: this.scene.anims.generateFrameNumbers("moran", {
-                start: 12,
-                end: 15
-            }),
-            frameRate: 12,
-            repeat: -1
-        });
-        this.scene.anims.create({
-            key: "jetpack_still",
-            frames: [{ key: "moran", frame: 16 }],
-            frameRate: 12,
-            repeat: -1
-        });
-        this.scene.anims.create({
-            key: "jetpack_fall",
-            frames: this.scene.anims.generateFrameNumbers("moran", {
-                start: 16,
-                end: 17
-            }),
-            frameRate: 12,
-            repeat: -1
-        });
-        this.scene.anims.create({
-            key: "jumping",
-            frames: this.scene.anims.generateFrameNumbers("moran", {
-                start: 18,
-                end: 21
-            }),
-            frameRate: 12,
-            repeat: 0
-        });
-        this.scene.anims.create({
-            key: "fall",
-            frames: this.scene.anims.generateFrameNumbers("moran", {
-                start: 22,
-                end: 23
-            }),
-            frameRate: 12,
-            repeat: -1
-        });
-        this.scene.anims.create({
-            key: "dash",
-            frames: this.scene.anims.generateFrameNumbers("moran", {
-                start: 24,
-                end: 29
-            }),
-            frameRate: 15,
-            repeat: 0
-        });
-        this.scene.anims.create({
-            key: "jet_jump",
-            frames: this.scene.anims.generateFrameNumbers("moran", {
-                start: 30,
-                end: 34
-            }),
-            frameRate: 12,
-            repeat: 0
-        });
     }
 }
 

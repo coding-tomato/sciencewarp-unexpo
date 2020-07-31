@@ -2,6 +2,8 @@ import "phaser";
 import { reset, isObjectNear, shoot } from "../../utils/libmon";
 import { Projectile } from "../../helpers/proj";
 
+import Sabana from "../../helpers/sabana";
+
 enum State {
     MOVING = 1,
     ATTACKING = 2,
@@ -21,32 +23,39 @@ const AGGRO_RAN = 300; // Range before it detects player
 const AGGRO_WIDTH = 3; // Width of Y to detect player
 
 export default class Cannon extends Phaser.GameObjects.Sprite {
-    public body: Phaser.Physics.Arcade.Body;
+    body: Phaser.Physics.Arcade.Body;
     private moveTween: Phaser.Tweens.Tween;
-    private isAttacking: boolean;
+
+    isAttacking = false;
     //Properties
     private travel_time: number;
     private travel_dist: number;
     private direction: Direction;
     private restingTime: number;
-    public state: State;
+    state = State.MOVING;
 
     constructor(params: any) {
         super(params.scene, params.x, params.y, params.texture);
 
-        this.direction = params.props.direction || DIRECTION;
+        this.direction =   params.props.direction   || DIRECTION;
         this.travel_dist = params.props.travel_dist || TRAVEL_DIST;
         this.travel_time = params.props.travel_time || TRAVEL_TIME;
         this.restingTime = params.props.restingTime || RESTING_TIME;
 
-        this.state = State.MOVING;
-        this.scene.add.existing(this);
-        this.scene.physics.world.enable(this);
+        const size = {
+            x: 20,
+            y: 30
+        };
 
-        this.body.allowGravity = false;
+        const offset = {
+            x: 14,
+            y: 10,
+        };
 
-        this.body.setSize(20, 35);
-        this.body.setOffset(14, 10);
+        Sabana.Init(this, this.scene).Sprite(size, offset);
+
+        this.body.setAllowGravity(false);
+
         this.setFlipX(this.direction === Direction.LEFT ? false : true);
         this.createAnimations();
         this.create();
@@ -110,26 +119,16 @@ export default class Cannon extends Phaser.GameObjects.Sprite {
 
         this.shootProjectiles();
 
-        this.scene.time.delayedCall(
-            2500,
-            () => {
-                if (!this.active) return;
-                if (this.moveTween.isPaused()) {
-                    this.moveTween.resume();
-                }
-                this.scene.time.delayedCall(
-                    this.restingTime,
-                    () => {
-                        this.isAttacking = false;
-                    },
-                    [],
-                    this
-                );
-                this.state = State.MOVING;
-            },
-            [],
-            this
-        );
+        this.scene.time.delayedCall(2500, () => {
+            if (!this.active) return;
+            if (this.moveTween.isPaused()) {
+                this.moveTween.resume();
+            }
+            this.scene.time.delayedCall(this.restingTime, () => {
+                this.isAttacking = false;
+            }, [], this);
+            this.state = State.MOVING;
+        }, [], this);
     }
 
     shootProjectiles() {
@@ -159,6 +158,8 @@ export default class Cannon extends Phaser.GameObjects.Sprite {
             texture: "cannon_part",
             lifetime: 3000,
             velocity: -100,
+            width: 8,
+            height: 8,
             setup: function() {
                 this.body.setVelocity(this.velocity * direction, 0);
             },

@@ -107,11 +107,11 @@ class TestLevel extends Phaser.Scene {
     create() {
         this.cameras.main.fadeOut(0);
 
-        if (!this.data.get("levels")) {
+        if (this.data.get("levels") === undefined) {
             this.data.set("levels", 0);
         }
 
-        if (!this.data.get("coins")) {
+        if (this.data.get("coins") === undefined) {
             this.data.set("coins", 0);
         }
 
@@ -128,8 +128,6 @@ class TestLevel extends Phaser.Scene {
             "tesla_tileset",
             "tileset"
         );
-
-        
 
         this.numbFont = this.cache.json.get("numbers_json");
 
@@ -326,7 +324,7 @@ class TestLevel extends Phaser.Scene {
             this.player.x = checkpoint.x;
             this.player.y = checkpoint.y;
             this.player.body.setVelocityY(-40);
-            this.player.setFuel(2000);
+            this.player.fuel.refill();
             this.cleanCollider();
 
 		}
@@ -409,25 +407,21 @@ class TestLevel extends Phaser.Scene {
         this.sound.play("hurt_sfx", {
             volume: 0.1,
         });
+
         // Take life from player
-        console.log(`You had ${this.player.lives} lives.`);
         addOrTakeLives(this.player, -1);
-        console.log(`Now you have ${this.player.lives} lives.`);
+
         // Update HUD
         if (this.player.lives > 0) {
             this.hud.lives.children.entries[this.player.lives].setTint(
                 0x555555
             );
         }
+
         // Restore player speed
-        this.time.delayedCall(
-            1000,
-            () => {
-                if (this.player !== null) this.player.maxSpeed = 150;
-            },
-            [],
-            this
-        );
+        this.time.delayedCall(1000, () => {
+            if (this.player !== null) this.player.maxSpeed = 150;
+        }, [], this);
     }
 
     hurtEnemy(player: any, enemy: any) {
@@ -466,10 +460,17 @@ class TestLevel extends Phaser.Scene {
         }
     }
 
-    hurtProj(element1: any, element2: any) {
-        if (!element1.isColliding) {
+    hurtProj(player: any, projectile: any) {
+        const DASHING = 2;
+
+        // If player isn't dashing or in grace period
+        // Hurt player
+        // Else destroy the projectile
+        if (player.state != DASHING && !player.isColliding) {
             this.cleanCollider();
             this.hurt();
+        } else {
+            projectile.destroy();
         }
     }
 
@@ -608,6 +609,7 @@ class TestLevel extends Phaser.Scene {
                 stepX: 25,
             },
         };
+
         this.hud.lives = this.add.group(config);
         this.hud.lives.children.iterate((element: any) => {
             element.setScrollFactor(0, 0).setScale(0.8);
@@ -624,6 +626,7 @@ class TestLevel extends Phaser.Scene {
             this.hud.powerup.jump,
             this.hud.powerup.pack,
         ]);
+
         this.hud.container.setScrollFactor(0, 0);
 
         this.hud.fuelBar = this.add
@@ -635,6 +638,14 @@ class TestLevel extends Phaser.Scene {
             .sprite(66, 18, "fuel-frame")
             .setScale(1)
             .setVisible(false);
+    }
+
+    hideUI() {
+        this.hud.container.each( prop => prop.setVisible(false) );
+    }
+
+    restoreUI() {
+        this.hud.container.each( prop => prop.setVisible(true) );
     }
 }
 

@@ -32,6 +32,12 @@ export class Projectile extends Phaser.GameObjects.Sprite {
         // Timer
         this.timer = 0;
 
+        this.body.setSize(params.width, params.height)
+
+        console.log(this.displayWidth);
+        console.log(this.displayHeight)
+
+
         this.scene.add.existing(this);
     }
     update(delta: number) {

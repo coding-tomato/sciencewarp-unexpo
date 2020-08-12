@@ -15,8 +15,39 @@ class Bootstrap extends Phaser.Scene {
 
         this.load.path = "../assets/";
 
-        // Menu Title
-        this.load.image("menu_title", "menu_title.png");
+        // ---- Menu Background 
+        this.load.image("menu_background", "menu_title/menu_background.png");
+        this.load.image("menu_title_science", "menu_title/title_science.png");
+        this.load.image("menu_title_warp", "menu_title/title_warp.png");
+
+        // - Start menu
+        this.load.spritesheet(
+            "menu_press_any_button",
+            "menu_title/title_anyButtonToStart_400x45.png",
+            { frameWidth: 400, frameHeight: 45 }
+        );
+        // - Home menu 
+        this.load.spritesheet(
+            "start_journey",
+            "menu_title/title_startJourney_227x32.png",
+            { frameWidth: 227, frameHeight: 32 }
+        );
+        this.load.spritesheet(
+            "top_score",
+            "menu_title/title_topScore_126x49.png",
+            { frameWidth: 126, frameHeight: 49 }
+        );
+        this.load.spritesheet(
+            "options",
+            "menu_title/title_options_120x36.png",
+            { frameWidth: 120, frameHeight: 36 }
+        );
+        // - Level selector
+        this.load.spritesheet(
+            "options",
+            "menu_title/title_levelSelector_48x48.png",
+            { frameWidth: 48, frameHeight: 48 }
+        );
 
         // Audio
         this.load.audio("coin_sfx", "audio/coin.ogg");

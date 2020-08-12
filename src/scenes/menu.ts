@@ -1,28 +1,37 @@
 import "phaser";
 
+/*
+ * This is the most consciously hardcoded shit I've ever done, judge
+ * me all you want because I deserve it.
+ */
+
 export default class Menu extends Phaser.Scene {
-    state: {
+    screenState: {
       prev: number, 
       current: number, 
     };
 
     /*
-     * Each array index represents a UI screen, which contains:
-     *  - A group of elements
-     *  - A group of animations objects (tween, anim)
+     * Each array index in "ui" and "background" represents 
+     * a UI screen, which contains:
      *
+     *  - An array of GameObjects
+     *  - An array of tweens
+     *  - An array of anims
+     *
+     * Screens:
      * 0 - Start menu
      * 1 - Home menu 
      * 2 - Level selector 
      * 3 - Controls menu 
     */
     ui: Array<{
-      elements: Array<Phaser.GameObjects.Sprite>,
+      gameObjects: Array<Phaser.GameObjects.Sprite>,
       tweens: Array<any>,
       anims: Array<any>,
     }>
     background: {
-      elements: Array<Phaser.GameObjects.Sprite>,
+      gameObjects: Array<Phaser.GameObjects.Sprite>,
       tweens: Array<any>,
     };
 
@@ -32,21 +41,20 @@ export default class Menu extends Phaser.Scene {
         super({
             key: "Menu",
         });
-
-        this.state = {prev: null, current: 0}
         this.ui = [];
     }
 
     public create(): void {
+        this.screenState = {prev: null, current: 0}
         this.background = {
-          elements: [],
+          gameObjects: [],
           tweens: [],
         };
 
         // UI init
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 3; i++) {
           this.ui[i] = {
-            elements: [],
+            gameObjects: [],
             tweens: [],
             anims: [],
           };
@@ -60,19 +68,33 @@ export default class Menu extends Phaser.Scene {
                 loop: true,
             });
                 
-        this.loadSprites();
+        this.gameObjectSetup();
 
         this.input.keyboard.on('keydown-ESC', () => {
           this.scene.restart();
         })
 
         this.input.keyboard.on('keydown', () => {
-          if (this.state.current === 0) {
+          if (this.screenState.current === 0) {
+            // If on start menu, head to home menu
+            // after any button is pressed.
             this.updateUI(1);
-          } else {
-            this.updateUI(0);
+          }         
+        })
+
+        /* Debug screen navigation
+        this.input.keyboard.on('keydown-M', () => {
+          if (this.screenState.current < this.ui.length - 1) {
+            this.updateUI(this.screenState.current + 1);
           }
         })
+
+        this.input.keyboard.on('keydown-N', () => {
+          if (this.screenState.current > 0) {
+            this.updateUI(this.screenState.current - 1);
+          }
+        })
+        */
 
     }
 
@@ -80,40 +102,40 @@ export default class Menu extends Phaser.Scene {
 
     }
 
+    
     private updateUI(newScreenIndex: number): void {
-        this.state.prev = this.state.current;
-        this.state.current = newScreenIndex;
+        if (newScreenIndex === this.screenState.current) {
+          console.log(`You're already in the ${this.screenState.current} screen`);
+          return;
+        }
 
-        this.ui[this.state.prev].elements.forEach(element => {
+        this.screenState.prev = this.screenState.current;
+        this.screenState.current = newScreenIndex;
+
+        // Hide previous UI gameObjects, show current ones and play 
+        // their respective animations.
+        this.ui[this.screenState.prev].gameObjects.forEach(element => {
           element.setVisible(false);
         })
-
-        this.ui[this.state.current].elements.forEach(element => {
+        this.ui[this.screenState.current].gameObjects.forEach(element => {
           element.setVisible(true);
         })
-        this.ui[this.state.current].tweens.forEach(tween => {
+        this.ui[this.screenState.current].tweens.forEach(tween => {
           tween.play();
         })
-
-        // Play tween/sprite animationss, hide prev UI elements and show new ones.
-        switch(this.state.current) {
-          case 0:
-            break;
-          default:
-            break;
-        }
     }
 
-    private loadSprites(): void {
-        // Create all sprites
+    private gameObjectSetup(): void {
+        // Load all gameobjects into the current scene and their
+        // respective tweens/animations
         
         // GENERAL BACKGROUND
-        this.background.elements.push(this.add.sprite(-12, -12, "menu_background")
+        this.background.gameObjects.push(this.add.sprite(-12, -12, "menu_background")
             .setOrigin(0, 0)
             .setScrollFactor(0)
         );
         this.background.tweens.push(this.add.tween({
-          targets: this.background.elements[0],
+          targets: this.background.gameObjects[0],
           x: -4,
           y: -4,
           duration: 2000,
@@ -125,12 +147,12 @@ export default class Menu extends Phaser.Scene {
         // START MENU
 
         // Title SCIENCE
-        this.ui[0].elements.push(this.add.sprite(0, -300, "menu_title_science")
+        this.ui[0].gameObjects.push(this.add.sprite(0, -300, "menu_title_science")
             .setOrigin(0, 0)
             .setScrollFactor(0)
         );
         this.ui[0].tweens.push(this.add.tween({
-          targets: this.ui[0].elements[0],
+          targets: this.ui[0].gameObjects[0],
           y: -30,
           duration: 800,
           delay: 50,
@@ -139,12 +161,12 @@ export default class Menu extends Phaser.Scene {
         }))
 
         // Title WARP
-        this.ui[0].elements.push(this.add.sprite(0, -300, "menu_title_warp")
+        this.ui[0].gameObjects.push(this.add.sprite(0, -300, "menu_title_warp")
             .setOrigin(0, 0)
             .setScrollFactor(0)
         );
         this.ui[0].tweens.push(this.add.tween({
-          targets: this.ui[0].elements[1],
+          targets: this.ui[0].gameObjects[1],
           y: -30,
           duration: 800,
           delay: 150,
@@ -153,7 +175,7 @@ export default class Menu extends Phaser.Scene {
         }))
         
         // Press any button to start
-        this.ui[0].elements.push(this.add
+        this.ui[0].gameObjects.push(this.add
             .sprite(40, 220, "menu_press_any_button")
             .setOrigin(0, 0)
             .setScrollFactor(0)
@@ -167,14 +189,14 @@ export default class Menu extends Phaser.Scene {
             frameRate: 15,
             repeat: -1,
         }));
-        this.ui[0].elements[2].anims.load('menuPressAnyloop');
-        this.ui[0].elements[2].anims.play('menuPressAnyloop');
+        this.ui[0].gameObjects[2].anims.load('menuPressAnyloop');
+        this.ui[0].gameObjects[2].anims.play('menuPressAnyloop');
 
 
         // HOME MENU
         
         // Start journey
-        this.ui[1].elements.push(this.add
+        this.ui[1].gameObjects.push(this.add
             .sprite(10, 200, "start_journey")
             .setOrigin(0, 0)
             .setScrollFactor(0)
@@ -190,7 +212,7 @@ export default class Menu extends Phaser.Scene {
             frameRate: 15,
             repeat: -1,
         }));
-        const startJourney = this.ui[1].elements[0];
+        const startJourney = this.ui[1].gameObjects[0];
         startJourney.anims.load('menuStartJourney');
         startJourney.on('pointerover', () => {
           startJourney.anims.play('menuStartJourney');
@@ -199,9 +221,22 @@ export default class Menu extends Phaser.Scene {
           startJourney.anims.restart();
           startJourney.anims.stop();
         })
+        startJourney.on('pointerdown', () => {
+          // Open level selector
+          this.updateUI(2);
+        })
+
+        this.ui[1].tweens.push(this.add.tween({
+            targets: startJourney,
+            y: 203,
+            duration: 800,
+            yoyo: true,
+            loop: -1,
+        }))
+
 
         // Options
-        this.ui[1].elements.push(this.add
+        this.ui[1].gameObjects.push(this.add
             .sprite(10, 230, "options")
             .setOrigin(0, 0)
             .setScrollFactor(0)
@@ -217,8 +252,9 @@ export default class Menu extends Phaser.Scene {
             frameRate: 15,
             repeat: -1,
         }));
-        const options = this.ui[1].elements[1];
+        const options = this.ui[1].gameObjects[1];
         options.anims.load('menuOptions');
+
         options.on('pointerover', () => {
           options.anims.play('menuOptions');
         })
@@ -226,51 +262,84 @@ export default class Menu extends Phaser.Scene {
           options.anims.restart();
           options.anims.stop();
         })
+        options.on('pointerdown', () => {
+          // Open options menu
+        })
+
+        this.ui[1].tweens.push(this.add.tween({
+            targets: options,
+            y: 233,
+            duration: 800,
+            yoyo: true,
+            loop: -1,
+        }))
 
 
-        // Level selector
-        
+        // LEVEL SELECTOR
+
+        // Loading level selection buttons
+        for (let i = 0; i < 8; i++) {
+          let animFrameStart = 0;
+          let animFrameEnd = 0;
+
+          if (i == 0) {
+            animFrameStart = i;
+          } else {
+            animFrameStart = i * 2;
+          };
+          animFrameEnd = animFrameStart + 1
+
+          this.ui[2].anims.push(this.anims.create({
+            key: `level${i + 1}`,
+            frames: this.anims.generateFrameNumbers("levels", {
+                start: animFrameStart,
+                end: animFrameEnd,
+            }),
+            frameRate: 10,
+            repeat: -1,
+          }));
+
+          this.ui[2].gameObjects.push(this.add
+            .sprite(40 + i*52, 200, "levels")
+            .setOrigin(0, 0)
+            .setScrollFactor(0)
+            .setVisible(false)
+            .setInteractive()
+          );
+
+          const levelName = `level${i + 1}`;
+          const levelButton = this.ui[2].gameObjects[i]
+          levelButton.anims.load(levelName);
+          levelButton.on('pointerover', () => {
+            levelButton.anims.play(levelName);
+          })
+          levelButton.on('pointerout', () => {
+            levelButton.anims.restart();
+            levelButton.anims.stop();
+          })
+          levelButton.on('pointerdown', () => {
+          this.cameras.main.once("camerafadeoutcomplete", (camera: any) => {
+                this.scene.launch("TestLevel", {
+                    level: i,
+                    coins: 0,
+                });
+                this.cameras.main.fadeIn(0);
+                this.scene.pause("Menu");
+            });
+            this.cameras.main.fadeOut(500);
+          })
+
+          this.ui[2].tweens.push(this.add.tween({
+            targets: levelButton,
+            y: 202,
+            duration: 800,
+            delay: i * 20,
+            yoyo: true,
+            loop: -1,
+          }))
+        }
     }
 }
-
-        /*
-        let menuPressAnyButtonAnim = this.anims.create({
-            key: "loop",
-            frames: this.anims.generateFrameNumbers("menu_press_any_button", {
-                start: 0,
-                end: 23,
-            }),
-            frameRate: 15,
-            repeat: -1,
-        });
-
-        this.tweens.add({
-          targets: this.background[0],
-          x: -4,
-          y: -4,
-          duration: 2000,
-          yoyo: true,
-          loop: -1,
-        })
-
-        this.tweens.add({
-          targets: this.background[1],
-          y: -30,
-          duration: 800,
-          delay: 50,
-          ease: 'Elastic',
-          easeParams: [ 1.5, 0.5],
-        })
-
-        this.tweens.add({
-          targets: this.background[2],
-          y: -30,
-          duration: 800,
-          delay: 150,
-          ease: 'Elastic',
-          easeParams: [ 1.5, 0.5],
-        })
-        */
 
         /*
         const list = [

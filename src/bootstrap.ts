@@ -44,7 +44,7 @@ class Bootstrap extends Phaser.Scene {
         );
         // - Level selector
         this.load.spritesheet(
-            "options",
+            "levels",
             "menu_title/title_levelSelector_48x48.png",
             { frameWidth: 48, frameHeight: 48 }
         );

@@ -137,7 +137,6 @@ class TestLevel extends Phaser.Scene {
         );
 
         this.pauseControl = this.input.keyboard.addKey("ENTER");
-
         // Audio
         this.coin = this.sound.add("coin_sfx", {
             loop: false,
@@ -339,8 +338,8 @@ class TestLevel extends Phaser.Scene {
             this.scene.moveBelow("TestLevel", "DialogBox");
 			this.scene.pause("TestLevel");
 
-		}
-
+        }
+        
         this.mapManager.parallaxUpdate();
 
         if (!this.inputDisabled) this.player.update(delta);
@@ -416,6 +415,11 @@ class TestLevel extends Phaser.Scene {
             this.hud.lives.children.entries[this.player.lives].setTint(
                 0x555555
             );
+        } else {
+            if (this.scene.isActive("DialogBox")) 
+                this.scene.stop("DialogBox");
+            this.scene.resume("Menu");
+            this.scene.stop("TestLevel");
         }
 
         // Restore player speed

@@ -11,6 +11,9 @@ export default class Menu extends Phaser.Scene {
       current: number, 
     };
 
+    // A number states how many levels has the player beaten.
+    levelsUnlocked: number;
+
     /*
      * Each array index in "ui" and "background" represents 
      * a UI screen, which contains:
@@ -44,6 +47,15 @@ export default class Menu extends Phaser.Scene {
         this.ui = [];
     }
 
+    public init(data: any): any {
+      console.log(data.levels_unlocked);
+      if (data.levels_unlocked === undefined) {
+        this.levelsUnlocked = 1;
+      } else {
+        this.levelsUnlocked = data.levels_unlocked;
+      }
+    }
+
     public create(): void {
         this.screenState = {prev: null, current: 0}
         this.background = {
@@ -74,13 +86,20 @@ export default class Menu extends Phaser.Scene {
           this.scene.restart();
         })
 
-        this.input.keyboard.on('keydown', () => {
-          if (this.screenState.current === 0) {
+        this.input.keyboard.on('keydown-C', () => {
+          this.levelsUnlocked = 8;
+          this.updateUI(0);
+        })
+
+        this.time.delayedCall(800, () => {
+          this.input.keyboard.on('keydown', () => {
             // If on start menu, head to home menu
             // after any button is pressed.
-            this.updateUI(1);
-          }         
-        })
+            if (this.screenState.current === 0) {
+              this.updateUI(1);
+            }         
+          });
+        });
 
         /* Debug screen navigation
         this.input.keyboard.on('keydown-M', () => {
@@ -112,7 +131,7 @@ export default class Menu extends Phaser.Scene {
         this.screenState.prev = this.screenState.current;
         this.screenState.current = newScreenIndex;
 
-        // Hide previous UI gameObjects, show current ones and play 
+        // Hide previous UI screen gameObjects, show current ones and play 
         // their respective animations.
         this.ui[this.screenState.prev].gameObjects.forEach(element => {
           element.setVisible(false);
@@ -194,6 +213,36 @@ export default class Menu extends Phaser.Scene {
 
 
         // HOME MENU
+
+        // Title SCIENCE
+        this.ui[1].gameObjects.push(this.add.sprite(0, -30, "menu_title_science")
+            .setOrigin(0, 0)
+            .setScrollFactor(0)
+            .setVisible(false)
+        );
+        this.ui[1].tweens.push(this.add.tween({
+          targets: this.ui[1].gameObjects[0],
+          y: -40,
+          duration: 800,
+          delay: 50,
+          ease: 'Elastic',
+          easeParams: [ 1.5, 0.5],
+        }))
+
+        // Title WARP
+        this.ui[1].gameObjects.push(this.add.sprite(0, -30, "menu_title_warp")
+            .setOrigin(0, 0)
+            .setScrollFactor(0)
+            .setVisible(false)
+        );
+        this.ui[1].tweens.push(this.add.tween({
+          targets: this.ui[1].gameObjects[1],
+          y: -40,
+          duration: 800,
+          delay: 150,
+          ease: 'Elastic',
+          easeParams: [ 1.5, 0.5],
+        }))
         
         // Start journey
         this.ui[1].gameObjects.push(this.add
@@ -212,7 +261,7 @@ export default class Menu extends Phaser.Scene {
             frameRate: 15,
             repeat: -1,
         }));
-        const startJourney = this.ui[1].gameObjects[0];
+        const startJourney = this.ui[1].gameObjects[2];
         startJourney.anims.load('menuStartJourney');
         startJourney.on('pointerover', () => {
           startJourney.anims.play('menuStartJourney');
@@ -252,7 +301,7 @@ export default class Menu extends Phaser.Scene {
             frameRate: 15,
             repeat: -1,
         }));
-        const options = this.ui[1].gameObjects[1];
+        const options = this.ui[1].gameObjects[3];
         options.anims.load('menuOptions');
 
         options.on('pointerover', () => {
@@ -276,6 +325,17 @@ export default class Menu extends Phaser.Scene {
 
 
         // LEVEL SELECTOR
+        
+        // Locked level animation
+        this.ui[2].anims.push(this.anims.create({
+          key: `levelLocked`,
+          frames: this.anims.generateFrameNumbers("levels", {
+            frames: [20],
+          }),
+          frameRate: 10,
+          repeat: -1,
+        }));
+
 
         // Loading level selection buttons
         for (let i = 0; i < 8; i++) {
@@ -307,27 +367,31 @@ export default class Menu extends Phaser.Scene {
             .setInteractive()
           );
 
-          const levelName = `level${i + 1}`;
+          const levelName = (i < this.levelsUnlocked) ? `level${i + 1}` : 'levelLocked';
           const levelButton = this.ui[2].gameObjects[i]
           levelButton.anims.load(levelName);
-          levelButton.on('pointerover', () => {
-            levelButton.anims.play(levelName);
-          })
-          levelButton.on('pointerout', () => {
-            levelButton.anims.restart();
-            levelButton.anims.stop();
-          })
-          levelButton.on('pointerdown', () => {
-          this.cameras.main.once("camerafadeoutcomplete", (camera: any) => {
-                this.scene.launch("TestLevel", {
-                    level: i,
-                    coins: 0,
-                });
-                this.cameras.main.fadeIn(0);
-                this.scene.pause("Menu");
-            });
-            this.cameras.main.fadeOut(500);
-          })
+
+          if (levelName !== 'levelLocked') {
+            levelButton.on('pointerover', () => {
+              levelButton.anims.play(levelName);
+            })
+            levelButton.on('pointerout', () => {
+              levelButton.anims.restart();
+              levelButton.anims.stop();
+            })
+            levelButton.on('pointerdown', () => {
+            this.cameras.main.once("camerafadeoutcomplete", (camera: any) => {
+                  this.scene.launch("TestLevel", {
+                      level: i,
+                      coins: 0,
+                      levelsUnlocked: this.levelsUnlocked,
+                  });
+                  this.cameras.main.fadeIn(0);
+                  this.scene.stop("Menu");
+              });
+              this.cameras.main.fadeOut(500);
+            })
+          }
 
           this.ui[2].tweens.push(this.add.tween({
             targets: levelButton,
@@ -338,97 +402,36 @@ export default class Menu extends Phaser.Scene {
             loop: -1,
           }))
         }
+
+        // Title SCIENCE
+        this.ui[2].gameObjects.push(this.add.sprite(0, -30, "menu_title_science")
+            .setOrigin(0, 0)
+            .setScrollFactor(0)
+            .setVisible(false)
+        );
+        this.ui[2].tweens.push(this.add.tween({
+          targets: this.ui[2].gameObjects[8],
+          y: -40,
+          duration: 800,
+          delay: 50,
+          ease: 'Elastic',
+          easeParams: [ 1.5, 0.5],
+        }))
+
+        // Title WARP
+        this.ui[2].gameObjects.push(this.add.sprite(0, -30, "menu_title_warp")
+            .setOrigin(0, 0)
+            .setScrollFactor(0)
+            .setVisible(false)
+        );
+        this.ui[2].tweens.push(this.add.tween({
+          targets: this.ui[2].gameObjects[9],
+          y: -40,
+          duration: 800,
+          delay: 150,
+          ease: 'Elastic',
+          easeParams: [ 1.5, 0.5],
+        }))
+
     }
 }
-
-        /*
-        const list = [
-            this.add
-                .text(
-                    this.cameras.main.centerX + 150,
-                    this.cameras.main.centerY - 30,
-                    "Level One"
-                )
-                .setScrollFactor(0),
-            this.add
-                .text(
-                    this.cameras.main.centerX + 150,
-                    this.cameras.main.centerY - 15,
-                    "Level Two"
-                )
-                .setScrollFactor(0),
-            this.add
-                .text(
-                    this.cameras.main.centerX + 150,
-                    this.cameras.main.centerY,
-                    "Level Three"
-                )
-                .setScrollFactor(0),
-        ];
-
-        for (let element of list) {
-            element
-                .setFontFamily('"ZCOOL QingKe HuangYou", serif')
-                .setFill("rgb(20, 10, 10");
-        }
-
-        if (!this.data.get("item_selected")) {
-            this.data.set("item_selected", 0);
-        }
-
-        let high = this.tweens.add({
-            targets: list[this.data.get("item_selected")],
-            alpha: { from: 0.5, to: 1 },
-            repeat: -1,
-        });
-
-        this.events.addListener("change", (previous: number) => {
-            high.remove();
-            list[previous].setAlpha(1);
-            console.log(this.data.get("item_selected"));
-            high = this.tweens.add({
-                targets: list[this.data.get("item_selected")],
-                alpha: { from: 0.5, to: 1 },
-                repeat: -1,
-            });
-        });
-
-        */
-
-      /*
-        if (Phaser.Input.Keyboard.JustDown(this.controlKeys.up)) {
-            if (this.data.get("item_selected") != 0) {
-                let previous: number = this.data.get("item_selected");
-                this.data.set("item_selected", previous - 1);
-                this.events.emit("change", previous);
-            }
-        }
-
-        // this.cameras.main.scrollX++;
-        // this.bg[0].tilePositionX = this.cameras.main.scrollX * 0.8;
-
-        if (Phaser.Input.Keyboard.JustDown(this.controlKeys.down)) {
-            if (this.data.get("item_selected") != 2) {
-                let previous: number = this.data.get("item_selected");
-                this.data.set("item_selected", previous + 1);
-                this.events.emit("change", previous);
-            }
-        }
-
-        if (Phaser.Input.Keyboard.JustDown(this.enterKey)) {
-            let item_selected = this.data.get(`item_selected`);
-            this.cameras.main.once("camerafadeoutcomplete", (camera: any) => {
-                this.scene.launch("TestLevel", {
-                    level: item_selected,
-                    coins: 0,
-                });
-                this.cameras.main.fadeIn(0);
-                this.scene.pause("Menu");
-            });
-            this.cameras.main.fadeOut(500);
-            // this.time.delayedCall(1000, () => {
-            // 	this.scene.start('TestLevel');
-            // }, [], this);
-            // break;
-        }
-    */

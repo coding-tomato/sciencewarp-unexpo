@@ -386,6 +386,7 @@ class TestLevel extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(this.debugControl[1])) {
             addOrTakeLives(this.player, -5);
+            this.hurt();
         }
 
         if (this.hud.fuelBar.visible) {
@@ -418,7 +419,9 @@ class TestLevel extends Phaser.Scene {
         } else {
             if (this.scene.isActive("DialogBox")) 
                 this.scene.stop("DialogBox");
-            this.scene.resume("Menu");
+            this.scene.start("Menu", {
+              levels_unlocked: this.data.get('levels') + 1,
+            });
             this.scene.stop("TestLevel");
         }
 
@@ -548,6 +551,7 @@ class TestLevel extends Phaser.Scene {
         this.inputDisabled = true;
         let actualLevel = this.data.get("levels");
         this.data.set("levels", actualLevel + 1);
+        console.log(this.data.get('levels'))
         this.time.delayedCall(
             600,
             () => {

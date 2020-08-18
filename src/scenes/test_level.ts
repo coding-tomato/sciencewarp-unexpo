@@ -322,6 +322,15 @@ class TestLevel extends Phaser.Scene {
       this.player.y = checkpoint.y;
       this.player.body.setVelocityY(-40);
       this.player.fuel.refill();
+      this.player.fuelBarFade.play();
+      this.player.fuelFrameFade.play();
+      this.player.level.hud.fuelBar.setCrop(
+        0,
+        0,
+        64 * this.player.fuel.getPercent(),
+        18,
+      );
+
       this.cleanCollider();
     }
 

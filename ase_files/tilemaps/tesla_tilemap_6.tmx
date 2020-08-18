@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.0" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="270" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#a3a3a3" nextlayerid="30" nextobjectid="1725">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="270" height="100" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#a3a3a3" nextlayerid="30" nextobjectid="1728">
  <editorsettings>
   <export target="../../assets/tilemaps/tesla_tilemap_6.json" format="json"/>
  </editorsettings>
@@ -1131,7 +1131,25 @@
   <object id="1589" name="checkpoint" type="checkpoint" x="3344" y="368">
    <point/>
   </object>
-  <object id="1724" name="portal" type="portal" x="4240" y="1296">
+  <object id="1724" name="portal" type="portal" x="4240" y="1280">
+   <properties>
+    <property name="level" type="int" value="7"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="1725" name="portal" type="portal" x="4272" y="1312">
+   <properties>
+    <property name="level" type="int" value="7"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="1726" name="portal" type="portal" x="4240" y="1312">
+   <properties>
+    <property name="level" type="int" value="7"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="1727" name="portal" type="portal" x="4272" y="1280">
    <properties>
     <property name="level" type="int" value="7"/>
    </properties>

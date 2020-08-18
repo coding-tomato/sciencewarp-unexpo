@@ -366,7 +366,7 @@ export default class Menu extends Phaser.Scene {
     );
 
     // Loading level selection buttons
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 9; i++) {
       let animFrameStart = 0;
       let animFrameEnd = 0;
 
@@ -391,7 +391,7 @@ export default class Menu extends Phaser.Scene {
 
       this.ui[2].gameObjects.push(
         this.add
-          .sprite(40 + i * 52, 200, 'levels')
+          .sprite(20 + i * 50, 200, 'levels')
           .setOrigin(0, 0)
           .setScrollFactor(0)
           .setVisible(false)
@@ -403,27 +403,27 @@ export default class Menu extends Phaser.Scene {
       const levelButton = this.ui[2].gameObjects[i];
       levelButton.anims.load(levelName);
 
-      if (levelName !== 'levelLocked') {
-        levelButton.on('pointerover', () => {
-          levelButton.anims.play(levelName);
-        });
-        levelButton.on('pointerout', () => {
-          levelButton.anims.restart();
-          levelButton.anims.stop();
-        });
-        levelButton.on('pointerdown', () => {
-          this.cameras.main.once('camerafadeoutcomplete', (camera: any) => {
-            this.scene.launch('TestLevel', {
-              level: i,
-              coins: 0,
-              levelsUnlocked: this.levelsUnlocked,
-            });
-            this.cameras.main.fadeIn(0);
-            this.scene.stop('Menu');
+      // if (levelName !== 'levelLocked') {
+      levelButton.on('pointerover', () => {
+        levelButton.anims.play(levelName);
+      });
+      levelButton.on('pointerout', () => {
+        levelButton.anims.restart();
+        levelButton.anims.stop();
+      });
+      levelButton.on('pointerdown', () => {
+        this.cameras.main.once('camerafadeoutcomplete', (camera: any) => {
+          this.scene.launch('TestLevel', {
+            level: i,
+            coins: 0,
+            levelsUnlocked: this.levelsUnlocked,
           });
-          this.cameras.main.fadeOut(500);
+          this.cameras.main.fadeIn(0);
+          this.scene.stop('Menu');
         });
-      }
+        this.cameras.main.fadeOut(500);
+      });
+      // }
 
       this.ui[2].tweens.push(
         this.add.tween({
@@ -447,7 +447,7 @@ export default class Menu extends Phaser.Scene {
     );
     this.ui[2].tweens.push(
       this.add.tween({
-        targets: this.ui[2].gameObjects[8],
+        targets: this.ui[2].gameObjects[9],
         y: -40,
         duration: 800,
         delay: 50,
@@ -466,7 +466,7 @@ export default class Menu extends Phaser.Scene {
     );
     this.ui[2].tweens.push(
       this.add.tween({
-        targets: this.ui[2].gameObjects[9],
+        targets: this.ui[2].gameObjects[10],
         y: -40,
         duration: 800,
         delay: 150,
@@ -478,7 +478,7 @@ export default class Menu extends Phaser.Scene {
     // Back button
     this.ui[2].gameObjects.push(
       this.add
-        .sprite(10, 217, 'backButton')
+        .sprite(10, 180, 'backButton')
         .setOrigin(0, 0)
         .setScrollFactor(0)
         .setVisible(false)
@@ -496,7 +496,7 @@ export default class Menu extends Phaser.Scene {
       }),
     );
 
-    const backButton = this.ui[2].gameObjects[10];
+    const backButton = this.ui[2].gameObjects[11];
     backButton.anims.load('backButtonLoop');
 
     backButton.on('pointerover', () => {
@@ -512,8 +512,8 @@ export default class Menu extends Phaser.Scene {
 
     this.ui[2].tweens.push(
       this.add.tween({
-        targets: this.ui[2].gameObjects[10],
-        y: 220,
+        targets: this.ui[2].gameObjects[11],
+        y: 183,
         duration: 800,
         loop: -1,
         yoyo: true,

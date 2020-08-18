@@ -346,6 +346,7 @@ class Player extends Phaser.GameObjects.Sprite {
       case State.WALKING: {
         if (this.body.blocked.down) {
           this.fuel.refill();
+          this.level.hud.fuelBar.setCrop(0, 0, 64 * this.fuel.getPercent(), 18);
         }
         break;
       }

@@ -5,7 +5,7 @@
      "export":
         {
          "format":"json",
-         "target":"tesla_tilemap_0.json"
+         "target":"tesla_tilemap_6.json"
         }
     },
  "height":100,
@@ -3026,6 +3026,78 @@
                  "width":0,
                  "x":3344,
                  "y":368
+                }, 
+                {
+                 "height":0,
+                 "id":1724,
+                 "name":"portal",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"level",
+                         "type":"int",
+                         "value":7
+                        }],
+                 "rotation":0,
+                 "type":"portal",
+                 "visible":true,
+                 "width":0,
+                 "x":4240,
+                 "y":1280
+                }, 
+                {
+                 "height":0,
+                 "id":1725,
+                 "name":"portal",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"level",
+                         "type":"int",
+                         "value":7
+                        }],
+                 "rotation":0,
+                 "type":"portal",
+                 "visible":true,
+                 "width":0,
+                 "x":4272,
+                 "y":1312
+                }, 
+                {
+                 "height":0,
+                 "id":1726,
+                 "name":"portal",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"level",
+                         "type":"int",
+                         "value":7
+                        }],
+                 "rotation":0,
+                 "type":"portal",
+                 "visible":true,
+                 "width":0,
+                 "x":4240,
+                 "y":1312
+                }, 
+                {
+                 "height":0,
+                 "id":1727,
+                 "name":"portal",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"level",
+                         "type":"int",
+                         "value":7
+                        }],
+                 "rotation":0,
+                 "type":"portal",
+                 "visible":true,
+                 "width":0,
+                 "x":4272,
+                 "y":1280
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -3034,10 +3106,10 @@
          "y":0
         }],
  "nextlayerid":30,
- "nextobjectid":1724,
+ "nextobjectid":1728,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.3.0",
+ "tiledversion":"1.4.2",
  "tileheight":16,
  "tilesets":[
         {
@@ -3583,6 +3655,6 @@
         }],
  "tilewidth":16,
  "type":"map",
- "version":1.2,
+ "version":1.4,
  "width":270
 }

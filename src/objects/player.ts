@@ -26,9 +26,9 @@ class Player extends Phaser.GameObjects.Sprite {
   state = State.WALKING; // Start on the floor
   powerup = {
     // Start without powerups
-    dash: true,
-    jump: true,
-    jetpack: true,
+    dash: false,
+    jump: false,
+    jetpack: false,
   };
 
   dash = {

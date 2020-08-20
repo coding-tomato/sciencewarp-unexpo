@@ -48,7 +48,6 @@ export default class Menu extends Phaser.Scene {
   }
 
   public init(data: any): any {
-    console.log(data.levels_unlocked);
     if (data.levels_unlocked === undefined) {
       this.levelsUnlocked = 1;
     } else {
@@ -74,6 +73,10 @@ export default class Menu extends Phaser.Scene {
 
     // Music
     this.music = this.sound.add(`song`);
+    console.log(this.music);
+    if (this.music.isPlaying) {
+      this.music.stop();
+    }
     if (!this.music.isPlaying)
       this.music.play({
         volume: 0.02,
@@ -82,19 +85,19 @@ export default class Menu extends Phaser.Scene {
 
     this.gameObjectSetup();
 
-    this.input.keyboard.on('keydown-ESC', () => {
-      this.scene.restart();
-    });
-
-    this.input.keyboard.on('keydown-C', () => {
-      this.levelsUnlocked = 8;
-      this.updateUI(0);
-    });
-
-    this.time.delayedCall(800, () => {
+    this.time.delayedCall(200, () => {
       this.input.keyboard.on('keydown', () => {
         // If on start menu, head to home menu
         // after any button is pressed.
+        if (this.screenState.current === 0) {
+          this.updateUI(1);
+        }
+      });
+      this.input.on('pointerdown', () => {
+        // If on start menu, head to home menu
+        // after any button is pressed.
+        console.log(this.levelsUnlocked);
+        console.log('Pointer down');
         if (this.screenState.current === 0) {
           this.updateUI(1);
         }
@@ -403,27 +406,28 @@ export default class Menu extends Phaser.Scene {
       const levelButton = this.ui[2].gameObjects[i];
       levelButton.anims.load(levelName);
 
-      // if (levelName !== 'levelLocked') {
-      levelButton.on('pointerover', () => {
-        levelButton.anims.play(levelName);
-      });
-      levelButton.on('pointerout', () => {
-        levelButton.anims.restart();
-        levelButton.anims.stop();
-      });
-      levelButton.on('pointerdown', () => {
-        this.cameras.main.once('camerafadeoutcomplete', (camera: any) => {
-          this.scene.launch('TestLevel', {
-            level: i,
-            coins: 0,
-            levelsUnlocked: this.levelsUnlocked,
-          });
-          this.cameras.main.fadeIn(0);
-          this.scene.stop('Menu');
+      if (levelName !== 'levelLocked') {
+        levelButton.on('pointerover', () => {
+          levelButton.anims.play(levelName);
         });
-        this.cameras.main.fadeOut(500);
-      });
-      // }
+        levelButton.on('pointerout', () => {
+          levelButton.anims.restart();
+          levelButton.anims.stop();
+        });
+        levelButton.on('pointerdown', () => {
+          this.cameras.main.once('camerafadeoutcomplete', (camera: any) => {
+            this.music.stop();
+            this.scene.launch('TestLevel', {
+              level: i,
+              coins: 0,
+              levelsUnlocked: this.levelsUnlocked,
+            });
+            this.cameras.main.fadeIn(0);
+            this.scene.stop('Menu');
+          });
+          this.cameras.main.fadeOut(500);
+        });
+      }
 
       this.ui[2].tweens.push(
         this.add.tween({

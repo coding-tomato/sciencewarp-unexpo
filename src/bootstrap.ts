@@ -183,6 +183,17 @@ class Bootstrap extends Phaser.Scene {
     this.load.image('fuel-bar', 'sprites/hud/fuel_bar.png');
     this.load.image('fuel-frame', 'sprites/hud/fuel_frame.png');
 
+    this.load.spritesheet(
+      'robot_companion',
+      'sprites/hud/robot_companion_32x32.png',
+      { frameWidth: 32, frameHeight: 32 },
+    );
+    this.load.spritesheet(
+      'robot_companion_bigger',
+      'sprites/hud/robot_companion_48x48.png',
+      { frameWidth: 48, frameHeight: 48 },
+    );
+
     // Shaders
     (this.game.renderer as any).addPipeline(
       'Grayscale',
